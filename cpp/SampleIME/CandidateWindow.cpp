@@ -10,6 +10,53 @@
 #include "BaseWindow.h"
 #include "CandidateWindow.h"
 
+DWORD RegGetDword(HKEY hKey, const std::wstring& subKey, const std::wstring& value)
+{
+    DWORD data{};
+    DWORD dataSize = sizeof(data);
+    LONG retCode = ::RegGetValue(hKey, subKey.c_str(), value.c_str(), RRF_RT_REG_DWORD, nullptr, &data, &dataSize);
+    if (retCode != ERROR_SUCCESS)
+    {
+        throw std::exception{ "Cannot read DWORD from registry.", retCode };
+    }
+    return data;
+}
+
+DWORD HighlightedCandidateColor(DWORD accentColor)
+{
+    int r = accentColor % 0x100;
+    int g = (accentColor >> 8) % 0x100;
+    int b = (accentColor >> 16) % 0x100;
+    float ratio = 0.75 * 510 / (min(r, min(g, b)) + max(r, max(g, b)));
+    BOOL maxxed = 0;
+    std::cout << r << " " << g << " " << b << "\n";
+    while (ratio > 1 && !maxxed) {
+        float fr = r * ratio;
+        float fg = g * ratio;
+        float fb = b * ratio;
+        float th = 255.999;
+        float fm = max(fr, max(fg, fb));
+        if (fm >= th) {
+            float ft = fr + fg + fb;
+            if (ft >= th * 3) {
+                fr = 255; fg = 255; fb = 255;
+            }
+            else {
+                float x = (th * 3 - ft) / (fm * 3 - ft);
+                float gr = th - x * fm;
+                fr = fr * x + gr; fg = fg * x + gr; fb = fb * x + gr;
+            }
+        }
+        r = int(fr); g = int(fg); b = int(fb);
+        float newRatio = 0.75 * 510 / (min(r, min(g, b)) + max(r, max(g, b)));
+        if (ratio == newRatio)
+            maxxed = 1;
+        else
+            ratio = newRatio;
+    }
+    return (DWORD)(r * 0x1 + g * 0x100 + b * 0x10000);
+}
+
 //+---------------------------------------------------------------------------
 //
 // ctor
@@ -644,8 +691,9 @@ void CCandidateWindow::_DrawList(_In_ HDC dcHandle, _In_ UINT iIndex, _In_ RECT 
         }
         else
         {
-            SetTextColor(dcHandle, CANDWND_SELECTED_ITEM_COLOR);
-            SetBkColor(dcHandle, CANDWND_SELECTED_BK_COLOR);
+            DWORD accentColor = RegGetDword(HKEY_CURRENT_USER, L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent", L"AccentColorMenu");
+            SetTextColor(dcHandle, _crTextColor);
+            SetBkColor(dcHandle, HighlightedCandidateColor(accentColor));
         }
 
         CStringRangeUtf16 str(*_candidateList.GetAt(iIndex));

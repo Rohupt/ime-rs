@@ -226,8 +226,8 @@ BOOL CSampleIME::_IsKeyboardDisabled()
     }
     else
     {
-        CCompartment CompartmentKeyboardDisabled(_pThreadMgr, _tfClientId, GUID_COMPARTMENT_KEYBOARD_DISABLED);
-        CompartmentKeyboardDisabled._GetCompartmentBOOL(isDisabled);
+        // CCompartment CompartmentKeyboardDisabled(_pThreadMgr, _tfClientId, GUID_COMPARTMENT_KEYBOARD_DISABLED);
+        // CompartmentKeyboardDisabled._GetCompartmentBOOL(isDisabled);
 
         CCompartment CompartmentEmptyContext(_pThreadMgr, _tfClientId, GUID_COMPARTMENT_EMPTYCONTEXT);
         CompartmentEmptyContext._GetCompartmentBOOL(isDisabled);
