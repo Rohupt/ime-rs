@@ -6,12 +6,13 @@ use globals::{
 use windows::{
     core::{Interface, GUID},
     Win32::{
-        Foundation::PWSTR,
+        System::Com::{CoCreateInstance, CLSCTX_INPROC_SERVER},
         UI::{
             Input::KeyboardAndMouse::{VK_OEM_PERIOD, VK_SHIFT, VK_SPACE},
             TextServices::{
-                ITfKeystrokeMgr, ITfThreadMgr, GUID_COMPARTMENT_KEYBOARD_OPENCLOSE, TF_MOD_CONTROL,
-                TF_MOD_ON_KEYUP, TF_MOD_SHIFT, TF_PRESERVEDKEY,
+                CLSID_TF_ThreadMgr, ITfKeystrokeMgr, ITfThreadMgr,
+                GUID_COMPARTMENT_KEYBOARD_OPENCLOSE, TF_MOD_CONTROL, TF_MOD_ON_KEYUP, TF_MOD_SHIFT,
+                TF_PRESERVEDKEY,
             },
         },
     },
@@ -83,18 +84,29 @@ impl PreservedKeys {
     ) -> windows::core::Result<()> {
         debug_assert!(preserved.key_guid != GUID::zeroed());
 
-        let mut desc: Vec<u16> = preserved.desc.encode_utf16().collect();
+        let desc: Vec<u16> = preserved.desc.encode_utf16().collect();
 
         unsafe {
-            keystroke_mgr.PreserveKey(
-                client_id,
-                &preserved.key_guid,
-                &preserved.key,
-                PWSTR(desc.as_mut_ptr()),
-                desc.len() as u32,
-            )
+            keystroke_mgr.PreserveKey(client_id, &preserved.key_guid, &preserved.key, &desc)
         }?;
 
         Ok(())
+    }
+}
+
+impl Drop for PreservedKeys {
+    fn drop(&mut self) {
+        unsafe fn drop_impl(this: &mut PreservedKeys) -> windows::core::Result<()> {
+            let thread_mgr: ITfThreadMgr =
+                CoCreateInstance(&CLSID_TF_ThreadMgr, None, CLSCTX_INPROC_SERVER)?;
+            let keystroke_mgr: ITfKeystrokeMgr = thread_mgr.cast()?;
+
+            for preserved in &this.keys {
+                keystroke_mgr.UnpreserveKey(&preserved.key_guid, &preserved.key)?;
+            }
+
+            Ok(())
+        }
+        unsafe { drop_impl(self).ok() };
     }
 }
