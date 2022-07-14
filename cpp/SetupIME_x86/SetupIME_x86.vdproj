@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_0FFEA9C46C9746DD8D9519D80666B40A"
+        "MsmKey" = "8:_505DFDB3F92C4A81B548E42E59333201"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_505DFDB3F92C4A81B548E42E59333201"
+        "MsmKey" = "8:_E46EC3AFC56345299D64F3A63BF3FC53"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -43,6 +43,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -59,6 +75,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -80,26 +104,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0FFEA9C46C9746DD8D9519D80666B40A"
-            {
-            "SourcePath" = "8:..\\Win32\\Debug\\SampleIME.dll"
-            "TargetName" = "8:SampleIME.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_09A17997D71245D88BE9D8A36BDB664F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:4"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_505DFDB3F92C4A81B548E42E59333201"
             {
             "SourcePath" = "8:..\\SampleIME\\Dictionary\\SampleIMESimplifiedQuanPinUtf8.txt"
@@ -116,6 +120,26 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E46EC3AFC56345299D64F3A63BF3FC53"
+            {
+            "SourcePath" = "8:..\\Win32\\Debug\\SampleIME_Win32.dll"
+            "TargetName" = "8:SampleIME_Win32.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_09A17997D71245D88BE9D8A36BDB664F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:4"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
@@ -177,7 +201,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SetupIME_x86"
         "ProductCode" = "8:{1B1FA9B3-8881-4621-BE14-38765E150466}"
-        "PackageCode" = "8:{D586CBA6-2473-42FB-B830-413AB1421D1E}"
+        "PackageCode" = "8:{5DF54E5F-3624-41ED-9CFE-4E6D11960D2F}"
         "UpgradeCode" = "8:{3CB4DDB9-9C15-40E6-8F62-C99E629A7E69}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
