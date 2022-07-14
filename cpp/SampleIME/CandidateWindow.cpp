@@ -9,6 +9,7 @@
 #include "Globals.h"
 #include "BaseWindow.h"
 #include "CandidateWindow.h"
+#include "cbindgen/ime.h"
 
 DWORD RegGetDword(HKEY hKey, const std::wstring& subKey, const std::wstring& value)
 {
@@ -284,7 +285,7 @@ LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT
             dcHandle = GetDC(wndHandle);
             if (dcHandle)
             {
-                HFONT hFontOld = (HFONT)SelectObject(dcHandle, Global::defaultlFontHandle);
+                HFONT hFontOld = (HFONT)SelectObject(dcHandle, DEFAULT_FONT_HANDLE);
                 GetTextMetrics(dcHandle, &_TextMetric);
 
                 _cxTitle = _TextMetric.tmMaxCharWidth * _wndWidth;
@@ -463,7 +464,7 @@ void CCandidateWindow::_OnPaint(_In_ HDC dcHandle, _In_ PAINTSTRUCT *pPaintStruc
 {
     SetBkMode(dcHandle, TRANSPARENT);
 
-    HFONT hFontOld = (HFONT)SelectObject(dcHandle, Global::defaultlFontHandle);
+    HFONT hFontOld = (HFONT)SelectObject(dcHandle, DEFAULT_FONT_HANDLE);
 
     FillRect(dcHandle, &pPaintStruct->rcPaint, _brshBkColor);
 

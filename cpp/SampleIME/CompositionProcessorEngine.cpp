@@ -11,7 +11,6 @@
 #include "TfInputProcessorProfile.h"
 #include "Globals.h"
 #include "Compartment.h"
-#include "LanguageBar.h"
 #include "cbindgen/globals.h"
 #include "cbindgen/ime.h"
 #include "cbindgen/itf_components.h"
@@ -55,10 +54,9 @@ BOOL CSampleIME::_AddTextProcessorEngine()
     // Is this already added?
     if (_pCompositionProcessorEngine != nullptr)
     {
-        LANGID langidProfile = 0;
-        GUID guidLanguageProfile = GUID_NULL;
+        LANGID langidProfile = _pCompositionProcessorEngine->langid;
+        GUID guidLanguageProfile = _pCompositionProcessorEngine->guidProfile;
 
-        guidLanguageProfile = _pCompositionProcessorEngine->GetLanguageProfile(&langidProfile);
         if ((langid == langidProfile) && IsEqualGUID(guidProfile, guidLanguageProfile))
         {
             return TRUE;
@@ -68,7 +66,7 @@ BOOL CSampleIME::_AddTextProcessorEngine()
     // Create composition processor engine
     if (_pCompositionProcessorEngine == nullptr)
     {
-        _pCompositionProcessorEngine = new (std::nothrow) CCompositionProcessorEngine(_GetThreadMgr(), _GetClientId());
+        _pCompositionProcessorEngine = new (std::nothrow) CCompositionProcessorEngine(langid, guidProfile, _GetThreadMgr(), _GetClientId());
     }
     if (!_pCompositionProcessorEngine)
     {
@@ -76,7 +74,7 @@ BOOL CSampleIME::_AddTextProcessorEngine()
     }
 
     // setup composition processor engine
-    if (FALSE == _pCompositionProcessorEngine->SetupLanguageProfile(langid, guidProfile, _GetThreadMgr(), _GetClientId()))
+    if (FALSE == _pCompositionProcessorEngine->SetupLanguageProfile(_GetThreadMgr(), _GetClientId()))
     {
         return FALSE;
     }
@@ -93,507 +91,130 @@ BOOL CSampleIME::_AddTextProcessorEngine()
 //+---------------------------------------------------------------------------
 //
 // ctor
-//
-//----------------------------------------------------------------------------
-
-CCompositionProcessorEngine::CCompositionProcessorEngine(ITfThreadMgr *threadMgr, TfClientId clientId)
-    : engine_rust(threadMgr, clientId)
-{
-    _langid = 0xffff;
-    _guidProfile = GUID_NULL;
-    _tfClientId = TF_CLIENTID_NULL;
-
-    _pLanguageBar_IMEMode = nullptr;
-
-    _pCompartmentKeyboardOpenEventSink = nullptr;
-    _pCompartmentConversionEventSink = nullptr;
-    _pCompartmentDoubleSingleByteEventSink = nullptr;
-    _pCompartmentPunctuationEventSink = nullptr;
-}
-
-//+---------------------------------------------------------------------------
-//
-// dtor
-//
-//----------------------------------------------------------------------------
-
-CCompositionProcessorEngine::~CCompositionProcessorEngine()
-{
-    if (_pLanguageBar_IMEMode)
-    {
-        RustLangBarItemButton::Cleanup(_pLanguageBar_IMEMode);
-        _pLanguageBar_IMEMode = nullptr;
-    }
-
-    if (_pCompartmentKeyboardOpenEventSink)
-    {
-        RustCompartmentSink::Unadvise(_pCompartmentKeyboardOpenEventSink);
-        _pCompartmentKeyboardOpenEventSink->Release();
-        _pCompartmentKeyboardOpenEventSink = nullptr;
-    }
-    if (_pCompartmentConversionEventSink)
-    {
-        RustCompartmentSink::Unadvise(_pCompartmentConversionEventSink);
-        _pCompartmentConversionEventSink->Release();
-        _pCompartmentConversionEventSink = nullptr;
-    }
-    if (_pCompartmentDoubleSingleByteEventSink)
-    {
-        RustCompartmentSink::Unadvise(_pCompartmentDoubleSingleByteEventSink);
-        _pCompartmentDoubleSingleByteEventSink->Release();
-        _pCompartmentDoubleSingleByteEventSink = nullptr;
-    }
-    if (_pCompartmentPunctuationEventSink)
-    {
-        RustCompartmentSink::Unadvise(_pCompartmentPunctuationEventSink);
-        _pCompartmentPunctuationEventSink->Release();
-        _pCompartmentPunctuationEventSink = nullptr;
-    }
-}
-
-//+---------------------------------------------------------------------------
-//
-// SetupLanguageProfile
-//
-// Setup language profile for Composition Processor Engine.
 // param
 //     [in] LANGID langid = Specify language ID
 //     [in] GUID guidLanguageProfile - Specify GUID language profile which GUID is as same as Text Service Framework language profile.
-//     [in] ITfThreadMgr - pointer ITfThreadMgr.
-//     [in] tfClientId - TfClientId value.
-// returns
-//     If setup succeeded, returns true. Otherwise returns false.
-// N.B. For reverse conversion, ITfThreadMgr is NULL and TfClientId is 0.
-//+---------------------------------------------------------------------------
-
-BOOL CCompositionProcessorEngine::SetupLanguageProfile(LANGID langid, REFGUID guidLanguageProfile, _In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId)
-{
-    BOOL ret = TRUE;
-    if ((tfClientId == 0) && (pThreadMgr == nullptr))
-    {
-        ret = FALSE;
-        goto Exit;
-    }
-
-    _langid = langid;
-    _guidProfile = guidLanguageProfile;
-    _tfClientId = tfClientId;
-
-    engine_rust.PreservedKeysInit(pThreadMgr, tfClientId);
-	InitializeSampleIMECompartment(pThreadMgr, tfClientId);
-    SetupLanguageBar(pThreadMgr, tfClientId);
-    SetDefaultCandidateTextFont();
-    engine_rust.SetupDictionaryFile(DLL_INSTANCE, TEXTSERVICE_DIC);
-
-Exit:
-    return ret;
-}
-
-//+---------------------------------------------------------------------------
-//
-// AddVirtualKey
-// Add virtual key code to Composition Processor Engine for used to parse keystroke data.
-// param
-//     [in] uCode - Specify virtual key code.
-// returns
-//     State of Text Processor Engine.
-//----------------------------------------------------------------------------
-
-BOOL CCompositionProcessorEngine::AddVirtualKey(WCHAR wch)
-{
-    return engine_rust.AddVirtualKey(wch);
-}
-
-//+---------------------------------------------------------------------------
-//
-// PopVirtualKey
-// Remove the last stored virtual key code.
-// returns
-//     none.
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::PopVirtualKey()
-{
-    engine_rust.PopVirtualKey();
-}
-
-//+---------------------------------------------------------------------------
-//
-// PurgeVirtualKey
-// Purge stored virtual key code.
-// param
-//     none.
-// returns
-//     none.
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::PurgeVirtualKey()
-{
-    engine_rust.PurgeVirtualKey();
-}
-
-bool CCompositionProcessorEngine::HasVirtualKey()
-{
-    return engine_rust.HasVirtualKey();
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetReadingString
-// Retrieves string from Composition Processor Engine.
 //
 //----------------------------------------------------------------------------
 
-std::optional<std::tuple<CRustStringRange, bool>> CCompositionProcessorEngine::GetReadingString()
-{
-    if (engine_rust.HasVirtualKey())
-    {
-        return std::tuple<CRustStringRange, bool>(engine_rust.GetReadingString(), engine_rust.KeystrokeBufferIncludesWildcard());
-    }
-
-    return std::nullopt;
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetCandidateList
-//
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::GetCandidateList(_Inout_ CSampleImeArray<CCandidateListItem> *pCandidateList, BOOL isIncrementalWordSearch, BOOL isWildcardSearch)
-{
-    if (!IsDictionaryAvailable())
-    {
-        return;
-    }
-
-    if (isIncrementalWordSearch)
-    {
-        CRustStringRange wildcardSearch = engine_rust.GetReadingString();
-
-        // check keystroke buffer already has wildcard char which end user want wildcard serach
-        uint32_t wildcardIndex = 0;
-        bool isFindWildcard = wildcardSearch.Contains(u8'*') || wildcardSearch.Contains(u8'?');
-
-        if (!isFindWildcard)
-        {
-            // add wildcard char for incremental search
-            wildcardSearch = wildcardSearch.Concat(u8"*"_rs);
-        }
-
-        engine_rust.GetTableDictionaryEngine()->CollectWordForWildcard(wildcardSearch, pCandidateList);
-
-        if (0 >= pCandidateList->Count())
-        {
-            return;
-        }
-    }
-    else if (isWildcardSearch)
-    {
-        engine_rust.GetTableDictionaryEngine()->CollectWordForWildcard(engine_rust.GetReadingString(), pCandidateList);
-    }
-    else
-    {
-        engine_rust.GetTableDictionaryEngine()->CollectWord(engine_rust.GetReadingString(), pCandidateList);
-    }
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetCandidateStringInConverted
-//
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::GetCandidateStringInConverted(const CRustStringRange& searchString, _In_ CSampleImeArray<CCandidateListItem> *pCandidateList)
-{
-    if (!IsDictionaryAvailable())
-    {
-        return;
-    }
-
-    // Search phrase from SECTION_TEXT's converted string list
-    CRustStringRange wildcardSearch = searchString.Concat(u8"*"_rs);
-
-    engine_rust.GetTableDictionaryEngine()->CollectWordFromConvertedStringForWildcard(wildcardSearch, pCandidateList);
-}
-
-//+---------------------------------------------------------------------------
-//
-// IsPunctuation
-//
-//----------------------------------------------------------------------------
-
-bool CCompositionProcessorEngine::IsPunctuation(wchar_t wch)
-{
-    return engine_rust.PunctuationsHasAlternativePunctuation(wch);
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetPunctuationPair
-//
-//----------------------------------------------------------------------------
-
-wchar_t CCompositionProcessorEngine::GetPunctuation(wchar_t wch)
-{
-    return engine_rust.PunctuationsGetAlternativePunctuationCounted(wch);
-}
-
-//+---------------------------------------------------------------------------
-//
-// IsDoubleSingleByte
-//
-//----------------------------------------------------------------------------
-
-BOOL CCompositionProcessorEngine::IsDoubleSingleByte(WCHAR wch)
-{
-    if (L' ' <= wch && wch <= L'~')
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
-
-//+---------------------------------------------------------------------------
-//
-// OnPreservedKey
-//
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::OnPreservedKey(REFGUID rguid, _Out_ BOOL *pIsEaten, _In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId)
-{
-    bool isEaten;
-    engine_rust.OnPreservedKey(rguid, &isEaten, pThreadMgr, tfClientId);
-    *pIsEaten = isEaten;
-}
-
-//+---------------------------------------------------------------------------
-//
-// SetupLanguageBar
-//
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::SetupLanguageBar(_In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId)
-{
-    _pLanguageBar_IMEMode = RustLangBarItemButton::New();
-
-    RustLangBarItemButton::Init(_pLanguageBar_IMEMode, pThreadMgr, tfClientId, &GUID_COMPARTMENT_KEYBOARD_OPENCLOSE);
-
-    _pCompartmentKeyboardOpenEventSink = (ITfCompartmentEventSink*)compartmenteventsink_new(compartment_callback, engine_rust.CompartmentWrapperRawPtr());
-    _pCompartmentConversionEventSink = (ITfCompartmentEventSink*)compartmenteventsink_new(compartment_callback, engine_rust.CompartmentWrapperRawPtr());
-    _pCompartmentDoubleSingleByteEventSink = (ITfCompartmentEventSink*)compartmenteventsink_new(compartment_callback, engine_rust.CompartmentWrapperRawPtr());
-    _pCompartmentPunctuationEventSink = (ITfCompartmentEventSink*)compartmenteventsink_new(compartment_callback, engine_rust.CompartmentWrapperRawPtr());
-
-    if (_pCompartmentKeyboardOpenEventSink)
-    {
-        RustCompartmentSink::Advise(_pCompartmentKeyboardOpenEventSink, pThreadMgr, &GUID_COMPARTMENT_KEYBOARD_OPENCLOSE);
-    }
-    if (_pCompartmentConversionEventSink)
-    {
-        RustCompartmentSink::Advise(_pCompartmentConversionEventSink, pThreadMgr, &GUID_COMPARTMENT_KEYBOARD_INPUTMODE_CONVERSION);
-    }
-    if (_pCompartmentDoubleSingleByteEventSink)
-    {
-        RustCompartmentSink::Advise(_pCompartmentDoubleSingleByteEventSink, pThreadMgr, &SAMPLEIME_GUID_COMPARTMENT_DOUBLE_SINGLE_BYTE);
-    }
-    if (_pCompartmentPunctuationEventSink)
-    {
-        RustCompartmentSink::Advise(_pCompartmentPunctuationEventSink, pThreadMgr, &SAMPLEIME_GUID_COMPARTMENT_PUNCTUATION);
-    }
-
-    return;
-}
-
-void CCompositionProcessorEngine::InitializeSampleIMECompartment(_In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId)
-{
-	// set initial mode
-    CCompartment CompartmentKeyboardOpen(pThreadMgr, tfClientId, GUID_COMPARTMENT_KEYBOARD_OPENCLOSE);
-    CompartmentKeyboardOpen._SetCompartmentBOOL(TRUE);
-
-    CCompartment CompartmentDoubleSingleByte(pThreadMgr, tfClientId, SAMPLEIME_GUID_COMPARTMENT_DOUBLE_SINGLE_BYTE);
-    CompartmentDoubleSingleByte._SetCompartmentBOOL(FALSE);
-
-    CCompartment CompartmentPunctuation(pThreadMgr, tfClientId, SAMPLEIME_GUID_COMPARTMENT_PUNCTUATION);
-    CompartmentPunctuation._SetCompartmentBOOL(TRUE);
-
-    PrivateCompartmentsUpdated(pThreadMgr);
-}
-
-//+---------------------------------------------------------------------------
-//
-// UpdatePrivateCompartments
-//
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::ConversionModeCompartmentUpdated(_In_ ITfThreadMgr *pThreadMgr)
-{
-    engine_rust.ConversionModeCompartmentUpdated(pThreadMgr);
-}
-
-//+---------------------------------------------------------------------------
-//
-// PrivateCompartmentsUpdated()
-//
-//----------------------------------------------------------------------------
-
-void CCompositionProcessorEngine::PrivateCompartmentsUpdated(_In_ ITfThreadMgr *pThreadMgr)
-{
-    engine_rust.PrivateCompartmentsUpdated(pThreadMgr);
-}
-
-void CCompositionProcessorEngine::ShowAllLanguageBarIcons()
-{
-    SetLanguageBarStatus(TF_LBI_STATUS_HIDDEN, FALSE);
-}
-
-void CCompositionProcessorEngine::HideAllLanguageBarIcons()
-{
-    SetLanguageBarStatus(TF_LBI_STATUS_HIDDEN, TRUE);
-}
-
-void CCompositionProcessorEngine::SetDefaultCandidateTextFont()
-{
-    // Candidate Text Font
-    if (Global::defaultlFontHandle == nullptr)
-    {
-		WCHAR fontName[50] = {'\0'};
-		LoadString(DLL_INSTANCE, IDS_DEFAULT_FONT, fontName, 50);
-        Global::defaultlFontHandle = CreateFont(-MulDiv(10, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 72), 0, 0, 0, FW_MEDIUM, 0, 0, 0, 0, 0, 0, 0, 0, fontName);
-        if (!Global::defaultlFontHandle)
-        {
-			LOGFONT lf;
-			SystemParametersInfo(SPI_GETICONTITLELOGFONT, sizeof(LOGFONT), &lf, 0);
-            // Fall back to the default GUI font on failure.
-            Global::defaultlFontHandle = CreateFont(-MulDiv(10, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 72), 0, 0, 0, FW_MEDIUM, 0, 0, 0, 0, 0, 0, 0, 0, lf.lfFaceName);
-        }
-    }
-}
-
-//////////////////////////////////////////////////////////////////////
-//
-//    CCompositionProcessorEngine
-//
-//////////////////////////////////////////////////////////////////////
-
-//+---------------------------------------------------------------------------
-//
-// CCompositionProcessorEngine::IsVirtualKeyNeed
-//
-// Test virtual key code need to the Composition Processor Engine.
-// param
-//     [in] uCode - Specify virtual key code.
-//     [in/out] pwch       - char code
-//     [in] fComposing     - Specified composing.
-//     [in] fCandidateMode - Specified candidate mode.
-//     [out] pKeyState     - Returns function regarding virtual key.
-// returns
-//     If engine need this virtual key code, returns true. Otherwise returns false.
-//----------------------------------------------------------------------------
-
-std::tuple<bool, KeystrokeCategory, KeystrokeFunction> CCompositionProcessorEngine::TestVirtualKey(uint16_t uCode, char16_t wch, bool fComposing, CandidateMode candidateMode)
-{
-    return engine_rust.TestVirtualKey(uCode, wch, fComposing, candidateMode);
-}
-
-CCompositionProcessorEngine::CRustCompositionProcessorEngine::CRustCompositionProcessorEngine(ITfThreadMgr *threadMgr, TfClientId clientId) {
+CCompositionProcessorEngine::CCompositionProcessorEngine(
+    LANGID langid,
+    REFGUID guidLanguageProfile,
+    ITfThreadMgr *threadMgr,
+    TfClientId clientId
+) : langid(langid), guidProfile(guidLanguageProfile) {
     threadMgr->AddRef();
     engine = compositionprocessorengine_new(threadMgr, clientId);
 }
 
-CCompositionProcessorEngine::CRustCompositionProcessorEngine::~CRustCompositionProcessorEngine() {
+CCompositionProcessorEngine::~CCompositionProcessorEngine() {
     compositionprocessorengine_free(engine);
 }
 
-std::tuple<bool, KeystrokeCategory, KeystrokeFunction> CCompositionProcessorEngine::CRustCompositionProcessorEngine::TestVirtualKey(uint16_t code, char16_t ch, bool composing, CandidateMode candidateMode)
-{
-    bool keyEaten;
-    KeystrokeCategory keystrokeCategory;
-    KeystrokeFunction keystrokeFunction;
-    compositionprocessorengine_test_virtual_key(engine, code, ch, composing, candidateMode, &keyEaten, &keystrokeCategory, &keystrokeFunction);
-    return { keyEaten, keystrokeCategory, keystrokeFunction };
-}
+bool CCompositionProcessorEngine::SetupLanguageProfile(ITfThreadMgr *threadMgr, TfClientId clientId) {
+    return compositionprocessorengine_setup_language_profile(engine, threadMgr, clientId);
+};
 
-bool CCompositionProcessorEngine::CRustCompositionProcessorEngine::AddVirtualKey(char16_t wch) {
+bool CCompositionProcessorEngine::AddVirtualKey(char16_t wch) {
     return compositionprocessorengine_add_virtual_key(engine, wch);
 }
 
-void CCompositionProcessorEngine::CRustCompositionProcessorEngine::PopVirtualKey() {
+void CCompositionProcessorEngine::PopVirtualKey() {
     compositionprocessorengine_pop_virtual_key(engine);
 }
 
-void CCompositionProcessorEngine::CRustCompositionProcessorEngine::PurgeVirtualKey() {
+void CCompositionProcessorEngine::PurgeVirtualKey() {
     compositionprocessorengine_purge_virtual_key(engine);
 }
 
-bool CCompositionProcessorEngine::CRustCompositionProcessorEngine::HasVirtualKey() {
+bool CCompositionProcessorEngine::HasVirtualKey() {
     return compositionprocessorengine_has_virtual_key(engine);
 }
 
-CRustStringRange CCompositionProcessorEngine::CRustCompositionProcessorEngine::GetReadingString() {
-    void* str = compositionprocessorengine_get_reading_string(engine);
+CRustStringRange CCompositionProcessorEngine::KeystrokeBufferGetReadingString() {
+    void* str = compositionprocessorengine_keystroke_buffer_get_reading_string(engine);
     return CRustStringRange::FromVoid(str);
 }
 
-bool CCompositionProcessorEngine::CRustCompositionProcessorEngine::KeystrokeBufferIncludesWildcard() {
+bool CCompositionProcessorEngine::KeystrokeBufferIncludesWildcard() {
     return compositionprocessorengine_keystroke_buffer_includes_wildcard(engine);
 }
 
-HRESULT CCompositionProcessorEngine::CRustCompositionProcessorEngine::OnPreservedKey(REFGUID rguid, bool* isEaten, ITfThreadMgr* threadMgr, TfClientId clientId) {
-    threadMgr->AddRef();
-    return compositionprocessorengine_on_preserved_key(engine, &rguid, isEaten, threadMgr, clientId);
-}
+static const uintptr_t MAX_BUFFER = 512;
 
-void CCompositionProcessorEngine::CRustCompositionProcessorEngine::SetupDictionaryFile(HINSTANCE dllInstanceHandle, const CRustStringRange& dictionaryFileName) {
-    compositionprocessorengine_setup_dictionary_file(engine, dllInstanceHandle, dictionaryFileName.GetInternal());
-}
-
-std::optional<CRustTableDictionaryEngine> CCompositionProcessorEngine::CRustCompositionProcessorEngine::GetTableDictionaryEngine() const {
-    const void* dict = compositionprocessorengine_get_table_dictionary_engine(engine);
-    if (dict) {
-        return CRustTableDictionaryEngine::WeakRef(const_cast<void*>(compositionprocessorengine_get_table_dictionary_engine(engine)));
+inline void ArraysToArray(void** keys, void** values, uintptr_t length, _Inout_ CSampleImeArray<CCandidateListItem> *pItemList) {
+    for (uintptr_t i = 0; i < length; i++) {
+        CRustStringRange key = CRustStringRange::FromVoid(keys[i]);
+        CRustStringRange value = CRustStringRange::FromVoid(values[i]);
+        CCandidateListItem listItem(value, key);
+        pItemList->Append(listItem);
     }
-    return std::nullopt;
 }
 
-void CCompositionProcessorEngine::CRustCompositionProcessorEngine::ModifiersUpdate(WPARAM w, LPARAM l) {
+void CCompositionProcessorEngine::GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch, bool isWildcardSearch) {
+    void* keys[MAX_BUFFER];
+    void* values[MAX_BUFFER];
+    uintptr_t length = compositionprocessorengine_get_candidate_list(this->engine, keys, values, MAX_BUFFER, isIncrementalWordSearch, isWildcardSearch);
+    ArraysToArray(keys, values, length, pCandidateList);
+}
+
+void CCompositionProcessorEngine::GetCandidateStringInConverted(const CRustStringRange& searchString, CSampleImeArray<CCandidateListItem> *pCandidateList) {
+    void* keys[MAX_BUFFER];
+    void* values[MAX_BUFFER];
+    uintptr_t length = compositionprocessorengine_get_candidate_string_in_converted(engine, searchString.GetInternal(), keys, values, MAX_BUFFER);
+    ArraysToArray(keys, values, length, pCandidateList);
+}
+
+HRESULT CCompositionProcessorEngine::OnPreservedKey(REFGUID rguid, BOOL* isEaten, ITfThreadMgr* threadMgr, TfClientId clientId) {
+    threadMgr->AddRef();
+    bool _isEaten = false;
+    HRESULT result = compositionprocessorengine_on_preserved_key(engine, &rguid, &_isEaten, threadMgr, clientId);
+    *isEaten = _isEaten;
+    return result;
+}
+
+void CCompositionProcessorEngine::ModifiersUpdate(WPARAM w, LPARAM l) {
     compositionprocessorengine_modifiers_update(engine, w, l);
 }
 
-bool CCompositionProcessorEngine::CRustCompositionProcessorEngine::ModifiersIsShiftKeyDownOnly() const {
+bool CCompositionProcessorEngine::ModifiersIsShiftKeyDownOnly() const {
     return compositionprocessorengine_modifiers_is_shift_key_down_only(engine);
 }
 
-bool CCompositionProcessorEngine::CRustCompositionProcessorEngine::ModifiersIsControlKeyDownOnly() const {
+bool CCompositionProcessorEngine::ModifiersIsControlKeyDownOnly() const {
     return compositionprocessorengine_modifiers_is_control_key_down_only(engine);
 }
 
-bool CCompositionProcessorEngine::CRustCompositionProcessorEngine::ModifiersIsAltKeyDownOnly() const {
+bool CCompositionProcessorEngine::ModifiersIsAltKeyDownOnly() const {
     return compositionprocessorengine_modifiers_is_alt_key_down_only(engine);
 }
 
-bool CCompositionProcessorEngine::CRustCompositionProcessorEngine::PunctuationsHasAlternativePunctuation(WCHAR wch) const {
+bool CCompositionProcessorEngine::PunctuationsHasAlternativePunctuation(WCHAR wch) const {
     return compositionprocessorengine_punctuations_has_alternative_punctuation(engine, wch);
 }
 
-wchar_t CCompositionProcessorEngine::CRustCompositionProcessorEngine::PunctuationsGetAlternativePunctuationCounted(wchar_t wch) {
+wchar_t CCompositionProcessorEngine::PunctuationsGetAlternativePunctuationCounted(wchar_t wch) {
     return compositionprocessorengine_punctuations_get_alternative_punctuation_counted(engine, wch);
 }
 
-HRESULT CCompositionProcessorEngine::CRustCompositionProcessorEngine::PreservedKeysInit(ITfThreadMgr* threadMgr, TfClientId clientId) {
+HRESULT CCompositionProcessorEngine::PreservedKeysInit(ITfThreadMgr* threadMgr, TfClientId clientId) {
     threadMgr->AddRef();
     return compositionprocessorengine_preserved_keys_init(engine, threadMgr, clientId);
 }
 
-void* CCompositionProcessorEngine::CRustCompositionProcessorEngine::CompartmentWrapperRawPtr() {
+void* CCompositionProcessorEngine::CompartmentWrapperRawPtr() {
     return const_cast<void*>(compositionprocessorengine_compartmentwrapper_raw_ptr(engine));
 }
 
-void CCompositionProcessorEngine::CRustCompositionProcessorEngine::ConversionModeCompartmentUpdated(ITfThreadMgr *threadMgr) {
+void CCompositionProcessorEngine::ConversionModeCompartmentUpdated(ITfThreadMgr *threadMgr) {
     threadMgr->AddRef();
     compositionprocessorengine_compartmentwrapper_conversion_mode_compartment_updated(engine, threadMgr);
 }
 
-void CCompositionProcessorEngine::CRustCompositionProcessorEngine::PrivateCompartmentsUpdated(ITfThreadMgr *threadMgr) {
-    threadMgr->AddRef();
-    compositionprocessorengine_compartmentwrapper_private_compartments_updated(engine, threadMgr);
+void CCompositionProcessorEngine::HideLanguageBarButton(bool hide) {
+    compositionprocessorengine_hide_language_bar_button(engine, hide);
+}
+
+void CCompositionProcessorEngine::DisableLanguageBarButton(bool disable) {
+    compositionprocessorengine_disable_language_bar_button(engine, disable);
 }

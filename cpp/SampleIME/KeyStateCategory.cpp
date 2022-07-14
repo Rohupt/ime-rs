@@ -7,33 +7,12 @@
 
 #include "KeyStateCategory.h"
 
-CKeyStateCategoryFactory* CKeyStateCategoryFactory::_instance;
-
-CKeyStateCategoryFactory::CKeyStateCategoryFactory()
-{
-    _instance = nullptr;
-}
-
-CKeyStateCategoryFactory* CKeyStateCategoryFactory::Instance()
-{
-    if (nullptr == _instance)
-    {
-        _instance = new (std::nothrow) CKeyStateCategoryFactory();
-    }
-
-    return _instance;
-}
-
 CKeyStateCategory* CKeyStateCategoryFactory::MakeKeyStateCategory(KeystrokeCategory keyCategory, _In_ CSampleIME *pTextService)
 {
     CKeyStateCategory* pKeyState = nullptr;
 
     switch (keyCategory)
     {
-    case KeystrokeCategory::None:
-        pKeyState = new (std::nothrow) CKeyStateNull(pTextService);
-        break;
-
     case KeystrokeCategory::Composing:
         pKeyState = new (std::nothrow) CKeyStateComposing(pTextService);
         break;
@@ -42,20 +21,12 @@ CKeyStateCategory* CKeyStateCategoryFactory::MakeKeyStateCategory(KeystrokeCateg
         pKeyState = new (std::nothrow) CKeyStateCandidate(pTextService);
         break;
 
+    case KeystrokeCategory::None:
     default:
         pKeyState = new (std::nothrow) CKeyStateNull(pTextService);
         break;
     }
     return pKeyState;
-}
-
-void CKeyStateCategoryFactory::Release()
-{
-    if (_instance)
-    {
-        delete _instance;
-        _instance = nullptr;
-    }
 }
 
 /*
@@ -330,37 +301,5 @@ HRESULT CKeyStateCandidate::HandleKeyArrow(KeyHandlerEditSessionDTO dto)
 //_HandleCandidateSelectByNumber
 HRESULT CKeyStateCandidate::HandleKeySelectByNumber(KeyHandlerEditSessionDTO dto)
 {
-    return _pTextService->_HandleCandidateSelectByNumber(dto.ec, dto.pContext, dto.code);
-}
-
-/*
-class CKeyStatePhrase
-*/
-
-CKeyStatePhrase::CKeyStatePhrase(_In_ CSampleIME *pTextService) : CKeyStateCategory(pTextService)
-{
-}
-
-//HandleKeyFinalizeCandidatelist
-HRESULT CKeyStatePhrase::HandleKeyFinalizeCandidatelist(KeyHandlerEditSessionDTO dto)
-{
-    return _pTextService->_HandlePhraseFinalize(dto.ec, dto.pContext);
-}
-
-//HandleKeyCancel
-HRESULT CKeyStatePhrase::HandleKeyCancel(KeyHandlerEditSessionDTO dto)
-{
-    return _pTextService->_HandleCancel(dto.ec, dto.pContext);
-}
-
-//HandleKeyArrow
-HRESULT CKeyStatePhrase::HandleKeyArrow(KeyHandlerEditSessionDTO dto)
-{
-    return _pTextService->_HandlePhraseArrowKey(dto.ec, dto.pContext, dto.arrowKey);
-}
-
-//HandleKeySelectByNumber
-HRESULT CKeyStatePhrase::HandleKeySelectByNumber(KeyHandlerEditSessionDTO dto)
-{
-    return _pTextService->_HandlePhraseSelectByNumber(dto.ec, dto.pContext, dto.code);
+    return _pTextService->_HandleCandidateSelectByNumber(dto.ec, dto.pContext, dto.wch);
 }

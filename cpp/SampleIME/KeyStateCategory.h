@@ -15,32 +15,21 @@ class CKeyStateCategory;
 class CKeyStateCategoryFactory
 {
 public:
-    static CKeyStateCategoryFactory* Instance();
-    CKeyStateCategory* MakeKeyStateCategory(KeystrokeCategory keyCategory, _In_ CSampleIME *pTextService);
-    void Release();
-
-protected:
-    CKeyStateCategoryFactory();
-
-private:
-    static CKeyStateCategoryFactory* _instance;
-
+    static CKeyStateCategory* MakeKeyStateCategory(KeystrokeCategory keyCategory, _In_ CSampleIME *pTextService);
 };
 
 typedef struct KeyHandlerEditSessionDTO
 {
-    KeyHandlerEditSessionDTO::KeyHandlerEditSessionDTO(TfEditCookie tFEC, _In_ ITfContext *pTfContext, UINT virualCode, WCHAR inputChar, KeystrokeFunction arrowKeyFunction)
+    KeyHandlerEditSessionDTO::KeyHandlerEditSessionDTO(TfEditCookie tFEC, _In_ ITfContext *pTfContext, WCHAR inputChar, KeystrokeFunction arrowKeyFunction)
     {
         ec = tFEC;
         pContext = pTfContext;
-        code = virualCode;
         wch = inputChar;
         arrowKey = arrowKeyFunction;
     }
 
     TfEditCookie ec;
     ITfContext* pContext;
-    UINT code;
     WCHAR wch;
     KeystrokeFunction arrowKey;
 }KeyHandlerEditSessionDTO;
@@ -169,68 +158,9 @@ protected:
     HRESULT HandleKeySelectByNumber(KeyHandlerEditSessionDTO dto);
 };
 
-class CKeyStatePhrase : public CKeyStateCategory
-{
-public:
-    CKeyStatePhrase(_In_ CSampleIME *pTextService);
-
-protected:
-    //_HandleCancel
-    HRESULT HandleKeyFinalizeCandidatelist(KeyHandlerEditSessionDTO dto);
-
-    //_HandleCancel
-    HRESULT HandleKeyCancel(KeyHandlerEditSessionDTO dto);
-
-    //_HandlePhraseArrowKey
-    HRESULT HandleKeyArrow(KeyHandlerEditSessionDTO dto);
-
-    //_HandlePhraseSelectByNumber
-    HRESULT HandleKeySelectByNumber(KeyHandlerEditSessionDTO dto);
-};
-
 //degeneration class
 class CKeyStateNull : public CKeyStateCategory
 {
 public:
     CKeyStateNull(_In_ CSampleIME *pTextService) : CKeyStateCategory(pTextService) {};
-
-protected:
-    // _HandleNullInput
-    HRESULT HandleKeyInput(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyInput(dto); };
-
-    // HandleKeyNullFinalizeTextStoreAndInput
-    HRESULT HandleKeyFinalizeTextStoreAndInput(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyFinalizeTextStoreAndInput(dto); };
-
-    // HandleKeyFinalizeTextStore
-    HRESULT HandleKeyFinalizeTextStore(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyFinalizeTextStore(dto); };
-
-    // HandleKeyNullFinalizeCandidatelistAndInput
-    HRESULT HandleKeyFinalizeCandidatelistAndInput(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyFinalizeCandidatelistAndInput(dto); };
-
-    // HandleKeyNullFinalizeCandidatelist
-    HRESULT HandleKeyFinalizeCandidatelist(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyFinalizeCandidatelist(dto); };
-
-    //_HandleNullConvert
-    HRESULT HandleKeyConvert(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyConvert(dto); };
-
-    //_HandleNullCancel
-    HRESULT HandleKeyCancel(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyCancel(dto); };
-
-    // HandleKeyNullConvertWild
-    HRESULT HandleKeyConvertWildCard(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyConvertWildCard(dto); };
-
-    //_HandleNullBackspace
-    HRESULT HandleKeyBackspace(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyBackspace(dto); };
-
-    //_HandleNullArrowKey
-    HRESULT HandleKeyArrow(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyArrow(dto); };
-
-    // HandleKeyDoubleSingleByte
-    HRESULT HandleKeyDoubleSingleByte(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyDoubleSingleByte(dto); };
-
-    // HandleKeyPunctuation
-    HRESULT HandleKeyPunctuation(KeyHandlerEditSessionDTO dto) { return __super::HandleKeyPunctuation(dto); };
-
-    //_HandleNullCandidateSelectByNumber
-    HRESULT HandleKeySelectByNumber(KeyHandlerEditSessionDTO dto) { return __super::HandleKeySelectByNumber(dto); };
 };

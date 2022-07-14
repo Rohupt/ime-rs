@@ -12,127 +12,57 @@
 #include <tuple>
 
 #include "sal.h"
-#include "TableDictionaryEngine.h"
 #include "KeyHandlerEditSession.h"
 #include "SampleIMEBaseStructure.h"
 #include "Compartment.h"
 #include "Define.h"
 #include "RustStringRange.h"
 
-class CCompositionProcessorEngine
-{
+class CCompositionProcessorEngine {
+    void* engine;
+
 public:
-    CCompositionProcessorEngine(ITfThreadMgr* threadMgr, TfClientId clientId);
-    ~CCompositionProcessorEngine(void);
+    // TODO: Ultimately split these fields as tuple<langid, profile, engine>,
+    // since these fields are not used within this class.
+    // For now let's keep them as fields to reduce code change.
+    const LANGID langid;
+    const GUID guidProfile;
 
-    BOOL SetupLanguageProfile(LANGID langid, REFGUID guidLanguageProfile, _In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId);
+    CCompositionProcessorEngine(LANGID langid, REFGUID guidLanguageProfile, ITfThreadMgr* threadMgr, TfClientId clientId);
+    ~CCompositionProcessorEngine();
 
-    // Get language profile.
-    GUID GetLanguageProfile(LANGID *plangid)
-    {
-        *plangid = _langid;
-        return _guidProfile;
-    }
-    // Get locale
-    LCID GetLocale()
-    {
-        return MAKELCID(_langid, SORT_DEFAULT);
-    }
+    void* GetRaw() { return engine; }
 
-    std::tuple<bool, KeystrokeCategory, KeystrokeFunction> TestVirtualKey(uint16_t uCode, char16_t wch, bool fComposing, CandidateMode candidateMode);
+    bool SetupLanguageProfile(ITfThreadMgr *threadMgr, TfClientId clientId);
 
-    BOOL AddVirtualKey(WCHAR wch);
+    bool AddVirtualKey(char16_t wch);
     void PopVirtualKey();
     void PurgeVirtualKey();
-
     bool HasVirtualKey();
+    CRustStringRange KeystrokeBufferGetReadingString();
+    bool KeystrokeBufferIncludesWildcard();
 
-    std::optional<std::tuple<CRustStringRange, bool>> GetReadingString();
-    void GetCandidateList(_Inout_ CSampleImeArray<CCandidateListItem> *pCandidateList, BOOL isIncrementalWordSearch, BOOL isWildcardSearch);
-    void GetCandidateStringInConverted(const CRustStringRange& searchString, _In_ CSampleImeArray<CCandidateListItem> *pCandidateList);
+    void GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch, bool isWildcardSearch);
+    void GetCandidateStringInConverted(const CRustStringRange& searchString, CSampleImeArray<CCandidateListItem> *pCandidateList);
 
-    // Preserved key handler
-    void OnPreservedKey(REFGUID rguid, _Out_ BOOL *pIsEaten, _In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId);
+    HRESULT OnPreservedKey(REFGUID rguid, BOOL* isEaten, ITfThreadMgr* threadMgr, TfClientId clientId);
 
-    // Punctuation
-    bool IsPunctuation(wchar_t wch);
-    wchar_t GetPunctuation(wchar_t wch);
+    void SetupDictionaryFile(HINSTANCE dllInstanceHandle, const CRustStringRange& dictionaryFileName);
 
-    BOOL IsDoubleSingleByte(WCHAR wch);
-    BOOL IsWildcardChar(WCHAR wch) { return (wch == u'?' || wch == u'*'); }
+    void ModifiersUpdate(WPARAM w, LPARAM l);
+    bool ModifiersIsShiftKeyDownOnly() const;
+    bool ModifiersIsControlKeyDownOnly() const;
+    bool ModifiersIsAltKeyDownOnly() const;
 
-    // Dictionary engine
-    BOOL IsDictionaryAvailable() { return !!engine_rust.GetTableDictionaryEngine(); }
+    bool PunctuationsHasAlternativePunctuation(WCHAR wch) const;
+    WCHAR PunctuationsGetAlternativePunctuationCounted(WCHAR wch);
 
-    // Language bar control
-    void SetLanguageBarStatus(DWORD status, BOOL isSet);
+    HRESULT PreservedKeysInit(ITfThreadMgr* threadMgr, TfClientId clientId);
 
-    void ConversionModeCompartmentUpdated(_In_ ITfThreadMgr *pThreadMgr);
+    void* CompartmentWrapperRawPtr();
+    void ConversionModeCompartmentUpdated(ITfThreadMgr* threadMgr);
 
-    void ShowAllLanguageBarIcons();
-    void HideAllLanguageBarIcons();
-
-    void ModifiersUpdate(WPARAM w, LPARAM l) { return engine_rust.ModifiersUpdate(w, l); }
-
-    const uint32_t CandidateWindowWidth = 13;  // * tmMaxCharWidth
-
-private:
-    void SetupLanguageBar(_In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId);
-    void SetDefaultCandidateTextFont();
-	void InitializeSampleIMECompartment(_In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId);
-
-    void PrivateCompartmentsUpdated(_In_ ITfThreadMgr *pThreadMgr);
-
-private:
-    LANGID _langid;
-    GUID _guidProfile;
-    TfClientId  _tfClientId;
-
-    // Language bar data
-    ITfLangBarItemButton* _pLanguageBar_IMEMode;
-
-    // Compartment
-    ITfCompartmentEventSink* _pCompartmentConversionEventSink;
-    ITfCompartmentEventSink* _pCompartmentKeyboardOpenEventSink;
-    ITfCompartmentEventSink* _pCompartmentDoubleSingleByteEventSink;
-    ITfCompartmentEventSink* _pCompartmentPunctuationEventSink;
-
-    // Rust port
-    class CRustCompositionProcessorEngine {
-        void* engine;
-    public:
-        CRustCompositionProcessorEngine(ITfThreadMgr* threadMgr, TfClientId clientId);
-        ~CRustCompositionProcessorEngine();
-
-        std::tuple<bool, KeystrokeCategory, KeystrokeFunction> TestVirtualKey(uint16_t code, char16_t ch, bool composing, CandidateMode candidateMode);
-
-        bool AddVirtualKey(char16_t wch);
-        void PopVirtualKey();
-        void PurgeVirtualKey();
-        bool HasVirtualKey();
-        CRustStringRange GetReadingString();
-        bool KeystrokeBufferIncludesWildcard();
-
-        HRESULT OnPreservedKey(REFGUID rguid, bool* isEaten, ITfThreadMgr* threadMgr, TfClientId clientId);
-
-        void SetupDictionaryFile(HINSTANCE dllInstanceHandle, const CRustStringRange& dictionaryFileName);
-        std::optional<CRustTableDictionaryEngine> GetTableDictionaryEngine() const;
-
-        void ModifiersUpdate(WPARAM w, LPARAM l);
-        bool ModifiersIsShiftKeyDownOnly() const;
-        bool ModifiersIsControlKeyDownOnly() const;
-        bool ModifiersIsAltKeyDownOnly() const;
-
-        bool PunctuationsHasAlternativePunctuation(WCHAR wch) const;
-        WCHAR PunctuationsGetAlternativePunctuationCounted(WCHAR wch);
-
-        HRESULT PreservedKeysInit(ITfThreadMgr* threadMgr, TfClientId clientId);
-
-        void* CompartmentWrapperRawPtr();
-        void ConversionModeCompartmentUpdated(ITfThreadMgr* threadMgr);
-        void PrivateCompartmentsUpdated(ITfThreadMgr* threadMgr);
-    };
-
-    CRustCompositionProcessorEngine engine_rust;
+    void HideLanguageBarButton(bool hide);
+    void DisableLanguageBarButton(bool disable);
 };
 

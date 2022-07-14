@@ -15,7 +15,6 @@ namespace Global {
 LONG dllRefCount = -1;
 
 CRITICAL_SECTION CS;
-HFONT defaultlFontHandle;				// Global font object we use everywhere
 
 //---------------------------------------------------------------------
 // Unicode byte order mark
@@ -27,28 +26,6 @@ extern const WCHAR UnicodeByteOrderMark = 0xFEFF;
 //---------------------------------------------------------------------
 extern const WCHAR KeywordDelimiter = L'=';
 extern const WCHAR StringDelimiter  = L'\"';
-
-//---------------------------------------------------------------------
-// defined item in setting file table [PreservedKey] section
-//---------------------------------------------------------------------
-extern const WCHAR ImeModeDescription[] = L"Chinese/English input (Shift)";
-extern const int ImeModeOnIcoIndex = IME_MODE_ON_ICON_INDEX;
-extern const int ImeModeOffIcoIndex = IME_MODE_OFF_ICON_INDEX;
-
-extern const WCHAR DoubleSingleByteDescription[] = L"Double/Single byte (Shift+Space)";
-extern const int DoubleSingleByteOnIcoIndex = IME_DOUBLE_ON_INDEX;
-extern const int DoubleSingleByteOffIcoIndex = IME_DOUBLE_OFF_INDEX;
-
-extern const WCHAR PunctuationDescription[] = L"Chinese/English punctuation (Ctrl+.)";
-extern const int PunctuationOnIcoIndex = IME_PUNCTUATION_ON_INDEX;
-extern const int PunctuationOffIcoIndex = IME_PUNCTUATION_OFF_INDEX;
-
-//---------------------------------------------------------------------
-// defined item in setting file table [LanguageBar] section
-//---------------------------------------------------------------------
-extern const WCHAR LangbarImeModeDescription[] = L"Conversion mode";
-extern const WCHAR LangbarDoubleSingleByteDescription[] = L"Character width";
-extern const WCHAR LangbarPunctuationDescription[] = L"Punctuation";
 
 //---------------------------------------------------------------------
 // windows class / titile / atom

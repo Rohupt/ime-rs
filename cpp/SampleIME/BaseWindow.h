@@ -40,12 +40,12 @@ public:
     virtual void _Move(int x, int y);
     virtual void _Resize(int x, int y, int cx, int cy);
     virtual void _Show(BOOL isShowWnd);
-    virtual BOOL _IsWindowVisible();
+    BOOL _IsWindowVisible();
     virtual void _Enable(BOOL enableWindowReceiveInput);
-    virtual BOOL _IsEnabled();
-    virtual void _InvalidateRect();
-    virtual BOOL _GetWindowRect(_Inout_ LPRECT lpRect);
-    virtual BOOL _GetClientRect(_Inout_ LPRECT lpRect);
+    BOOL _IsEnabled();
+    void _InvalidateRect();
+    BOOL _GetWindowRect(_Inout_ LPRECT lpRect);
+    BOOL _GetClientRect(_Inout_ LPRECT lpRect);
 
     virtual LRESULT CALLBACK _WindowProcCallback(_In_ HWND wndHandle, UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam) = 0;
     virtual void _OnPaint(_In_ HDC dcHandle, _In_ PAINTSTRUCT *pps) { dcHandle; pps; }
@@ -58,34 +58,34 @@ public:
 
     HRESULT _GetWindowExtent(_In_ const RECT *prcTextExtent, _In_opt_ RECT *prcCandidateExtent, _Inout_ POINT *pptCandidate);
 
-    HWND _GetWnd() 
-    { 
-        return _wndHandle; 
+    HWND _GetWnd()
+    {
+        return _wndHandle;
     }
 
-    CBaseWindow *_GetParent() 
-    { 
-        return _pParentWnd; 
+    CBaseWindow *_GetParent()
+    {
+        return _pParentWnd;
     }
 
-    void _SetUIWnd(_In_ CBaseWindow *pUIWnd) 
-    { 
-        _pUIWnd = pUIWnd; 
+    void _SetUIWnd(_In_ CBaseWindow *pUIWnd)
+    {
+        _pUIWnd = pUIWnd;
     }
 
-    CBaseWindow* _GetUIWnd() 
-    { 
-        return _pUIWnd; 
+    CBaseWindow* _GetUIWnd()
+    {
+        return _pUIWnd;
     }
 
-    CBaseWindow *_GetCaptureObject() 
-    { 
-        return _pUIObjCapture; 
+    CBaseWindow *_GetCaptureObject()
+    {
+        return _pUIObjCapture;
     }
 
-    CBaseWindow *_GetTimerObject()   
-    { 
-        return _pTimerUIObj; 
+    CBaseWindow *_GetTimerObject()
+    {
+        return _pTimerUIObj;
     }
 
     UINT _GetScrollDelay()
@@ -101,26 +101,26 @@ public:
 protected:
     LRESULT _NotifyCommand(UINT uMsg, DWORD dwSB, int nPos);
 
-    void _StartCapture() 
-    { 
-        _SetCaptureObject(this); 
+    void _StartCapture()
+    {
+        _SetCaptureObject(this);
     }
 
-    void _EndCapture()   
-    { 
-        _SetCaptureObject(nullptr); 
+    void _EndCapture()
+    {
+        _SetCaptureObject(nullptr);
     }
 
     BOOL _IsCapture();
 
-    void _StartTimer(UINT uElapse) 
-    { 
-        _SetTimerObject(this, uElapse); 
+    void _StartTimer(UINT uElapse)
+    {
+        _SetTimerObject(this, uElapse);
     }
 
-    void _EndTimer()    
-    { 
-        _SetTimerObject(nullptr); 
+    void _EndTimer()
+    {
+        _SetTimerObject(nullptr);
     }
 
     BOOL _IsTimer();

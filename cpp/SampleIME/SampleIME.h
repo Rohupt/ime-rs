@@ -116,12 +116,7 @@ public:
     HRESULT _HandleCandidateFinalize(TfEditCookie ec, _In_ ITfContext *pContext);
     HRESULT _HandleCandidateConvert(TfEditCookie ec, _In_ ITfContext *pContext);
     HRESULT _HandleCandidateArrowKey(TfEditCookie ec, _In_ ITfContext *pContext, _In_ KeystrokeFunction keyFunction);
-    HRESULT _HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode);
-
-    // key event handlers for phrase object.
-    HRESULT _HandlePhraseFinalize(TfEditCookie ec, _In_ ITfContext *pContext);
-    HRESULT _HandlePhraseArrowKey(TfEditCookie ec, _In_ ITfContext *pContext, _In_ KeystrokeFunction keyFunction);
-    HRESULT _HandlePhraseSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode);
+    HRESULT _HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ WCHAR wch);
 
     BOOL _IsComLess(void) { return (_dwActivateFlags & TF_TMAE_COMLESS) ? TRUE : FALSE; }
     BOOL _IsStoreAppMode(void) { return (_dwActivateFlags & TF_TMF_IMMERSIVEMODE) ? TRUE : FALSE; };
@@ -137,7 +132,6 @@ private:
     void _StartComposition(_In_ ITfContext *pContext);
     void _EndComposition(_In_opt_ ITfContext *pContext);
     BOOL _IsComposing();
-    BOOL _IsKeyboardDisabled();
 
     HRESULT _AddComposingAndChar(TfEditCookie ec, _In_ ITfContext *pContext, const CRustStringRange& strAddString);
     HRESULT _AddCharAndFinalize(TfEditCookie ec, _In_ ITfContext *pContext, const CRustStringRange& strAddString);
@@ -149,7 +143,7 @@ private:
     HRESULT _RemoveDummyCompositionForComposing(TfEditCookie ec, _In_ ITfComposition *pComposition);
 
     // Invoke key handler edit session
-    HRESULT _InvokeKeyHandler(_In_ ITfContext *pContext, UINT code, WCHAR wch, DWORD flags, _KEYSTROKE_STATE keyState);
+    HRESULT _InvokeKeyHandler(_In_ ITfContext *pContext, WCHAR wch, DWORD flags, _KEYSTROKE_STATE keyState);
 
     // function for the language property
     BOOL _SetCompositionLanguage(TfEditCookie ec, _In_ ITfContext *pContext);
@@ -172,12 +166,10 @@ private:
     BOOL _InitActiveLanguageProfileNotifySink();
     void _UninitActiveLanguageProfileNotifySink();
 
-    BOOL _IsKeyEaten(_In_ ITfContext *pContext, UINT codeIn, _Out_ UINT *pCodeOut, _Out_writes_(1) WCHAR *pwch, _Out_opt_ _KEYSTROKE_STATE *pKeyState);
+    BOOL _IsKeyEaten(UINT codeIn, _Out_writes_(1) WCHAR *pwch, _Out_opt_ _KEYSTROKE_STATE *pKeyState);
 
     BOOL _IsRangeCovered(TfEditCookie ec, _In_ ITfRange *pRangeTest, _In_ ITfRange *pRangeCover);
     VOID _DeleteCandidateList(BOOL fForce, _In_opt_ ITfContext *pContext);
-
-    WCHAR ConvertVKey(UINT code);
 
     BOOL _InitThreadFocusSink();
     void _UninitThreadFocusSink();

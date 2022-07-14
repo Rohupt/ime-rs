@@ -1,5 +1,3 @@
-use numberkey_windows::is_number_key;
-
 use crate::engine::CompositionProcessorEngine;
 use windows::Win32::UI::Input::KeyboardAndMouse::{
     VK_BACK, VK_DOWN, VK_END, VK_ESCAPE, VK_HOME, VK_LEFT, VK_NEXT, VK_PRIOR, VK_RETURN, VK_RIGHT,
@@ -47,7 +45,7 @@ pub enum KeystrokeFunction {
 }
 
 #[repr(C)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone, Copy)]
 pub enum CandidateMode {
     None,
     Original,
@@ -70,12 +68,15 @@ fn map_invariable_keystroke_function(keystroke: u16) -> Option<KeystrokeFunction
     }
 }
 
-fn is_virtual_key_keystroke_composition(code: u16, modifiers: u32) -> bool {
-    code >= 'A' as u16 && code <= 'Z' as u16 && modifiers == 0
+fn character_affects_keystroke_composition(ch: char, modifiers: u32) -> bool {
+    // Normally [a-z] are only relevant since composition does not happen with Shift,
+    // but KEYEVENTF_UNICODE can dispatch A-Z without Shift and that's allowed here
+    // to maintain the original behavior.
+    ('A'..='z').contains(&ch) && modifiers == 0
 }
 
-fn is_keystroke_range(code: u16, modifiers: u32, candidate_mode: CandidateMode) -> bool {
-    if !is_number_key(code) {
+fn is_keystroke_range(ch: char, modifiers: u32, candidate_mode: CandidateMode) -> bool {
+    if !ch.is_numeric() {
         false
     } else if candidate_mode == CandidateMode::WithNextComposition {
         // Candidate phrase could specify modifier
@@ -86,6 +87,9 @@ fn is_keystroke_range(code: u16, modifiers: u32, candidate_mode: CandidateMode) 
     }
 }
 
+/// Test virtual key code need to the Composition Processor Engine.
+/// If engine need this virtual key code, returns true. Otherwise returns false.
+/// Returns function regarding virtual key.
 pub fn test_virtual_key(
     engine: &CompositionProcessorEngine,
     code: u16,
@@ -103,13 +107,9 @@ pub fn test_virtual_key(
         || candidate_mode == CandidateMode::Incremental
         || candidate_mode == CandidateMode::None
     {
-        if (ch == '*' || ch == '?') && engine.virtual_key_manager().has_virtual_key() {
+        if (ch == '*' || ch == '?') && engine.keystroke_buffer().has_virtual_key() {
             return (true, KeystrokeCategory::Composing, KeystrokeFunction::Input);
-        } else if engine
-            .virtual_key_manager()
-            .keystroke_buffer_includes_wildcard()
-            && code == VK_SPACE.0
-        {
+        } else if engine.keystroke_buffer().includes_wildcard() && code == VK_SPACE.0 {
             return (
                 true,
                 KeystrokeCategory::Composing,
@@ -121,7 +121,7 @@ pub fn test_virtual_key(
     let modifiers = engine.modifiers().get();
 
     // Candidate list could not handle key. We can try to restart the composition.
-    if is_virtual_key_keystroke_composition(code, modifiers) {
+    if character_affects_keystroke_composition(ch, modifiers) {
         return if candidate_mode == CandidateMode::Original {
             (
                 true,
@@ -240,7 +240,7 @@ pub fn test_virtual_key(
         }
     }
 
-    if is_keystroke_range(code, modifiers, candidate_mode) {
+    if is_keystroke_range(ch, modifiers, candidate_mode) {
         return (
             true,
             KeystrokeCategory::Candidate,
@@ -249,7 +249,7 @@ pub fn test_virtual_key(
     }
 
     if ch != '\0' {
-        return if is_virtual_key_keystroke_composition(code, modifiers) {
+        return if character_affects_keystroke_composition(ch, modifiers) {
             (
                 false,
                 KeystrokeCategory::Composing,

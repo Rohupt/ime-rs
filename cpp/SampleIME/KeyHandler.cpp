@@ -174,12 +174,12 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
     //
     // Get reading string from composition processor engine
     //
-    auto readingString = pCompositionProcessorEngine->GetReadingString();
+    bool hasVirtualKey = pCompositionProcessorEngine->HasVirtualKey();
 
-    if (readingString.has_value())
+    if (hasVirtualKey)
     {
-        auto [item, hasWildcard] = readingString.value();
-        isWildcardIncluded = hasWildcard;
+        CRustStringRange item = pCompositionProcessorEngine->KeystrokeBufferGetReadingString();
+        isWildcardIncluded = pCompositionProcessorEngine->KeystrokeBufferIncludesWildcard();
 
         hr = _AddComposingAndChar(ec, pContext, item);
         if (FAILED(hr))
@@ -208,7 +208,7 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
     {
         _pCandidateListUIPresenter->_ClearList();
     }
-    else if (readingString.has_value() && isWildcardIncluded)
+    else if (hasVirtualKey && isWildcardIncluded)
     {
         hr = _CreateAndStartCandidate(pCompositionProcessorEngine, ec, pContext);
         if (SUCCEEDED(hr))
@@ -258,7 +258,7 @@ HRESULT CSampleIME::_CreateAndStartCandidate(_In_ CCompositionProcessorEngine *p
             ITfRange* pRange = nullptr;
             if (SUCCEEDED(_pComposition->GetRange(&pRange)))
             {
-                hr = _pCandidateListUIPresenter->_StartCandidateList(_tfClientId, pDocumentMgr, pContext, ec, pRange, pCompositionProcessorEngine->CandidateWindowWidth);
+                hr = _pCandidateListUIPresenter->_StartCandidateList(_tfClientId, pDocumentMgr, pContext, ec, pRange, CAND_WIDTH);
                 pRange->Release();
             }
             pDocumentMgr->Release();
@@ -380,7 +380,7 @@ HRESULT CSampleIME::_HandleCompositionConvert(TfEditCookie ec, _In_ ITfContext *
             ITfRange* pRange = nullptr;
             if (SUCCEEDED(_pComposition->GetRange(&pRange)))
             {
-                hr = _pCandidateListUIPresenter->_StartCandidateList(_tfClientId, pDocumentMgr, pContext, ec, pRange, pCompositionProcessorEngine->CandidateWindowWidth);
+                hr = _pCandidateListUIPresenter->_StartCandidateList(_tfClientId, pDocumentMgr, pContext, ec, pRange, CAND_WIDTH);
                 pRange->Release();
             }
             pDocumentMgr->Release();
@@ -525,7 +525,7 @@ HRESULT CSampleIME::_HandleCompositionPunctuation(TfEditCookie ec, _In_ ITfConte
     CCompositionProcessorEngine* pCompositionProcessorEngine = nullptr;
     pCompositionProcessorEngine = _pCompositionProcessorEngine;
 
-    WCHAR punctuation = pCompositionProcessorEngine->GetPunctuation(wch);
+    WCHAR punctuation = pCompositionProcessorEngine->PunctuationsGetAlternativePunctuationCounted(wch);
 
     // Finalize character
     hr = _AddCharAndFinalize(ec, pContext, CRustStringRange(CStringRangeUtf16(punctuation)));
@@ -579,7 +579,7 @@ HRESULT CSampleIME::_HandleCompositionDoubleSingleByte(TfEditCookie ec, _In_ ITf
 //    [in] dwKeyFunction - Function regarding virtual key
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_InvokeKeyHandler(_In_ ITfContext *pContext, UINT code, WCHAR wch, DWORD flags, _KEYSTROKE_STATE keyState)
+HRESULT CSampleIME::_InvokeKeyHandler(_In_ ITfContext *pContext, WCHAR wch, DWORD flags, _KEYSTROKE_STATE keyState)
 {
     flags;
 
@@ -587,7 +587,7 @@ HRESULT CSampleIME::_InvokeKeyHandler(_In_ ITfContext *pContext, UINT code, WCHA
     HRESULT hr = E_FAIL;
 
     // we'll insert a char ourselves in place of this keystroke
-    pEditSession = new (std::nothrow) CKeyHandlerEditSession(this, pContext, code, wch, keyState);
+    pEditSession = new (std::nothrow) CKeyHandlerEditSession(this, pContext, wch, keyState);
     if (pEditSession == nullptr)
     {
         goto Exit;
