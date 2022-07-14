@@ -29,7 +29,6 @@ DWORD HighlightedCandidateColor(DWORD accentColor)
     int b = (accentColor >> 16) % 0x100;
     float ratio = 0.75 * 510 / (min(r, min(g, b)) + max(r, max(g, b)));
     BOOL maxxed = 0;
-    std::cout << r << " " << g << " " << b << "\n";
     while (ratio > 1 && !maxxed) {
         float fr = r * ratio;
         float fg = g * ratio;
