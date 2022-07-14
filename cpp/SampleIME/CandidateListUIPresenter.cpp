@@ -96,9 +96,8 @@ HRESULT CSampleIME::_HandleCandidateWorker(TfEditCookie ec, _In_ ITfContext *pCo
     }
 
     _pCompositionProcessorEngine->GetCandidateStringInConverted(candidateString.value(), &candidatePhraseList);
-    LCID locale = _pCompositionProcessorEngine->GetLocale();
 
-    _pCandidateListUIPresenter->RemoveSpecificCandidateFromList(locale, candidatePhraseList, candidateString.value());
+    _pCandidateListUIPresenter->RemoveSpecificCandidateFromList(candidatePhraseList, candidateString.value());
 
     // We have a candidate list if candidatePhraseList.Cnt is not 0
     // If we are showing reverse conversion, use CCandidateListUIPresenter
@@ -129,7 +128,7 @@ HRESULT CSampleIME::_HandleCandidateWorker(TfEditCookie ec, _In_ ITfContext *pCo
         {
             if (pTempCandListUIPresenter)
             {
-                hrStartCandidateList = pTempCandListUIPresenter->_StartCandidateList(_tfClientId, pDocumentMgr, pContext, ec, pRange, _pCompositionProcessorEngine->CandidateWindowWidth);
+                hrStartCandidateList = pTempCandListUIPresenter->_StartCandidateList(_tfClientId, pDocumentMgr, pContext, ec, pRange, CAND_WIDTH);
             }
 
             pRange->Release();
@@ -196,9 +195,9 @@ HRESULT CSampleIME::_HandleCandidateArrowKey(TfEditCookie ec, _In_ ITfContext *p
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode)
+HRESULT CSampleIME::_HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ WCHAR wch)
 {
-    int iSelectAsNumber = CCandidateRange::GetIndex(uCode);
+    int iSelectAsNumber = CCandidateRange::GetIndex(wch);
     if (iSelectAsNumber == -1)
     {
         return S_FALSE;
@@ -209,72 +208,6 @@ HRESULT CSampleIME::_HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfCont
         if (_pCandidateListUIPresenter->_SetSelectionInPage(iSelectAsNumber))
         {
             return _HandleCandidateConvert(ec, pContext);
-        }
-    }
-
-    return S_FALSE;
-}
-
-//+---------------------------------------------------------------------------
-//
-// _HandlePhraseFinalize
-//
-//----------------------------------------------------------------------------
-
-HRESULT CSampleIME::_HandlePhraseFinalize(TfEditCookie ec, _In_ ITfContext *pContext)
-{
-    HRESULT hr = S_OK;
-
-    std::optional<CRustStringRange> phraseString = _pCandidateListUIPresenter->_GetSelectedCandidateString();
-
-    if (phraseString.has_value())
-    {
-        if ((hr = _AddCharAndFinalize(ec, pContext, phraseString.value())) != S_OK)
-        {
-            return hr;
-        }
-    }
-
-    _HandleComplete(ec, pContext);
-
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// _HandlePhraseArrowKey
-//
-//----------------------------------------------------------------------------
-
-HRESULT CSampleIME::_HandlePhraseArrowKey(TfEditCookie ec, _In_ ITfContext *pContext, _In_ KeystrokeFunction keyFunction)
-{
-    ec;
-    pContext;
-
-    _pCandidateListUIPresenter->AdviseUIChangedByArrowKey(keyFunction);
-
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// _HandlePhraseSelectByNumber
-//
-//----------------------------------------------------------------------------
-
-HRESULT CSampleIME::_HandlePhraseSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode)
-{
-    int iSelectAsNumber = CCandidateRange::GetIndex(uCode);
-    if (iSelectAsNumber == -1)
-    {
-        return S_FALSE;
-    }
-
-    if (_pCandidateListUIPresenter)
-    {
-        if (_pCandidateListUIPresenter->_SetSelectionInPage(iSelectAsNumber))
-        {
-            return _HandlePhraseFinalize(ec, pContext);
         }
     }
 
@@ -1041,7 +974,7 @@ HRESULT CCandidateListUIPresenter::_CandidateChangeNotification(_In_ enum CANDWN
         goto Exit;
     }
 
-    CKeyHandlerEditSession *pEditSession = new (std::nothrow) CKeyHandlerEditSession(_pTextService, pContext, 0, 0, KeyState);
+    CKeyHandlerEditSession *pEditSession = new (std::nothrow) CKeyHandlerEditSession(_pTextService, pContext, 0, KeyState);
     if (nullptr != pEditSession)
     {
         HRESULT hrSession = S_OK;
@@ -1132,7 +1065,7 @@ HRESULT CCandidateListUIPresenter::OnKillThreadFocus()
     return S_OK;
 }
 
-void CCandidateListUIPresenter::RemoveSpecificCandidateFromList(_In_ LCID Locale, _Inout_ CSampleImeArray<CCandidateListItem> &candidateList, const CRustStringRange& candidateString)
+void CCandidateListUIPresenter::RemoveSpecificCandidateFromList(_Inout_ CSampleImeArray<CCandidateListItem> &candidateList, const CRustStringRange& candidateString)
 {
     for (UINT index = 0; index < candidateList.Count();)
     {

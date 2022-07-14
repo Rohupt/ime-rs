@@ -7,16 +7,16 @@ use ruststringrange::RustStringRange;
 use windows::{
     core::{GUID, HRESULT},
     Win32::{
-        Foundation::{HINSTANCE, LPARAM, WPARAM},
+        Foundation::{LPARAM, WPARAM},
         UI::TextServices::ITfThreadMgr,
     },
 };
 
 mod engine;
-use engine::CompositionProcessorEngine;
+pub use engine::CompositionProcessorEngine;
 
 mod test_virtual_key;
-use test_virtual_key::{CandidateMode, KeystrokeCategory, KeystrokeFunction};
+pub use test_virtual_key::{CandidateMode, KeystrokeCategory, KeystrokeFunction};
 
 #[no_mangle]
 pub extern "C" fn compositionprocessorengine_new(
@@ -35,61 +35,38 @@ pub unsafe extern "C" fn compositionprocessorengine_free(engine: *mut c_void) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn compositionprocessorengine_test_virtual_key(
-    engine: *mut c_void,
-    code: u16,
-    ch: u16,
-    composing: bool,
-    candidate_mode: CandidateMode,
-    key_eaten: *mut bool,
-    keystroke_category: *mut KeystrokeCategory,
-    keystroke_function: *mut KeystrokeFunction,
-) {
-    let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    let (eaten, category, function) = engine.test_virtual_key(
-        code,
-        char::from_u32(ch as u32).unwrap(),
-        composing,
-        candidate_mode,
-    );
-    *key_eaten = eaten;
-    *keystroke_category = category;
-    *keystroke_function = function;
-}
-
-#[no_mangle]
 pub unsafe extern "C" fn compositionprocessorengine_add_virtual_key(
     engine: *mut c_void,
     wch: u16,
 ) -> bool {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    engine.virtual_key_manager_mut().add_virtual_key(wch)
+    engine.keystroke_buffer_mut().add_virtual_key(wch)
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn compositionprocessorengine_pop_virtual_key(engine: *mut c_void) {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    engine.virtual_key_manager_mut().pop_virtual_key();
+    engine.keystroke_buffer_mut().pop_virtual_key();
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn compositionprocessorengine_purge_virtual_key(engine: *mut c_void) {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    engine.virtual_key_manager_mut().purge_virtual_key();
+    engine.keystroke_buffer_mut().purge_virtual_key();
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn compositionprocessorengine_has_virtual_key(engine: *mut c_void) -> bool {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    engine.virtual_key_manager().has_virtual_key()
+    engine.keystroke_buffer().has_virtual_key()
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn compositionprocessorengine_get_reading_string(
+pub unsafe extern "C" fn compositionprocessorengine_keystroke_buffer_get_reading_string(
     engine: *mut c_void,
 ) -> *mut c_void {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    let s = engine.virtual_key_manager().get_reading_string();
+    let s = engine.keystroke_buffer().get_reading_string();
     Box::into_raw(Box::new(RustStringRange::from_str(&s))) as *mut c_void
 }
 
@@ -98,20 +75,7 @@ pub unsafe extern "C" fn compositionprocessorengine_keystroke_buffer_includes_wi
     engine: *mut c_void,
 ) -> bool {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    engine
-        .virtual_key_manager()
-        .keystroke_buffer_includes_wildcard()
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn compositionprocessorengine_setup_dictionary_file(
-    engine: *mut c_void,
-    dll_instance_handle: HINSTANCE,
-    dictionary_file_name: *mut c_void,
-) {
-    let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    let dictionary_file_name = Box::leak(RustStringRange::from_void(dictionary_file_name));
-    engine.setup_dictionary_file(dll_instance_handle, dictionary_file_name.as_slice());
+    engine.keystroke_buffer().includes_wildcard()
 }
 
 #[no_mangle]
@@ -226,20 +190,86 @@ pub unsafe extern "C" fn compositionprocessorengine_compartmentwrapper_conversio
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn compositionprocessorengine_compartmentwrapper_private_compartments_updated(
-    engine: *mut c_void,
-    thread_mgr: ITfThreadMgr,
-) {
-    let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
-    engine
-        .compartment_wrapper()
-        .private_compartments_updated(thread_mgr);
-}
-
-#[no_mangle]
 pub unsafe extern "C" fn compositionprocessorengine_compartmentwrapper_raw_ptr(
     engine: *mut c_void,
 ) -> *const c_void {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
     engine.compartment_wrapper() as *const _ as *const c_void
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn compositionprocessorengine_setup_language_profile(
+    engine: *mut c_void,
+    thread_mgr: ITfThreadMgr,
+    client_id: u32,
+) -> bool {
+    let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
+    engine.setup_language_profile(thread_mgr, client_id)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn compositionprocessorengine_hide_language_bar_button(
+    engine: *mut c_void,
+    hide: bool,
+) {
+    let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
+    engine.hide_language_bar_button(hide).ok();
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn compositionprocessorengine_disable_language_bar_button(
+    engine: *mut c_void,
+    disable: bool,
+) {
+    let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
+    engine.disable_language_bar_button(disable).ok();
+}
+
+unsafe fn tuples_to_ffi(
+    tuples: Vec<(&str, &str)>,
+    keys_buffer: *mut *mut c_void,
+    values_buffer: *mut *mut c_void,
+    buffer_length: usize,
+) -> usize {
+    let len = std::cmp::min(tuples.len(), buffer_length);
+    for (i, tuple) in tuples.iter().enumerate().take(len) {
+        *keys_buffer.add(i) =
+            Box::into_raw(Box::new(RustStringRange::from_str(tuple.0))) as *mut c_void;
+        *values_buffer.add(i) =
+            Box::into_raw(Box::new(RustStringRange::from_str(tuple.1))) as *mut c_void;
+    }
+
+    len
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn compositionprocessorengine_get_candidate_list(
+    engine: *const c_void,
+    keys_buffer: *mut *mut c_void,
+    values_buffer: *mut *mut c_void,
+    buffer_length: usize,
+    is_incremental_word_search: bool,
+    is_wildcard_search: bool,
+) -> usize {
+    let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
+
+    let result = engine.get_candidate_list(is_incremental_word_search, is_wildcard_search);
+
+    tuples_to_ffi(result, keys_buffer, values_buffer, buffer_length)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn compositionprocessorengine_get_candidate_string_in_converted(
+    engine: *const c_void,
+    search_key: *const c_void,
+    keys_buffer: *mut *mut c_void,
+    values_buffer: *mut *mut c_void,
+    buffer_length: usize,
+) -> usize {
+    let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
+    let search_key = Box::leak(RustStringRange::from_void(search_key as *mut _));
+
+    let result = engine.get_candidate_string_in_converted(search_key.as_slice());
+
+    tuples_to_ffi(result, keys_buffer, values_buffer, buffer_length)
 }

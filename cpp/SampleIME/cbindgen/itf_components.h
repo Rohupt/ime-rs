@@ -8,7 +8,7 @@ using CESCALLBACK = HRESULT(*)(const void *pv, const GUID *guid);
 
 extern "C" {
 
-void *compartment_new(void *punk, uint32_t tf_client_id, const GUID *guid);
+void *compartment_new(ITfThreadMgr* thread_mgr, uint32_t tf_client_id, const GUID *guid);
 
 void compartment_free(void *compartment);
 

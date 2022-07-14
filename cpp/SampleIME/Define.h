@@ -8,17 +8,6 @@
 #pragma once
 #include "resource.h"
 
-#define TEXTSERVICE_DIC u8"SampleIMESimplifiedQuanPinUtf8.txt"_rs
-
-#define IME_MODE_ON_ICON_INDEX      IDI_IME_MODE_ON
-#define IME_MODE_OFF_ICON_INDEX     IDI_IME_MODE_OFF
-#define IME_DOUBLE_ON_INDEX         IDI_DOUBLE_SINGLE_BYTE_ON
-#define IME_DOUBLE_OFF_INDEX        IDI_DOUBLE_SINGLE_BYTE_OFF
-#define IME_PUNCTUATION_ON_INDEX    IDI_PUNCTUATION_ON
-#define IME_PUNCTUATION_OFF_INDEX   IDI_PUNCTUATION_OFF
-
-#define SAMPLEIME_FONT_DEFAULT L"Microsoft YaHei UI"
-
 //---------------------------------------------------------------------
 // defined Candidated Window
 //---------------------------------------------------------------------
@@ -29,6 +18,8 @@
 #define CANDWND_SELECTED_ITEM_COLOR		(RGB(0xFF, 0xFF, 0xFF))
 #define CANDWND_SELECTED_BK_COLOR		(RGB(0xA6, 0xA6, 0x00))
 #define CANDWND_ITEM_COLOR				(RGB(0x00, 0x00, 0x00))
+
+#define CAND_WIDTH     (13)      // * tmMaxCharWidth
 
 //---------------------------------------------------------------------
 // string length of CLSID

@@ -6,11 +6,12 @@ edition = "2021"
 
 [lib]
 name = "composition_processor"
-crate-type = ["staticlib"]
+crate-type = ["staticlib", "rlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+ime = { path = "../ime" }
 dictionary_parser = { path = "../dictionary_parser" }
 ruststringrange = { path = "../ruststringrange" }
 numberkey_windows = { path = "../numberkey_windows" }
@@ -18,7 +19,7 @@ globals = { path = "../globals" }
 itf_components = { path = "../itf_components" }
 
 [dependencies.windows]
-version = "0.35.0"
+version = "0.38.0"
 features = [
   "Win32_Foundation",
   "Win32_System_LibraryLoader",
