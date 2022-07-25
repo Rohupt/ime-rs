@@ -1,4 +1,4 @@
-pub const DEFAULT_FONT: &str = "Microsoft YaHei UI";
+pub const DEFAULT_FONT: &str = "Nom Na Tong";
 
 pub const TEXTSERVICE_DIC: &str = "SampleIMESimplifiedQuanPinUtf8.txt";
 

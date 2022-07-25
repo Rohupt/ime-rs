@@ -15,7 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_4B376EB1F55047DC8627CC46C45C1491"
+        "MsmKey" = "8:_251E8D25A80247D29BED632B99EEB86A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9BC5E3337E5A428C897D681A9C711158"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -112,10 +118,30 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4B376EB1F55047DC8627CC46C45C1491"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_251E8D25A80247D29BED632B99EEB86A"
             {
-            "SourcePath" = "8:..\\x64\\Debug\\SampleIME.dll"
-            "TargetName" = "8:SampleIME.dll"
+            "SourcePath" = "8:..\\x64\\Debug\\SampleIME_x64.dll"
+            "TargetName" = "8:SampleIME_x64.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_AF32A0FC2828487C830C3BCC57EAE1BF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:4"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9BC5E3337E5A428C897D681A9C711158"
+            {
+            "SourcePath" = "8:..\\Win32\\Debug\\SampleIME_x86.dll"
+            "TargetName" = "8:SampleIME_x86.dll"
             "Tag" = "8:"
             "Folder" = "8:_AF32A0FC2828487C830C3BCC57EAE1BF"
             "Condition" = "8:"
@@ -209,7 +235,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Sample Rust IME"
         "ProductCode" = "8:{D1CD833C-B654-4A80-A66B-4DBA3BA69692}"
-        "PackageCode" = "8:{225994B4-3B4E-411F-8157-13DA55B97080}"
+        "PackageCode" = "8:{FB04C697-6776-471E-8763-BEC744B13326}"
         "UpgradeCode" = "8:{F337C6B9-6EED-4B61-91BE-4E2CA8FD303E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

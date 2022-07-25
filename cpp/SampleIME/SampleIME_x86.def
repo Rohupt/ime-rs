@@ -1,4 +1,4 @@
-LIBRARY SampleIME.dll
+LIBRARY SampleIME_x86.dll
 
 EXPORTS
         DllGetClassObject    PRIVATE

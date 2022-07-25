@@ -1,0 +1,7 @@
+LIBRARY SampleIME_x64.dll
+
+EXPORTS
+        DllGetClassObject    PRIVATE
+        DllCanUnloadNow      PRIVATE
+        DllRegisterServer    PRIVATE
+        DllUnregisterServer  PRIVATE

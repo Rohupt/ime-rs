@@ -6,6 +6,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved
 
 #include <codecvt>
+#include <Windows.h>
 
 #include "Globals.h"
 #include "RustStringRange.h"
@@ -39,10 +40,19 @@ CStringRangeUtf16::CStringRangeUtf16(WCHAR wch)
 
 CStringRangeUtf16::CStringRangeUtf16(const CRustStringRange& rsr) {
     // The conversion to UTF16 is in C++ on purpose to allow easier memory management
+    static_assert(sizeof(std::wstring::value_type) == sizeof(std::u16string::value_type),
+        "std::wstring and std::u16string are expected to have the same character size");
+    
     char* firstChar = (char*)rsr.GetRawUtf8();
-    char* afterLastChar = firstChar + rsr.GetLengthUtf8();
-    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,char16_t> conversion;
-    std::u16string strU16 = conversion.from_bytes(firstChar, afterLastChar);
+    // char* afterLastChar = firstChar + rsr.GetLengthUtf8();
+    // std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,char16_t> conversion;
+    // std::u16string strU16 = conversion.from_bytes(firstChar, afterLastChar);
+
+    int rsrLen = rsr.GetLengthUtf8();
+    int u16len = MultiByteToWideChar(CP_UTF8, 0, firstChar, rsrLen, NULL, 0);
+    wchar_t* wstr = new wchar_t[u16len];
+    MultiByteToWideChar(CP_UTF8, 0, firstChar, rsrLen, wstr, u16len);
+    std::u16string strU16(wstr, wstr + u16len);
 
     SetClone((WCHAR*)strU16.c_str(), strU16.length());
 }

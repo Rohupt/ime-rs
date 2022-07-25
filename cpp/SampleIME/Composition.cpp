@@ -225,6 +225,9 @@ HRESULT CSampleIME::_SetInputString(TfEditCookie ec, _In_ ITfContext *pContext, 
     {
         CStringRangeUtf16 str(strAddString);
         pRange->SetText(ec, 0, str.GetRaw(), (LONG)str.GetLength());
+
+        // debug
+        // pRange->SetText(ec, 0, str.GetRaw(), (LONG)str.GetLength() + 2);
     }
 
     _SetCompositionLanguage(ec, pContext);

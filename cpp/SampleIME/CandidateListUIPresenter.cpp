@@ -1186,7 +1186,9 @@ HRESULT CCandidateListUIPresenter::MakeCandidateWindow(_In_ ITfContext *pContext
     ITfContextView* pView = nullptr;
     if (SUCCEEDED(pContextDocument->GetActiveView(&pView)))
     {
-        pView->GetWnd(&parentWndHandle);
+        if (FAILED(pView->GetWnd(&parentWndHandle)) || (parentWndHandle == nullptr)) {
+            parentWndHandle = GetFocus();
+        }
     }
 
     if (!_pCandidateWnd->_Create(_atom, wndWidth, parentWndHandle))
