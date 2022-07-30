@@ -109,12 +109,6 @@ uintptr_t compositionprocessorengine_get_candidate_list(const void *engine,
                                                         bool is_incremental_word_search,
                                                         bool is_wildcard_search);
 
-uintptr_t compositionprocessorengine_get_candidate_string_in_converted(const void *engine,
-                                                                       const void *search_key,
-                                                                       void **keys_buffer,
-                                                                       void **values_buffer,
-                                                                       uintptr_t buffer_length);
-
 HRESULT compartment_callback(const void *wrapper, const GUID *guid);
 
 } // extern "C"

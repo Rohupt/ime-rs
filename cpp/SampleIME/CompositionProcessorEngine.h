@@ -44,7 +44,6 @@ public:
     bool KeystrokeBufferIncludesWildcard();
 
     void GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch, bool isWildcardSearch);
-    void GetCandidateStringInConverted(const CRustStringRange& searchString, CSampleImeArray<CCandidateListItem> *pCandidateList);
 
     HRESULT OnPreservedKey(REFGUID rguid, BOOL* isEaten, ITfThreadMgr* threadMgr, TfClientId clientId);
 

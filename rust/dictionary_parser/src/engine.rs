@@ -26,21 +26,17 @@ impl TableDictionaryEngine {
     }
 
     pub fn collect_word(&self, search_key: &str) -> Vec<(&str, &str)> {
-        self.collect_word_common_steps(search_key, false, false)
+        self.collect_word_common_steps(search_key, false)
     }
 
     pub fn collect_word_for_wildcard(&self, search_key: &str) -> Vec<(&str, &str)> {
-        self.collect_word_common_steps(search_key, false, true)
+        self.collect_word_common_steps(search_key, true)
     }
 
-    pub fn collect_word_from_converted_string_for_wildcard(&self,search_key: &str) -> Vec<(&str, &str)> {
-        self.collect_word_common_steps(search_key, true, true)
-    }
-
-    fn collect_word_common_steps(&self, search_key: &str, is_text_search: bool, is_wildcard_search: bool) -> Vec<(&str, &str)> {
+    fn collect_word_common_steps(&self, search_key: &str, is_wildcard_search: bool) -> Vec<(&str, &str)> {
         // let converted_key = self.convert_input_string(search_key.to_string());
         // let mut vec = find_items(&self.content[..], &converted_key, is_text_search, is_wildcard_search);
-        let mut vec = find_items(&self.content[..], search_key, is_text_search, is_wildcard_search);
+        let mut vec = find_items(&self.content[..], search_key, is_wildcard_search);
         vec.sort_by(|x, y| x.0.to_lowercase().cmp(&y.0.to_lowercase()).then(y.2.cmp(&x.2)));
         vec.iter().map(|(key, value, _priority)| (*key, *value)).collect()
     }

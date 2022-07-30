@@ -266,19 +266,3 @@ pub unsafe extern "C" fn compositionprocessorengine_get_candidate_list(
 
     tuples_to_ffi(result, keys_buffer, values_buffer, buffer_length)
 }
-
-#[no_mangle]
-pub unsafe extern "C" fn compositionprocessorengine_get_candidate_string_in_converted(
-    engine: *const c_void,
-    search_key: *const c_void,
-    keys_buffer: *mut *mut c_void,
-    values_buffer: *mut *mut c_void,
-    buffer_length: usize,
-) -> usize {
-    let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
-    let search_key = Box::leak(RustStringRange::from_void(search_key as *mut _));
-
-    let result = engine.get_candidate_string_in_converted(search_key.as_slice());
-
-    tuples_to_ffi(result, keys_buffer, values_buffer, buffer_length)
-}

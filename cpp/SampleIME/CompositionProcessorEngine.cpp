@@ -163,13 +163,6 @@ void CCompositionProcessorEngine::GetCandidateList(CSampleImeArray<CCandidateLis
     ArraysToArray(keys, values, length, pCandidateList);
 }
 
-void CCompositionProcessorEngine::GetCandidateStringInConverted(const CRustStringRange& searchString, CSampleImeArray<CCandidateListItem> *pCandidateList) {
-    void* keys[MAX_BUFFER];
-    void* values[MAX_BUFFER];
-    uintptr_t length = compositionprocessorengine_get_candidate_string_in_converted(engine, searchString.GetInternal(), keys, values, MAX_BUFFER);
-    ArraysToArray(keys, values, length, pCandidateList);
-}
-
 HRESULT CCompositionProcessorEngine::OnPreservedKey(REFGUID rguid, BOOL* isEaten, ITfThreadMgr* threadMgr, TfClientId clientId) {
     threadMgr->AddRef();
     bool _isEaten = false;

@@ -128,18 +128,6 @@ impl CompositionProcessorEngine {
         table_dictionary_engine.collect_word(&self.keystroke_buffer.get_reading_string())
     }
 
-    pub fn get_candidate_string_in_converted(&self, search: &str) -> Vec<(&str, &str)> {
-        if let Some(ref table_dictionary_engine) = self.table_dictionary_engine {
-            // Search phrase from SECTION_TEXT's converted string list
-            let wildcard_search = search.to_owned() + "*";
-
-            table_dictionary_engine
-                .collect_word_from_converted_string_for_wildcard(&wildcard_search)
-        } else {
-            Vec::new()
-        }
-    }
-
     pub fn on_preserved_key(
         &self,
         guid: &GUID,

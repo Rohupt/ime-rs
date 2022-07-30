@@ -42,7 +42,6 @@ fn parse_line(line: &str) -> Option<(&str, &str, u8)> {
 pub fn find_items<'a>(
     content: &'a str,
     search_key: & str,
-    is_text_search: bool,
     is_wildcard_search: bool,
 ) -> Vec<(&'a str, &'a str, u8)> {
     use crate::compare_with_wildcard::compare_with_wildcard;
@@ -50,11 +49,10 @@ pub fn find_items<'a>(
     for line in content.lines() {
         if parse_line(line).is_none() { continue; }
         let (key, value, priority) = parse_line(line).unwrap();
-        let target = if is_text_search { value } else { key };
         let matches = if is_wildcard_search {
-            compare_with_wildcard(search_key, target)
+            compare_with_wildcard(search_key, key)
         } else {
-            search_key.eq_ignore_ascii_case(target)
+            search_key.eq_ignore_ascii_case(key)
         };
         if matches {
             vec.push((key, value, priority));
