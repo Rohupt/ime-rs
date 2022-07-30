@@ -40,6 +40,7 @@ public:
     void PurgeVirtualKey();
     bool HasVirtualKey();
     CRustStringRange KeystrokeBufferGetReadingString();
+    CRustStringRange GetMarkedString();
     bool KeystrokeBufferIncludesWildcard();
 
     void GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch, bool isWildcardSearch);

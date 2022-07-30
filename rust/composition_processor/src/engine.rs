@@ -79,6 +79,7 @@ impl CompositionProcessorEngine {
         self.setup_dictionary_file(
             unsafe { ime::dll::DLL_INSTANCE },
             ime::resources::TEXTSERVICE_DIC,
+            ime::resources::TEXTSERVICE_STYLE,
         );
 
         true
@@ -171,6 +172,7 @@ impl CompositionProcessorEngine {
         &mut self,
         dll_instance_handle: HINSTANCE,
         dictionary_file_name: &str,
+        style_file_name: &str,
     ) {
         let file_name = unsafe {
             let mut file_name = [0u16; MAX_PATH as usize];
@@ -180,9 +182,9 @@ impl CompositionProcessorEngine {
 
         let dir = std::path::Path::new(&file_name[..]).parent().unwrap();
         let dict_path = dir.join(dictionary_file_name);
+        let style_path = dir.join(style_file_name);
 
-        self.table_dictionary_engine =
-            Some(TableDictionaryEngine::load(dict_path.to_str().unwrap()).unwrap())
+        self.table_dictionary_engine = Some(TableDictionaryEngine::load(dict_path.to_str().unwrap(), style_path.to_str().unwrap()).unwrap())
     }
 
     fn set_language_bar_status(&self, status: u32, set: bool) -> windows::core::Result<()> {
@@ -231,5 +233,9 @@ impl CompositionProcessorEngine {
 
     pub fn compartment_wrapper(&self) -> &CompartmentUpdateListener {
         &self.compartment_wrapper
+    }
+    
+    pub fn get_marked_string(&self) -> String {
+        return self.table_dictionary_engine.as_ref().unwrap().convert_input_string(self.keystroke_buffer.get_reading_string());
     }
 }

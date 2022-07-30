@@ -71,6 +71,15 @@ pub unsafe extern "C" fn compositionprocessorengine_keystroke_buffer_get_reading
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn compositionprocessorengine_get_marked_string(
+    engine: *mut c_void,
+) -> *mut c_void {
+    let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
+    let s = engine.get_marked_string();
+    Box::into_raw(Box::new(RustStringRange::from_str(&s))) as *mut c_void
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn compositionprocessorengine_keystroke_buffer_includes_wildcard(
     engine: *mut c_void,
 ) -> bool {

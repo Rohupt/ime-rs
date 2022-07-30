@@ -136,6 +136,11 @@ CRustStringRange CCompositionProcessorEngine::KeystrokeBufferGetReadingString() 
     return CRustStringRange::FromVoid(str);
 }
 
+CRustStringRange CCompositionProcessorEngine::GetMarkedString() {
+    void* str = compositionprocessorengine_get_marked_string(engine);
+    return CRustStringRange::FromVoid(str);
+}
+
 bool CCompositionProcessorEngine::KeystrokeBufferIncludesWildcard() {
     return compositionprocessorengine_keystroke_buffer_includes_wildcard(engine);
 }

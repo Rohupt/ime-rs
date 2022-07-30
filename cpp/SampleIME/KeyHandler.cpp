@@ -178,7 +178,7 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
 
     if (hasVirtualKey)
     {
-        CRustStringRange item = pCompositionProcessorEngine->KeystrokeBufferGetReadingString();
+        CRustStringRange item = pCompositionProcessorEngine->GetMarkedString();
         isWildcardIncluded = pCompositionProcessorEngine->KeystrokeBufferIncludesWildcard();
 
         hr = _AddComposingAndChar(ec, pContext, item);
