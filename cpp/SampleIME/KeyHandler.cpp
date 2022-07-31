@@ -169,7 +169,6 @@ Exit:
 HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngine *pCompositionProcessorEngine, TfEditCookie ec, _In_ ITfContext *pContext)
 {
     HRESULT hr = S_OK;
-    BOOL isWildcardIncluded = TRUE;
 
     //
     // Get reading string from composition processor engine
@@ -179,7 +178,6 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
     if (hasVirtualKey)
     {
         CRustStringRange item = pCompositionProcessorEngine->GetMarkedString();
-        isWildcardIncluded = pCompositionProcessorEngine->KeystrokeBufferIncludesWildcard();
 
         hr = _AddComposingAndChar(ec, pContext, item);
         if (FAILED(hr))
@@ -193,7 +191,7 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
     //
     CSampleImeArray<CCandidateListItem> candidateList;
 
-    pCompositionProcessorEngine->GetCandidateList(&candidateList, TRUE, FALSE);
+    pCompositionProcessorEngine->GetCandidateList(&candidateList, TRUE);
 
     if ((candidateList.Count()))
     {
@@ -208,14 +206,7 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
     {
         _pCandidateListUIPresenter->_ClearList();
     }
-    else if (hasVirtualKey && isWildcardIncluded)
-    {
-        hr = _CreateAndStartCandidate(pCompositionProcessorEngine, ec, pContext);
-        if (SUCCEEDED(hr))
-        {
-            _pCandidateListUIPresenter->_ClearList();
-        }
-    }
+    
     return hr;
 }
 //+---------------------------------------------------------------------------
@@ -332,7 +323,7 @@ HRESULT CSampleIME::_HandleCompositionFinalize(TfEditCookie ec, _In_ ITfContext 
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandleCompositionConvert(TfEditCookie ec, _In_ ITfContext *pContext, BOOL isWildcardSearch)
+HRESULT CSampleIME::_HandleCompositionConvert(TfEditCookie ec, _In_ ITfContext *pContext)
 {
     HRESULT hr = S_OK;
 
@@ -343,7 +334,7 @@ HRESULT CSampleIME::_HandleCompositionConvert(TfEditCookie ec, _In_ ITfContext *
     //
     CCompositionProcessorEngine* pCompositionProcessorEngine = nullptr;
     pCompositionProcessorEngine = _pCompositionProcessorEngine;
-    pCompositionProcessorEngine->GetCandidateList(&candidateList, FALSE, isWildcardSearch);
+    pCompositionProcessorEngine->GetCandidateList(&candidateList, FALSE);
 
     // If there is no candlidate listing the current reading string, we don't do anything. Just wait for
     // next char to be ready for the conversion with it.

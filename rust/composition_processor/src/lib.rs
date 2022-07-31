@@ -80,14 +80,6 @@ pub unsafe extern "C" fn compositionprocessorengine_get_marked_string(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn compositionprocessorengine_keystroke_buffer_includes_wildcard(
-    engine: *mut c_void,
-) -> bool {
-    let engine = Box::leak(CompositionProcessorEngine::from_void(engine));
-    engine.keystroke_buffer().includes_wildcard()
-}
-
-#[no_mangle]
 pub unsafe extern "C" fn compositionprocessorengine_get_table_dictionary_engine(
     engine: *const c_void,
 ) -> *const c_void {
@@ -258,11 +250,10 @@ pub unsafe extern "C" fn compositionprocessorengine_get_candidate_list(
     values_buffer: *mut *mut c_void,
     buffer_length: usize,
     is_incremental_word_search: bool,
-    is_wildcard_search: bool,
 ) -> usize {
     let engine = Box::leak(CompositionProcessorEngine::from_void(engine as *mut _));
 
-    let result = engine.get_candidate_list(is_incremental_word_search, is_wildcard_search);
+    let result = engine.get_candidate_list(is_incremental_word_search);
 
     tuples_to_ffi(result, keys_buffer, values_buffer, buffer_length)
 }

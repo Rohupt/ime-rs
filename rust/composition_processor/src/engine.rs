@@ -98,7 +98,6 @@ impl CompositionProcessorEngine {
     pub fn get_candidate_list(
         &self,
         is_incremental_word_search: bool,
-        is_wildcard_search: bool,
     ) -> Vec<(String, String)> {
         if self.table_dictionary_engine.is_none() { return Vec::new(); }
 

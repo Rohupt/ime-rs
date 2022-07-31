@@ -130,7 +130,6 @@ impl TableDictionaryEngine {
     }
 
     pub fn collect_words<'a>(&'a self, search_key: &str, is_incremental_search: bool) -> Vec<(String, String)> {
-        // use crate::compare_with_wildcard::compare_with_wildcard;
         let search_key = search_key.to_lowercase();
         let converted_key = self.convert_input_string(search_key.to_string());
         let mut vec: Vec<(String, String, u8, u8)> = Vec::new();

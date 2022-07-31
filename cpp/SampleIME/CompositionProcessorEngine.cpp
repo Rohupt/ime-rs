@@ -141,10 +141,6 @@ CRustStringRange CCompositionProcessorEngine::GetMarkedString() {
     return CRustStringRange::FromVoid(str);
 }
 
-bool CCompositionProcessorEngine::KeystrokeBufferIncludesWildcard() {
-    return compositionprocessorengine_keystroke_buffer_includes_wildcard(engine);
-}
-
 static const uintptr_t MAX_BUFFER = 512;
 
 inline void ArraysToArray(void** keys, void** values, uintptr_t length, _Inout_ CSampleImeArray<CCandidateListItem> *pItemList) {
@@ -156,10 +152,10 @@ inline void ArraysToArray(void** keys, void** values, uintptr_t length, _Inout_ 
     }
 }
 
-void CCompositionProcessorEngine::GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch, bool isWildcardSearch) {
+void CCompositionProcessorEngine::GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch) {
     void* keys[MAX_BUFFER];
     void* values[MAX_BUFFER];
-    uintptr_t length = compositionprocessorengine_get_candidate_list(this->engine, keys, values, MAX_BUFFER, isIncrementalWordSearch, isWildcardSearch);
+    uintptr_t length = compositionprocessorengine_get_candidate_list(this->engine, keys, values, MAX_BUFFER, isIncrementalWordSearch);
     ArraysToArray(keys, values, length, pCandidateList);
 }
 

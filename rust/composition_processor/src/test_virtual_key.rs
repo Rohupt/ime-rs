@@ -25,7 +25,6 @@ pub enum KeystrokeFunction {
     FinalizeCandidatelist,
     FinalizeCandidatelistAndInput,
     Convert,
-    ConvertWildcard,
     SelectByNumber,
     Backspace,
     MoveLeft,
@@ -101,21 +100,6 @@ pub fn test_virtual_key(
         || candidate_mode == CandidateMode::WithNextComposition
     {
         composing = false;
-    }
-
-    if composing
-        || candidate_mode == CandidateMode::Incremental
-        || candidate_mode == CandidateMode::None
-    {
-        if (ch == '*' || ch == '?') && engine.keystroke_buffer().has_virtual_key() {
-            return (true, KeystrokeCategory::Composing, KeystrokeFunction::Input);
-        } else if engine.keystroke_buffer().includes_wildcard() && code == VK_SPACE.0 {
-            return (
-                true,
-                KeystrokeCategory::Composing,
-                KeystrokeFunction::ConvertWildcard,
-            );
-        }
     }
 
     let modifiers = engine.modifiers().get();

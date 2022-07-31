@@ -28,7 +28,6 @@ enum class KeystrokeFunction {
   FinalizeCandidatelist,
   FinalizeCandidatelistAndInput,
   Convert,
-  ConvertWildcard,
   SelectByNumber,
   Backspace,
   MoveLeft,
@@ -60,8 +59,6 @@ bool compositionprocessorengine_has_virtual_key(void *engine);
 void *compositionprocessorengine_keystroke_buffer_get_reading_string(void *engine);
 
 void *compositionprocessorengine_get_marked_string(void *engine);
-
-bool compositionprocessorengine_keystroke_buffer_includes_wildcard(void *engine);
 
 const void *compositionprocessorengine_get_table_dictionary_engine(const void *engine);
 
@@ -106,8 +103,7 @@ uintptr_t compositionprocessorengine_get_candidate_list(const void *engine,
                                                         void **keys_buffer,
                                                         void **values_buffer,
                                                         uintptr_t buffer_length,
-                                                        bool is_incremental_word_search,
-                                                        bool is_wildcard_search);
+                                                        bool is_incremental_word_search);
 
 HRESULT compartment_callback(const void *wrapper, const GUID *guid);
 

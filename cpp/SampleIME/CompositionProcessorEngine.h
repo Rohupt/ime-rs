@@ -41,9 +41,8 @@ public:
     bool HasVirtualKey();
     CRustStringRange KeystrokeBufferGetReadingString();
     CRustStringRange GetMarkedString();
-    bool KeystrokeBufferIncludesWildcard();
 
-    void GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch, bool isWildcardSearch);
+    void GetCandidateList(CSampleImeArray<CCandidateListItem> *pCandidateList, bool isIncrementalWordSearch);
 
     HRESULT OnPreservedKey(REFGUID rguid, BOOL* isEaten, ITfThreadMgr* threadMgr, TfClientId clientId);
 

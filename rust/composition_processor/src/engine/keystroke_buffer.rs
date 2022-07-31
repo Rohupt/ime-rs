@@ -30,10 +30,6 @@ impl KeystrokeBuffer {
     pub fn get_reading_string(&self) -> String {
         String::from_utf16(&self.buffer).unwrap()
     }
-
-    pub fn includes_wildcard(&self) -> bool {
-        self.buffer.contains(&(b'*' as u16)) || self.buffer.contains(&(b'?' as u16))
-    }
 }
 
 #[cfg(test)]
