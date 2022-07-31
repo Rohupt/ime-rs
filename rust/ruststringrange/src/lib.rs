@@ -37,6 +37,10 @@ impl RustStringRange {
         RustStringRange::from_string(string)
     }
 
+    pub fn from_string_wrapped(s: String) -> RustStringRange {
+        RustStringRange::from_string(s.clone())
+    }
+
     pub unsafe fn from_buffer_utf16(buffer: *const u16, buffer_len: usize) -> RustStringRange {
         let buffer_slice: &[u16] = std::slice::from_raw_parts(buffer, buffer_len);
 

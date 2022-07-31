@@ -235,7 +235,7 @@ pub unsafe extern "C" fn compositionprocessorengine_disable_language_bar_button(
 }
 
 unsafe fn tuples_to_ffi(
-    tuples: Vec<(&str, &str)>,
+    tuples: Vec<(String, String)>,
     keys_buffer: *mut *mut c_void,
     values_buffer: *mut *mut c_void,
     buffer_length: usize,
@@ -243,9 +243,9 @@ unsafe fn tuples_to_ffi(
     let len = std::cmp::min(tuples.len(), buffer_length);
     for (i, tuple) in tuples.iter().enumerate().take(len) {
         *keys_buffer.add(i) =
-            Box::into_raw(Box::new(RustStringRange::from_str(tuple.0))) as *mut c_void;
+            Box::into_raw(Box::new(RustStringRange::from_string_wrapped(tuple.0.clone()))) as *mut c_void;
         *values_buffer.add(i) =
-            Box::into_raw(Box::new(RustStringRange::from_str(tuple.1))) as *mut c_void;
+            Box::into_raw(Box::new(RustStringRange::from_string_wrapped(tuple.1.clone()))) as *mut c_void;
     }
 
     len

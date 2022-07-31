@@ -99,33 +99,12 @@ impl CompositionProcessorEngine {
         &self,
         is_incremental_word_search: bool,
         is_wildcard_search: bool,
-    ) -> Vec<(&str, &str)> {
-        if self.table_dictionary_engine.is_none() {
-            return Vec::new();
-        }
+    ) -> Vec<(String, String)> {
+        if self.table_dictionary_engine.is_none() { return Vec::new(); }
 
         let table_dictionary_engine = self.table_dictionary_engine.as_ref().unwrap();
 
-        if is_incremental_word_search {
-            let mut wildcard_search = self.keystroke_buffer.get_reading_string();
-
-            // check keystroke buffer already has wildcard char which end user want wildcard search
-            let has_wildcard = wildcard_search.contains('*') || wildcard_search.contains('?');
-
-            if !has_wildcard {
-                // add wildcard char for incremental search
-                wildcard_search += "*";
-            }
-
-            return table_dictionary_engine.collect_word_for_wildcard(&wildcard_search);
-        }
-
-        if is_wildcard_search {
-            return table_dictionary_engine
-                .collect_word_for_wildcard(&self.keystroke_buffer.get_reading_string());
-        }
-
-        table_dictionary_engine.collect_word(&self.keystroke_buffer.get_reading_string())
+        table_dictionary_engine.collect_words(&self.keystroke_buffer.get_reading_string(), is_incremental_word_search)
     }
 
     pub fn on_preserved_key(
