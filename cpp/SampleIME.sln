@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleIME", "SampleIME\SampleIME.vcxproj", "{0C8FE010-5146-44D8-AF99-82702C15FEA5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRustIME", "SampleIME\SampleIME.vcxproj", "{0C8FE010-5146-44D8-AF99-82702C15FEA5}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupIME", "SetupIME\SetupIME.vdproj", "{40593F47-0A0E-4400-ADC3-A7D4F7E343E9}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -36,10 +36,12 @@ Global
 		{40593F47-0A0E-4400-ADC3-A7D4F7E343E9}.Debug|x64.Build.0 = Debug
 		{40593F47-0A0E-4400-ADC3-A7D4F7E343E9}.Release|Win32.ActiveCfg = Release
 		{40593F47-0A0E-4400-ADC3-A7D4F7E343E9}.Release|x64.ActiveCfg = Release
+		{40593F47-0A0E-4400-ADC3-A7D4F7E343E9}.Release|x64.Build.0 = Release
 		{E326E088-2DF2-4085-BC22-1F1D9E226B33}.Debug|Win32.ActiveCfg = Debug
 		{E326E088-2DF2-4085-BC22-1F1D9E226B33}.Debug|Win32.Build.0 = Debug
 		{E326E088-2DF2-4085-BC22-1F1D9E226B33}.Debug|x64.ActiveCfg = Debug
 		{E326E088-2DF2-4085-BC22-1F1D9E226B33}.Release|Win32.ActiveCfg = Release
+		{E326E088-2DF2-4085-BC22-1F1D9E226B33}.Release|Win32.Build.0 = Release
 		{E326E088-2DF2-4085-BC22-1F1D9E226B33}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

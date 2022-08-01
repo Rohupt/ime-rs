@@ -161,7 +161,7 @@ impl TableDictionaryEngine {
                 }
             } else {
                 for w in Self::get_word_forms(search_key.clone()) {
-                    vec.push((search_key.clone(), w.clone(), 0, 0));
+                    vec.push((search_key.clone(), w.clone(), 0, 11));
                 }
             }
         }
@@ -192,7 +192,7 @@ impl TableDictionaryEngine {
         };
 
         vec.sort_by(|x, y| {
-            y.3.cmp(&x.3)
+            x.3.cmp(&y.3)
                 .then(y.2.cmp(&x.2)
                 .then(x.0.to_lowercase().cmp(&y.0.to_lowercase())))
         });

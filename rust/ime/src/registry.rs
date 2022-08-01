@@ -6,7 +6,7 @@ use crate::com::create_instance_inproc;
 use windows::Win32::{
     Foundation::{HINSTANCE, MAX_PATH},
     System::LibraryLoader::GetModuleFileNameW,
-    System::SystemServices::{LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED},
+    System::SystemServices::{LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL},
     UI::TextServices::{
         CLSID_TF_CategoryMgr, CLSID_TF_InputProcessorProfiles, ITfCategoryMgr,
         ITfInputProcessorProfileMgr, GUID_TFCAT_DISPLAYATTRIBUTEPROVIDER,
@@ -18,8 +18,8 @@ use windows::Win32::{
 };
 
 const TEXTSERVICE_DESC: &str = "Sample Rust IME";
-// MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED)
-const TEXTSERVICE_LANGID: u16 = (SUBLANG_CHINESE_SIMPLIFIED << 10 | LANG_CHINESE) as u16;
+// MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL)
+const TEXTSERVICE_LANGID: u16 = (SUBLANG_CHINESE_TRADITIONAL << 10 | LANG_CHINESE) as u16;
 // #define TEXTSERVICE_ICON_INDEX   -IDIS_SAMPLEIME
 const TEXTSERVICE_ICON_INDEX: u32 = -12i32 as u32;
 

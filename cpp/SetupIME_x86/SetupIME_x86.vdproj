@@ -21,7 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2888EEB8528E4717AF5A75A39DD633C4"
+        "MsmKey" = "8:_44ACEBF884664F65AD69164EE6A4E92E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -39,7 +39,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\SetupIME_x86.msi"
+        "OutputFilename" = "8:Debug\\SampleRustIME_x86_setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -123,7 +123,7 @@
             "SourcePath" = "8:..\\SampleIME\\Dictionary\\SampleSN.dict.yaml"
             "TargetName" = "8:SampleSN.dict.yaml"
             "Tag" = "8:"
-            "Folder" = "8:_09A17997D71245D88BE9D8A36BDB664F"
+            "Folder" = "8:_7EAC19EEF53B46CC8150F438AB9C5385"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -138,12 +138,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2888EEB8528E4717AF5A75A39DD633C4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_44ACEBF884664F65AD69164EE6A4E92E"
             {
-            "SourcePath" = "8:..\\Win32\\Debug\\SampleIME_x86.dll"
-            "TargetName" = "8:SampleIME_x86.dll"
+            "SourcePath" = "8:..\\Win32\\Debug\\SampleRustIME.dll"
+            "TargetName" = "8:SampleRustIME.dll"
             "Tag" = "8:"
-            "Folder" = "8:_09A17997D71245D88BE9D8A36BDB664F"
+            "Folder" = "8:_7EAC19EEF53B46CC8150F438AB9C5385"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -163,7 +163,7 @@
             "SourcePath" = "8:..\\SampleIME\\Dictionary\\telex.scheme.yaml"
             "TargetName" = "8:telex.scheme.yaml"
             "Tag" = "8:"
-            "Folder" = "8:_09A17997D71245D88BE9D8A36BDB664F"
+            "Folder" = "8:_7EAC19EEF53B46CC8150F438AB9C5385"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -207,6 +207,17 @@
                 {
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_7EAC19EEF53B46CC8150F438AB9C5385"
+            {
+            "Name" = "8:#1914"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:SystemFolder"
+                "Folders"
+                {
+                }
+            }
             "{1525181F-901A-416C-8A58-119130FE478E}:_F8BEC36CF2694B75906C6A5D8A5B1FBA"
             {
             "Name" = "8:#1916"
@@ -233,9 +244,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:SetupIME_x86"
+        "ProductName" = "8:Sample Rust IME (x86)"
         "ProductCode" = "8:{1B1FA9B3-8881-4621-BE14-38765E150466}"
-        "PackageCode" = "8:{6B8F3766-284A-4FE0-9CFD-22AEA9286442}"
+        "PackageCode" = "8:{ED6D0F0F-25E6-4FEA-BA72-3271538B8AA9}"
         "UpgradeCode" = "8:{3CB4DDB9-9C15-40E6-8F62-C99E629A7E69}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -243,12 +254,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:SampleIME"
+        "Manufacturer" = "8:GCBD"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:SetupIME_x86"
+        "Title" = "8:SampleRustIME_x86_setup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:SampleIME"
+        "ARPCONTACT" = "8:Pham Trung HIeu"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
