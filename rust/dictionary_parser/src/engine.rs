@@ -206,14 +206,15 @@ impl TableDictionaryEngine {
 
         let mut cws = 0;
         let mut state = 0;
+        let mut add_space = false;
         let mut result = String::new();
         let istrlc = istr.to_lowercase();
         for (i, c) in istrlc.chars().enumerate() {
             match state {
-                0 => {
-                    if c.is_alphabetic() {
-                        state = if vowels.contains(c) { -2 } else { -1 };
-                    }
+                4 | 0 => {
+                    state = if c.is_alphabetic() {
+                        if vowels.contains(c) { -2 } else { -1 }
+                    } else { 0 };
                 }
                 -1 | 1 => {
                     state = if c.is_alphabetic() {
@@ -223,17 +224,19 @@ impl TableDictionaryEngine {
                 -2 | 2 => {
                     state = if c.is_alphabetic() {
                         if !vowels.contains(c) && !diacritics.contains(c) {
-                            if tones.contains(c) { 4 } else { 3 }
+                            if tones.contains(c) { 5 } else { 3 }
                         } else { 2 }
-                    } else { 0 }
+                    } else { 4 }
                 }
                 3 => {
                     if c.is_alphabetic() {
                         if vowels.contains(c) {
                             state = 0;
                         } else if tones.contains(c) {
-                            state = 4;
+                            state = 5;
                         }
+                    } else {
+                        state = 4;
                     }
                 }
                 _ => {}
@@ -244,23 +247,38 @@ impl TableDictionaryEngine {
                 None => {istr.len()},
                 Some((x, _)) => x,
             };
-            if (state < 0 && i > cws) || (i + 1 == istr.chars().count() && state != 4) {
+            if (state < 0 && i > cws) || (i + 1 == istr.chars().count() && state < 2) {
                 let w = if i + 1 == istr.chars().count() { &istr[si..ej] } else { &istr[si..ei] };
-                if result.len() > 0 {
+                if add_space && !w.starts_with(" ") && (w.chars().count() > 1 || w.starts_with(char::is_alphanumeric)) {
                     result.push_str(" ");
                 }
                 result.push_str(w);
                 cws = i;
+                add_space = (w.chars().count() > 1 && !result.ends_with(' ')) || w.ends_with(char::is_alphanumeric);
             }
-            if state == 4 {
-                let w = &istr[si..ej].to_lowercase();
-                let k = self.typing_keys.get(w).map(|x| x.as_str());
-                if result.len() > 0 {
+            if state >= 4 || (i + 1 == istr.chars().count() && state >= 2) {
+                let w = if state == 5 || i + 1 == istr.chars().count() { &istr[si..ej] } else { &istr[si..ei] };
+                let k = self.typing_keys.get(&w.to_lowercase()).map(|x| x.as_str());
+                if add_space {
                     result.push_str(" ");
                 }
-                result.push_str(if k.is_some() { k.unwrap() } else { w });
+                let mut p = match k {
+                    None => { w },
+                    Some(x) => { x },
+                }.to_string();
+                
+                p = if w.to_uppercase() == w {
+                    p.to_uppercase()
+                } else if w.chars().nth(0).unwrap().is_uppercase() {
+                    Self::capitalize_first_letter(p.to_string())
+                } else {
+                    p.to_lowercase()
+                };
+                
+                result.push_str(&p);
+                cws = if state == 5 {i + 1} else {i};
                 state = 0;
-                cws = i + 1;
+                add_space = p.to_lowercase() != w.to_lowercase();
             }
         }
         result

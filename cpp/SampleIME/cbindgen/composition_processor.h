@@ -9,7 +9,6 @@ enum class CandidateMode {
   None,
   Original,
   Incremental,
-  WithNextComposition,
 };
 
 enum class KeystrokeCategory {

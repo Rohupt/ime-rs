@@ -8,10 +8,10 @@ use windows::{
     Win32::{
         System::Com::{CoCreateInstance, CLSCTX_INPROC_SERVER},
         UI::{
-            Input::KeyboardAndMouse::{VK_OEM_PERIOD, VK_SHIFT, VK_SPACE},
+            Input::KeyboardAndMouse::{VK_OEM_PERIOD, VK_OEM_3},
             TextServices::{
                 CLSID_TF_ThreadMgr, ITfKeystrokeMgr, ITfThreadMgr,
-                GUID_COMPARTMENT_KEYBOARD_OPENCLOSE, TF_MOD_CONTROL, TF_MOD_ON_KEYUP, TF_MOD_SHIFT,
+                GUID_COMPARTMENT_KEYBOARD_OPENCLOSE, TF_MOD_CONTROL, TF_MOD_ALT,
                 TF_PRESERVEDKEY,
             },
         },
@@ -66,21 +66,21 @@ impl Default for PreservedKeys {
             keys: [
                 PreservedKeyExtended {
                     key: TF_PRESERVEDKEY {
-                        uVKey: VK_SHIFT.0 as u32,
-                        uModifiers: TF_MOD_ON_KEYUP,
+                        uVKey: VK_OEM_3.0 as u32,
+                        uModifiers: TF_MOD_ALT,
                     },
                     key_guid: SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY,
                     compartment_guid: GUID_COMPARTMENT_KEYBOARD_OPENCLOSE,
-                    desc: "Chinese/English input (Shift)",
+                    desc: "Bật/tắt bộ gõ (Alt+`)",
                 },
                 PreservedKeyExtended {
                     key: TF_PRESERVEDKEY {
-                        uVKey: VK_SPACE.0 as u32,
-                        uModifiers: TF_MOD_SHIFT,
+                        uVKey: VK_OEM_3.0 as u32,
+                        uModifiers: TF_MOD_CONTROL,
                     },
                     key_guid: SAMPLEIME_GUID_DOUBLE_SINGLE_BYTE_PRESERVE_KEY,
                     compartment_guid: SAMPLEIME_GUID_COMPARTMENT_DOUBLE_SINGLE_BYTE,
-                    desc: "Double/Single byte (Shift+Space)",
+                    desc: "Byte đơn/kép (Ctrl+`)",
                 },
                 PreservedKeyExtended {
                     key: TF_PRESERVEDKEY {
@@ -89,7 +89,7 @@ impl Default for PreservedKeys {
                     },
                     key_guid: SAMPLEIME_GUID_PUNCTUATION_PRESERVE_KEY,
                     compartment_guid: SAMPLEIME_GUID_COMPARTMENT_PUNCTUATION,
-                    desc: "Chinese/English punctuation (Ctrl+.)",
+                    desc: "Dấu câu kiểu Hán/La-tinh (Ctrl+.)",
                 },
             ],
         }

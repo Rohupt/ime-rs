@@ -15,12 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_195DA5F5286D4DAB97B23B6BA6C9A13C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_43D7A179A29747BD8E2953EEBD7FAE02"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -39,13 +33,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BD9342DC0114463695DEE4992C028D2A"
+        "MsmKey" = "8:_9F890B6B05014CFCA18FF0F0B58C217A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D0C09D27FFFB44928A64DD4DE1444E29"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F359CAEDF0F14132BE3CB442CE597DFF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -89,7 +89,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\SetupIME.msi"
+        "OutputFilename" = "8:Release\\SampleRustIME_setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -136,26 +136,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_195DA5F5286D4DAB97B23B6BA6C9A13C"
-            {
-            "SourcePath" = "8:..\\Win32\\Debug\\SampleRustIME.dll"
-            "TargetName" = "8:SampleRustIME.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_48342E85168A42C7A7BD0AB0A0BE5487"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:4"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_43D7A179A29747BD8E2953EEBD7FAE02"
             {
             "SourcePath" = "8:..\\SampleIME\\Dictionary\\SampleSN.dict.yaml"
@@ -216,12 +196,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BD9342DC0114463695DEE4992C028D2A"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9F890B6B05014CFCA18FF0F0B58C217A"
             {
-            "SourcePath" = "8:..\\x64\\Debug\\SampleRustIME.dll"
+            "SourcePath" = "8:..\\Win32\\Release\\SampleRustIME.dll"
             "TargetName" = "8:SampleRustIME.dll"
             "Tag" = "8:"
-            "Folder" = "8:_5518F5B82EDE4D8B904C55811B8F18EA"
+            "Folder" = "8:_48342E85168A42C7A7BD0AB0A0BE5487"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -252,6 +232,26 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F359CAEDF0F14132BE3CB442CE597DFF"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\SampleRustIME.dll"
+            "TargetName" = "8:SampleRustIME.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_5518F5B82EDE4D8B904C55811B8F18EA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:4"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
@@ -288,7 +288,7 @@
             {
             "Name" = "8:#1936"
             "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
+            "Condition" = "8:VersionNT64"
             "Transitive" = "11:FALSE"
             "Property" = "8:System64Folder"
                 "Folders"
@@ -335,7 +335,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Sample Rust IME"
         "ProductCode" = "8:{D1CD833C-B654-4A80-A66B-4DBA3BA69692}"
-        "PackageCode" = "8:{671E4B7F-4357-4E73-BD2F-41FA8AE523E5}"
+        "PackageCode" = "8:{F2FA1D7F-38F0-4C84-AD31-3AE9724AA346}"
         "UpgradeCode" = "8:{F337C6B9-6EED-4B61-91BE-4E2CA8FD303E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

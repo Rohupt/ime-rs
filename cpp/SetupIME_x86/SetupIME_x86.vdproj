@@ -21,7 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_44ACEBF884664F65AD69164EE6A4E92E"
+        "MsmKey" = "8:_57FFDFBB732A432290F84165BC5887D2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -71,7 +71,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\SetupIME_x86.msi"
+        "OutputFilename" = "8:Release\\SampleRustIME_x86_setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -138,9 +138,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_44ACEBF884664F65AD69164EE6A4E92E"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57FFDFBB732A432290F84165BC5887D2"
             {
-            "SourcePath" = "8:..\\Win32\\Debug\\SampleRustIME.dll"
+            "SourcePath" = "8:..\\Win32\\Release\\SampleRustIME.dll"
             "TargetName" = "8:SampleRustIME.dll"
             "Tag" = "8:"
             "Folder" = "8:_7EAC19EEF53B46CC8150F438AB9C5385"
@@ -246,7 +246,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Sample Rust IME (x86)"
         "ProductCode" = "8:{1B1FA9B3-8881-4621-BE14-38765E150466}"
-        "PackageCode" = "8:{ED6D0F0F-25E6-4FEA-BA72-3271538B8AA9}"
+        "PackageCode" = "8:{8912D5C9-138E-40DD-BE55-0FCC3D1F9DBC}"
         "UpgradeCode" = "8:{3CB4DDB9-9C15-40E6-8F62-C99E629A7E69}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

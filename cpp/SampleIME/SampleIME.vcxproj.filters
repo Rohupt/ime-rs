@@ -21,16 +21,19 @@
     <None Include="SampleIME.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="Dictionary\SampleIMESimplifiedQuanPin.txt">
+    <None Include="Dictionary\SampleSN.dict.yaml">
       <Filter>Dictionary</Filter>
     </None>
-    <None Include="image\SampleIme.ico">
+    <None Include="Dictionary\telex.scheme.yaml">
+      <Filter>Dictionary</Filter>
+    </None>
+    <None Include="image\SampleRustIme.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="image\ImeModeOn.ico">
+    <None Include="image\ImeModeNom.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="image\ImeModeOff.ico">
+    <None Include="image\ImeModeLatin.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="image\DoubleSingleByteOn.ico">

@@ -19,14 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dictionary\SampleIMESimplifiedQuanPin.txt" />
+    <None Include="Dictionary\SampleSN.dict.yaml" />
+    <None Include="Dictionary\telex.scheme.yaml" />
     <None Include="image\DoubleSingleByteOff.ico" />
     <None Include="image\DoubleSingleByteOn.ico" />
-    <None Include="image\ImeModeOff.ico" />
-    <None Include="image\ImeModeOn.ico" />
+    <None Include="image\ImeModeLatin.ico" />
+    <None Include="image\ImeModeNom.ico" />
     <None Include="image\PunctuationOff.ico" />
     <None Include="image\PunctuationOn.ico" />
-    <None Include="image\SampleIme.ico" />
+    <None Include="image\SampleRustIme.ico" />
     <None Include="SampleIME.def" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -163,6 +165,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -183,11 +187,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>shlwapi.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/compare_with_wildcard.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/composition_processor.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/input_processor.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/globals.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/ime.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/itf_components.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/numberkey_windows.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/ruststringrange.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>SampleIME_x86.def</ModuleDefinitionFile>
+      <AdditionalDependencies>shlwapi.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/composition_processor.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/input_processor.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/globals.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/ime.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/itf_components.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/numberkey_windows.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/debug/ruststringrange.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>"C:\Program Files\PowerShell\7\pwsh.exe" $(SolutionDir)prebuild-x86.ps1</Command>
+      <Command>"C:\Program Files\PowerShell\7\pwsh.exe" $(SolutionDir)prebuild.ps1 -x86</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -205,8 +209,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>shlwapi.lib;$(SolutionDir)../rust/target/debug/compare_with_wildcard.lib;$(SolutionDir)../rust/target/debug/composition_processor.lib;$(SolutionDir)../rust/target/debug/input_processor.lib;$(SolutionDir)../rust/target/debug/globals.lib;$(SolutionDir)../rust/target/debug/ime.lib;$(SolutionDir)../rust/target/debug/itf_components.lib;$(SolutionDir)../rust/target/debug/numberkey_windows.lib;$(SolutionDir)../rust/target/debug/ruststringrange.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>SampleIME_x64.def</ModuleDefinitionFile>
+      <AdditionalDependencies>shlwapi.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/debug/composition_processor.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/debug/input_processor.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/debug/globals.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/debug/ime.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/debug/itf_components.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/debug/numberkey_windows.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/debug/ruststringrange.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PreBuildEvent>
@@ -215,7 +219,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <Optimization>Disabled</Optimization>
@@ -224,7 +228,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SampleIME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\um;$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -232,11 +237,12 @@
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/release/composition_processor.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/release/input_processor.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/release/globals.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/release/ime.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/release/itf_components.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/release/numberkey_windows.lib;$(SolutionDir)../rust/target/i686-pc-windows-msvc/release/ruststringrange.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PreBuildEvent>
-      <Command>"C:\Program Files\PowerShell\7\pwsh.exe" $(SolutionDir)prebuild-x86.ps1</Command>
+      <Command>"C:\Program Files\PowerShell\7\pwsh.exe" $(SolutionDir)prebuild.ps1 -x86 -release</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -250,6 +256,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SampleIME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\um;$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -257,11 +264,12 @@
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/release/composition_processor.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/release/input_processor.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/release/globals.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/release/ime.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/release/itf_components.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/release/numberkey_windows.lib;$(SolutionDir)../rust/target/x86_64-pc-windows-msvc/release/ruststringrange.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PreBuildEvent>
-      <Command>"C:\Program Files\PowerShell\7\pwsh.exe" $(SolutionDir)prebuild.ps1</Command>
+      <Command>"C:\Program Files\PowerShell\7\pwsh.exe" $(SolutionDir)prebuild.ps1 -release</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
