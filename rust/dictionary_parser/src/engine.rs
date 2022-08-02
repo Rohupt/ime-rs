@@ -1,7 +1,6 @@
 #![allow(clippy::missing_safety_doc)]
 
-use std::collections::HashMap;
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -22,9 +21,9 @@ const REFERENCE: [(char, char); 73] = [
         ];
 
 pub struct TableDictionaryEngine {
-    dictionary: HashMap<String, HashSet<(String, u8)>>,
-    abbreviations: HashMap<String, HashSet<String>>,
-    typing_keys: HashMap<String, String>,
+    dictionary: BTreeMap<String, HashSet<(String, u8)>>,
+    abbreviations: BTreeMap<String, HashSet<String>>,
+    typing_keys: BTreeMap<String, String>,
 }
 
 impl TableDictionaryEngine {
@@ -33,7 +32,7 @@ impl TableDictionaryEngine {
         let mut typing_key_str = String::new();
         File::open(dict_path)?.read_to_string(&mut dictionary_str)?;
         File::open(style_path)?.read_to_string(&mut typing_key_str)?;
-        let diacritics = HashMap::from(REFERENCE);
+        let diacritics = BTreeMap::from(REFERENCE);
         let (dictionary, abbreviations, typing_keys) = Self::load_resources(&dictionary_str, &typing_key_str, diacritics);
         Ok(TableDictionaryEngine { dictionary, abbreviations, typing_keys })
     }
@@ -56,7 +55,7 @@ impl TableDictionaryEngine {
         result.trim().to_string()
     }
     
-    fn get_abbreviation(s: String, diacritics: &HashMap<char, char>) -> String {
+    fn get_abbreviation(s: String, diacritics: &BTreeMap<char, char>) -> String {
         let words = s.split(' ').collect::<Vec<&str>>();
         let mut result = String::new();
         for word in words {
@@ -94,12 +93,12 @@ impl TableDictionaryEngine {
         Some((key_slice, value_slice))
     }
 
-    fn load_resources(ds: &str, tss: &str, diacritics: HashMap<char, char>)
-        -> (HashMap<String, HashSet<(String, u8)>>, HashMap<String, HashSet<String>>, HashMap<String, String>) {
+    fn load_resources(ds: &str, tss: &str, diacritics: BTreeMap<char, char>)
+        -> (BTreeMap<String, HashSet<(String, u8)>>, BTreeMap<String, HashSet<String>>, BTreeMap<String, String>) {
         
-        let mut dictionary: HashMap<String, HashSet<(String, u8)>> = HashMap::new();
-        let mut abbreviations: HashMap<String, HashSet<String>> = HashMap::new();
-        let mut typing_keys: HashMap<String, String> = HashMap::new();
+        let mut dictionary: BTreeMap<String, HashSet<(String, u8)>> = BTreeMap::new();
+        let mut abbreviations: BTreeMap<String, HashSet<String>> = BTreeMap::new();
+        let mut typing_keys: BTreeMap<String, String> = BTreeMap::new();
         let mut keys: HashSet<String> = HashSet::new();
         for line in ds.lines() {
             if line.matches("\t").count() != 2 { continue; }
