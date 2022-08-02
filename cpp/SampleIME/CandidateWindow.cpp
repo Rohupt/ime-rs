@@ -9,6 +9,7 @@
 #include "Globals.h"
 #include "BaseWindow.h"
 #include "CandidateWindow.h"
+#include "SampleIME.h"
 #include "cbindgen/ime.h"
 
 DWORD RegGetDword(HKEY hKey, const std::wstring& subKey, const std::wstring& value)
@@ -78,8 +79,6 @@ CCandidateWindow::CCandidateWindow(_In_ CANDWNDCALLBACK pfnCallback, _In_ void *
     _cyRow = CANDWND_ROW_WIDTH;
     _cxTitle = 0;
 
-    _pVScrollBarWnd = nullptr;
-
     _wndWidth = 0;
 
     _dontAdjustOnEmptyItemPage = FALSE;
@@ -97,7 +96,6 @@ CCandidateWindow::~CCandidateWindow()
 {
     _ClearList();
     _DeleteShadowWnd();
-    _DeleteVScrollBarWnd();
 }
 
 //+---------------------------------------------------------------------------
@@ -119,12 +117,6 @@ BOOL CCandidateWindow::_Create(ATOM atom, _In_ UINT wndWidth, _In_opt_ HWND pare
     }
 
     ret = _CreateBackGroundShadowWindow();
-    if (FALSE == ret)
-    {
-        goto Exit;
-    }
-
-    ret = _CreateVScrollWindow();
     if (FALSE == ret)
     {
         goto Exit;
@@ -170,36 +162,6 @@ BOOL CCandidateWindow::_CreateBackGroundShadowWindow()
     return TRUE;
 }
 
-BOOL CCandidateWindow::_CreateVScrollWindow()
-{
-    BOOL ret = FALSE;
-
-    SHELL_MODE shellMode = _isStoreAppMode ? STOREAPP : DESKTOP;
-    CScrollBarWindowFactory* pFactory = CScrollBarWindowFactory::Instance();
-    _pVScrollBarWnd = pFactory->MakeScrollBarWindow(shellMode);
-
-    if (_pVScrollBarWnd == nullptr)
-    {
-        _DeleteShadowWnd();
-        goto Exit;
-    }
-
-    _pVScrollBarWnd->_SetUIWnd(this);
-
-    if (!_pVScrollBarWnd->_Create(Global::AtomScrollBarWindow, WS_EX_TOPMOST | WS_EX_TOOLWINDOW, WS_CHILD, this))
-    {
-        _DeleteVScrollBarWnd();
-        _DeleteShadowWnd();
-        goto Exit;
-    }
-
-    ret = TRUE;
-
-Exit:
-    pFactory->Release();
-    return ret;
-}
-
 void CCandidateWindow::_ResizeWindow()
 {
     SIZE size = {0, 0};
@@ -217,7 +179,6 @@ void CCandidateWindow::_ResizeWindow()
     int width = GetSystemMetrics(SM_CXVSCROLL) * 2;
     int height = rcCandRect.bottom - rcCandRect.top - CANDWND_BORDER_WIDTH * 2;
 
-    _pVScrollBarWnd->_Resize(letf, top, width, height);
 }
 
 //+---------------------------------------------------------------------------
@@ -272,7 +233,8 @@ VOID CCandidateWindow::_SetFillColor(_In_ HBRUSH hBrush)
 //----------------------------------------------------------------------------
 
 const int PageCountPosition = 1;
-const int StringPosition = 4;
+const int StringPosition = 3;
+const int KeyPosition = 15;
 
 LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam)
 {
@@ -309,12 +271,6 @@ LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT
                 _pShadowWnd->_OnOwnerWndMoved((pWndPos->flags & SWP_NOSIZE) == 0);
             }
 
-            // move v-scroll
-            if (_pVScrollBarWnd)
-            {
-                _pVScrollBarWnd->_OnOwnerWndMoved((pWndPos->flags & SWP_NOSIZE) == 0);
-            }
-
             _FireMessageToLightDismiss(wndHandle, pWndPos);
         }
         break;
@@ -339,17 +295,6 @@ LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT
 
                 _pShadowWnd->_OnOwnerWndMoved((pWndPos->flags & SWP_NOSIZE) == 0);
             }
-
-            // show/hide v-scroll
-            if (_pVScrollBarWnd)
-            {
-                if ((pWndPos->flags & SWP_HIDEWINDOW) != 0)
-                {
-                    _pVScrollBarWnd->_Show(FALSE);
-                }
-
-                _pVScrollBarWnd->_OnOwnerWndMoved((pWndPos->flags & SWP_NOSIZE) == 0);
-            }
         }
         break;
 
@@ -358,12 +303,6 @@ LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT
         if (_pShadowWnd)
         {
             _pShadowWnd->_Show((BOOL)wParam);
-        }
-
-        // show/hide v-scroll
-        if (_pVScrollBarWnd)
-        {
-            _pVScrollBarWnd->_Show((BOOL)wParam);
         }
         break;
 
@@ -385,9 +324,6 @@ LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT
 
             GetCursorPos(&cursorPoint);
             MapWindowPoints(NULL, wndHandle, &cursorPoint, 1);
-
-            // handle mouse message
-            _HandleMouseMsg(HIWORD(lParam), cursorPoint);
         }
         return 1;
 
@@ -398,14 +334,6 @@ LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT
     case WM_LBUTTONUP:
     case WM_MBUTTONUP:
     case WM_RBUTTONUP:
-        {
-            POINT point;
-
-            POINTSTOPOINT(point, MAKEPOINTS(lParam));
-
-            // handle mouse message
-            _HandleMouseMsg(uMsg, point);
-        }
 		// we processes this message, it should return zero.
         return 0;
 
@@ -430,28 +358,6 @@ LRESULT CALLBACK CCandidateWindow::_WindowProcCallback(_In_ HWND wndHandle, UINT
     }
 
     return DefWindowProc(wndHandle, uMsg, wParam, lParam);
-}
-
-//+---------------------------------------------------------------------------
-//
-// _HandleMouseMsg
-//
-//----------------------------------------------------------------------------
-
-void CCandidateWindow::_HandleMouseMsg(_In_ UINT mouseMsg, _In_ POINT point)
-{
-    switch (mouseMsg)
-    {
-    case WM_MOUSEMOVE:
-        _OnMouseMove(point);
-        break;
-    case WM_LBUTTONDOWN:
-        _OnLButtonDown(point);
-        break;
-    case WM_LBUTTONUP:
-        _OnLButtonUp(point);
-        break;
-    }
 }
 
 //+---------------------------------------------------------------------------
@@ -482,132 +388,6 @@ void CCandidateWindow::_OnPaint(_In_ HDC dcHandle, _In_ PAINTSTRUCT *pPaintStruc
 
 cleanup:
     SelectObject(dcHandle, hFontOld);
-}
-
-//+---------------------------------------------------------------------------
-//
-// _OnLButtonDown
-//
-//----------------------------------------------------------------------------
-
-void CCandidateWindow::_OnLButtonDown(POINT pt)
-{
-    RECT rcWindow = {0, 0, 0, 0};;
-    _GetClientRect(&rcWindow);
-
-    int cyLine = _cyRow;
-
-    UINT candidateListPageCnt = CCandidateRange::Count;
-    UINT index = 0;
-    int currentPage = 0;
-
-    if (FAILED(_GetCurrentPage(&currentPage)))
-    {
-        return;
-    }
-
-    // Hit test on list items
-    index = *_PageIndex.GetAt(currentPage);
-
-    for (UINT pageCount = 0; (index < _candidateList.Count()) && (pageCount < candidateListPageCnt); index++, pageCount++)
-    {
-        RECT rc = {0, 0, 0, 0};
-
-        rc.left = rcWindow.left;
-        rc.right = rcWindow.right - GetSystemMetrics(SM_CXVSCROLL) * 2;
-        rc.top = rcWindow.top + (pageCount * cyLine);
-        rc.bottom = rcWindow.top + ((pageCount + 1) * cyLine);
-
-        if (PtInRect(&rc, pt) && _pfnCallback)
-        {
-            SetCursor(LoadCursor(NULL, IDC_HAND));
-            _currentSelection = index;
-            _pfnCallback(_pObj, CAND_ITEM_SELECT);
-            return;
-        }
-    }
-
-    SetCursor(LoadCursor(NULL, IDC_ARROW));
-
-    if (_pVScrollBarWnd)
-    {
-        RECT rc = {0, 0, 0, 0};
-
-        _pVScrollBarWnd->_GetClientRect(&rc);
-        MapWindowPoints(_GetWnd(), _pVScrollBarWnd->_GetWnd(), &pt, 1);
-
-        if (PtInRect(&rc, pt))
-        {
-            _pVScrollBarWnd->_OnLButtonDown(pt);
-        }
-    }
-}
-
-//+---------------------------------------------------------------------------
-//
-// _OnLButtonUp
-//
-//----------------------------------------------------------------------------
-
-void CCandidateWindow::_OnLButtonUp(POINT pt)
-{
-    if (nullptr == _pVScrollBarWnd)
-    {
-        return;
-    }
-
-    RECT rc = {0, 0, 0, 0};
-    _pVScrollBarWnd->_GetClientRect(&rc);
-    MapWindowPoints(_GetWnd(), _pVScrollBarWnd->_GetWnd(), &pt, 1);
-
-    if (_IsCapture())
-    {
-        _pVScrollBarWnd->_OnLButtonUp(pt);
-    }
-    else if (PtInRect(&rc, pt))
-    {
-        _pVScrollBarWnd->_OnLButtonUp(pt);
-    }
-}
-
-//+---------------------------------------------------------------------------
-//
-// _OnMouseMove
-//
-//----------------------------------------------------------------------------
-
-void CCandidateWindow::_OnMouseMove(POINT pt)
-{
-    RECT rcWindow = {0, 0, 0, 0};
-
-    _GetClientRect(&rcWindow);
-
-    RECT rc = {0, 0, 0, 0};
-
-    rc.left   = rcWindow.left;
-    rc.right  = rcWindow.right - GetSystemMetrics(SM_CXVSCROLL) * 2;
-
-    rc.top    = rcWindow.top;
-    rc.bottom = rcWindow.bottom;
-
-    if (PtInRect(&rc, pt))
-    {
-        SetCursor(LoadCursor(NULL, IDC_HAND));
-        return;
-    }
-
-    SetCursor(LoadCursor(NULL, IDC_ARROW));
-
-    if (_pVScrollBarWnd)
-    {
-        _pVScrollBarWnd->_GetClientRect(&rc);
-        MapWindowPoints(_GetWnd(), _pVScrollBarWnd->_GetWnd(), &pt, 1);
-
-        if (PtInRect(&rc, pt))
-        {
-            _pVScrollBarWnd->_OnMouseMove(pt);
-        }
-    }
 }
 
 //+---------------------------------------------------------------------------
@@ -677,11 +457,12 @@ void CCandidateWindow::_DrawList(_In_ HDC dcHandle, _In_ UINT iIndex, _In_ RECT 
         SetTextColor(dcHandle, CANDWND_NUM_COLOR);
         SetBkColor(dcHandle, GetSysColor(COLOR_3DHIGHLIGHT));
 
-        StringCchPrintf(pageCountString, ARRAYSIZE(pageCountString), L"%d", (LONG)CCandidateRange::GetAt(pageCount));
+        // if (CSampleIME::GetCandidateMode() == CandidateMode::Original) {
+            StringCchPrintf(pageCountString, ARRAYSIZE(pageCountString), L"%d", (LONG)CCandidateRange::GetAt(pageCount));
+        // } else {
+        //     StringCchPrintf(pageCountString, ARRAYSIZE(pageCountString), L"");
+        // }
         ExtTextOut(dcHandle, PageCountPosition * cxLine, pageCount * cyLine + cyOffset, ETO_OPAQUE, &rc, pageCountString, lenOfPageCount, NULL);
-
-        rc.left = prc->left + StringPosition * cxLine;
-        rc.right = prc->right;
 
         // Candidate Font Color And BK
         if (_currentSelection != iIndex)
@@ -696,8 +477,17 @@ void CCandidateWindow::_DrawList(_In_ HDC dcHandle, _In_ UINT iIndex, _In_ RECT 
             SetBkColor(dcHandle, HighlightedCandidateColor(accentColor));
         }
 
-        CStringRangeUtf16 str(*_candidateList.GetAt(iIndex));
-        ExtTextOut(dcHandle, StringPosition * cxLine, pageCount * cyLine + cyOffset, ETO_OPAQUE, &rc, str.GetRaw(), (DWORD)str.GetLength(), NULL);
+        CStringRangeUtf16 key((_candidateList.GetAt(iIndex)->key));
+        CStringRangeUtf16 value((_candidateList.GetAt(iIndex)->value));
+
+        rc.left = prc->left + StringPosition * cxLine;
+        rc.right = prc->left + KeyPosition * cxLine;
+        ExtTextOut(dcHandle, StringPosition * cxLine, pageCount * cyLine + cyOffset, ETO_OPAQUE, &rc, value.GetRaw(), (DWORD)value.GetLength(), NULL);
+
+        rc.left = prc->left + KeyPosition * cxLine;
+        rc.right = prc->right;
+        SetTextColor(dcHandle, CANDWND_NUM_COLOR);
+        ExtTextOut(dcHandle, KeyPosition * cxLine, pageCount * cyLine + cyOffset, ETO_OPAQUE, &rc, key.GetRaw(), (DWORD)key.GetLength(), NULL);
     }
     for (; (pageCount < candidateListPageCnt); pageCount++)
     {
@@ -743,13 +533,13 @@ void CCandidateWindow::_DrawBorder(_In_ HWND wndHandle, _In_ int cx)
 
 //+---------------------------------------------------------------------------
 //
-// _AddString
+// _AddKVPair
 //
 //----------------------------------------------------------------------------
 
-void CCandidateWindow::_AddString(const CRustStringRange& str)
+void CCandidateWindow::_AddKVPair(const CRustStringRange& key, const CRustStringRange& value)
 {
-    _candidateList.Append(str);
+    _candidateList.Append(KVPair(key, value));
 }
 
 //+---------------------------------------------------------------------------
@@ -763,25 +553,6 @@ void CCandidateWindow::_ClearList()
     _currentSelection = 0;
     _candidateList.Clear();
     _PageIndex.Clear();
-}
-
-//+---------------------------------------------------------------------------
-//
-// _SetScrollInfo
-//
-//----------------------------------------------------------------------------
-
-void CCandidateWindow::_SetScrollInfo(_In_ int nMax, _In_ int nPage)
-{
-    CScrollInfo si;
-    si.nMax = nMax;
-    si.nPage = nPage;
-    si.nPos = 0;
-
-    if (_pVScrollBarWnd)
-    {
-        _pVScrollBarWnd->_SetScrollInfo(&si);
-    }
 }
 
 //+---------------------------------------------------------------------------
@@ -804,7 +575,30 @@ std::optional<CRustStringRange> CCandidateWindow::_GetCandidateString(_In_ int i
         return std::nullopt;
     }
 
-    return *_candidateList.GetAt(iIndex);
+    return _candidateList.GetAt(iIndex)->value;
+}
+
+//+---------------------------------------------------------------------------
+//
+// _GetCandidateKey
+//
+//----------------------------------------------------------------------------
+
+std::optional<CRustStringRange> CCandidateWindow::_GetCandidateKey(_In_ int iIndex)
+{
+    if (iIndex < 0 )
+    {
+        return std::nullopt;
+    }
+
+    UINT index = static_cast<UINT>(iIndex);
+
+	if (index >= _candidateList.Count())
+    {
+        return std::nullopt;
+    }
+
+    return _candidateList.GetAt(iIndex)->key;
 }
 
 //+---------------------------------------------------------------------------
@@ -820,7 +614,23 @@ std::optional<CRustStringRange> CCandidateWindow::_GetSelectedCandidateString()
         return std::nullopt;
     }
 
-    return *_candidateList.GetAt(_currentSelection);
+    return _candidateList.GetAt(_currentSelection)->value;
+}
+
+//+---------------------------------------------------------------------------
+//
+// _GetSelectedCandidateKey
+//
+//----------------------------------------------------------------------------
+
+std::optional<CRustStringRange> CCandidateWindow::_GetSelectedCandidateKey()
+{
+    if (_currentSelection >= _candidateList.Count())
+    {
+        return std::nullopt;
+    }
+
+    return _candidateList.GetAt(_currentSelection)->key;
 }
 
 //+---------------------------------------------------------------------------
@@ -871,11 +681,6 @@ BOOL CCandidateWindow::_MoveSelection(_In_ int offSet, _In_ BOOL isNotify)
 
     _dontAdjustOnEmptyItemPage = TRUE;
 
-    if (_pVScrollBarWnd && isNotify)
-    {
-        _pVScrollBarWnd->_ShiftLine(offSet, isNotify);
-    }
-
     return TRUE;
 }
 
@@ -906,11 +711,6 @@ BOOL CCandidateWindow::_SetSelection(_In_ int selectedIndex, _In_ BOOL isNotify)
     _currentSelection = static_cast<UINT>(selectedIndex);
 
     BOOL ret = _AdjustPageIndexForSelection();
-
-    if (_pVScrollBarWnd && isNotify)
-    {
-        _pVScrollBarWnd->_ShiftPosition(selectedIndex, isNotify);
-    }
 
     return ret;
 }
@@ -967,12 +767,6 @@ BOOL CCandidateWindow::_MovePage(_In_ int offSet, _In_ BOOL isNotify)
     selectionOffset = _currentSelection - *_PageIndex.GetAt(currentPage);
     _currentSelection = *_PageIndex.GetAt(newPage) + selectionOffset;
     _currentSelection = _candidateList.Count() > _currentSelection ? _currentSelection : _candidateList.Count() - 1;
-
-    // adjust scrollbar position
-    if (_pVScrollBarWnd && isNotify)
-    {
-        _pVScrollBarWnd->_ShiftPage(offSet, isNotify);
-    }
 
     return TRUE;
 }
@@ -1388,14 +1182,5 @@ void CCandidateWindow::_DeleteShadowWnd()
     {
         delete _pShadowWnd;
         _pShadowWnd = nullptr;
-    }
-}
-
-void CCandidateWindow::_DeleteVScrollBarWnd()
-{
-    if (nullptr != _pVScrollBarWnd)
-    {
-        delete _pVScrollBarWnd;
-        _pVScrollBarWnd = nullptr;
     }
 }

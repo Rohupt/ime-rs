@@ -99,7 +99,6 @@ inline BOOL IsTooSimilar(COLORREF cr1, COLORREF cr2)
 //---------------------------------------------------------------------
 extern ATOM AtomCandidateWindow;
 extern ATOM AtomShadowWindow;
-extern ATOM AtomScrollBarWindow;
 
 BOOL RegisterWindowClass();
 

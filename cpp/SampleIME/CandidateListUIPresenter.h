@@ -94,7 +94,6 @@ public:
     virtual HRESULT OnSetThreadFocus();
     virtual HRESULT OnKillThreadFocus();
 
-    void RemoveSpecificCandidateFromList(_Inout_ CSampleImeArray<CCandidateListItem> &candidateList, const CRustStringRange& srgCandidateString);
     void AdviseUIChangedByArrowKey(_In_ KeystrokeFunction arrowKey);
 
 private:

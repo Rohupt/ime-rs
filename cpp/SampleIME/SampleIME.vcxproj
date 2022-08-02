@@ -32,7 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseWindow.h" />
-    <ClInclude Include="ButtonWindow.h" />
     <ClInclude Include="CandidateListUIPresenter.h" />
     <ClInclude Include="CandidateWindow.h" />
     <ClInclude Include="Compartment.h" />
@@ -51,7 +50,6 @@
     <ClInclude Include="Private.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SampleIME.h" />
-    <ClInclude Include="ScrollBarWindow.h" />
     <ClInclude Include="ShadowWindow.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TfInputProcessorProfile.h" />
@@ -62,7 +60,6 @@
   <ItemGroup>
     <ClCompile Include="ActiveLanguageProfileNotifySink.cpp" />
     <ClCompile Include="BaseWindow.cpp" />
-    <ClCompile Include="ButtonWindow.cpp" />
     <ClCompile Include="CandidateListUIPresenter.cpp" />
     <ClCompile Include="CandidateWindow.cpp" />
     <ClCompile Include="Compartment.cpp" />
@@ -87,7 +84,6 @@
     <ClCompile Include="KeyHandler.cpp" />
     <ClCompile Include="KeyHandlerEditSession.cpp" />
     <ClCompile Include="LanguageBar.cpp" />
-    <ClCompile Include="ScrollBarWindow.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ShadowWindow.cpp" />
     <ClCompile Include="StartComposition.cpp" />

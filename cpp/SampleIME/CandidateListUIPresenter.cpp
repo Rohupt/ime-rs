@@ -66,7 +66,109 @@ NoPresenter:
 
 HRESULT CSampleIME::_HandleCandidateConvert(TfEditCookie ec, _In_ ITfContext *pContext)
 {
-    return _HandleCandidateFinalize(ec, pContext);
+    return _HandleCandidateWorker(ec, pContext);
+}
+
+//+---------------------------------------------------------------------------
+//
+// _HandleCandidateWorker
+//
+//----------------------------------------------------------------------------
+
+HRESULT CSampleIME::_HandleCandidateWorker(TfEditCookie ec, _In_ ITfContext *pContext)
+{
+    HRESULT hrReturn = E_FAIL;
+    DWORD_PTR candidateLen = 0;
+    const WCHAR* pCandidateString = nullptr;
+    std::optional<CRustStringRange> candidateString;
+    CSampleImeArray<CCandidateListItem> candidatePhraseList;
+
+    if (nullptr == _pCandidateListUIPresenter)
+    {
+        hrReturn = S_OK;
+        goto Exit;
+    }
+
+    candidateString = _pCompositionProcessorEngine->GetMarkedString();
+    if (!candidateString.has_value()) {
+        hrReturn = S_FALSE;
+        goto Exit;
+    }
+
+    _pCompositionProcessorEngine->GetCandidateList(&candidatePhraseList, FALSE);
+
+    // We have a candidate list if candidatePhraseList.Cnt is not 0
+    // If we are showing reverse conversion, use CCandidateListUIPresenter
+    CandidateMode tempCandMode = CandidateMode::None;
+    CCandidateListUIPresenter* pTempCandListUIPresenter = nullptr;
+    if (candidatePhraseList.Count())
+    {
+        tempCandMode = CandidateMode::Original;
+
+        pTempCandListUIPresenter = new (std::nothrow) CCandidateListUIPresenter(this, Global::AtomCandidateWindow,
+            KeystrokeCategory::Candidate,
+            FALSE);
+        if (nullptr == pTempCandListUIPresenter)
+        {
+            hrReturn = E_OUTOFMEMORY;
+            goto Exit;
+        }
+    }
+
+    // call _Start*Line for CCandidateListUIPresenter or CReadingLine
+    // we don't cache the document manager object so get it from pContext.
+    ITfDocumentMgr* pDocumentMgr = nullptr;
+    HRESULT hrStartCandidateList = E_FAIL;
+    if (pContext->GetDocumentMgr(&pDocumentMgr) == S_OK)
+    {
+        ITfRange* pRange = nullptr;
+        if (_pComposition->GetRange(&pRange) == S_OK)
+        {
+            if (pTempCandListUIPresenter)
+            {
+                hrStartCandidateList = pTempCandListUIPresenter->_StartCandidateList(_tfClientId, pDocumentMgr, pContext, ec, pRange, CAND_WIDTH);
+            }
+
+            pRange->Release();
+        }
+        pDocumentMgr->Release();
+    }
+
+    // set up candidate list if it is being shown
+    if (SUCCEEDED(hrStartCandidateList))
+    {
+        pTempCandListUIPresenter->_SetTextColor(RGB(0, 0, 0), GetSysColor(COLOR_WINDOW));    // Text color is green
+        pTempCandListUIPresenter->_SetFillColor((HBRUSH)(COLOR_WINDOW+1));    // Background color is window
+        pTempCandListUIPresenter->_SetText(&candidatePhraseList);
+
+        // Add composing character
+        hrReturn = _AddComposingAndChar(ec, pContext, candidateString.value());
+
+        // close candidate list
+        if (_pCandidateListUIPresenter)
+        {
+            _pCandidateListUIPresenter->_EndCandidateList();
+            delete _pCandidateListUIPresenter;
+            _pCandidateListUIPresenter = nullptr;
+
+            _candidateMode = CandidateMode::None;
+        }
+
+        if (hrReturn == S_OK)
+        {
+            // copy temp candidate
+            _pCandidateListUIPresenter = pTempCandListUIPresenter;
+
+            _candidateMode = tempCandMode;
+        }
+    }
+    else
+    {
+        hrReturn = _HandleCandidateFinalize(ec, pContext);
+    }
+
+Exit:
+    return hrReturn;
 }
 
 //+---------------------------------------------------------------------------
@@ -103,7 +205,7 @@ HRESULT CSampleIME::_HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfCont
     {
         if (_pCandidateListUIPresenter->_SetSelectionInPage(iSelectAsNumber))
         {
-            return _HandleCandidateConvert(ec, pContext);
+            return _HandleCandidateFinalize(ec, pContext);
         }
     }
 
@@ -647,7 +749,7 @@ void CCandidateListUIPresenter::AddCandidateToCandidateListUI(_In_ CSampleImeArr
 {
     for (auto& item : *pCandidateList)
     {
-        _pCandidateWnd->_AddString(CRustStringRange(item._ItemString));
+        _pCandidateWnd->_AddKVPair(CRustStringRange(item._FindKeyCode), CRustStringRange(item._ItemString));
     }
 }
 
@@ -666,8 +768,6 @@ void CCandidateListUIPresenter::SetPageIndexWithScrollInfo(_In_ CSampleImeArray<
         _pCandidateWnd->_SetPageIndex(puPageIndex, bufferSize);
         delete [] puPageIndex;
     }
-    _pCandidateWnd->_SetScrollInfo(pCandidateList->Count(), candCntInPage);  // nMax:range of max, nPage:number of items in page
-
 }
 //+---------------------------------------------------------------------------
 //
@@ -959,22 +1059,6 @@ HRESULT CCandidateListUIPresenter::OnKillThreadFocus()
         Show(FALSE);
     }
     return S_OK;
-}
-
-void CCandidateListUIPresenter::RemoveSpecificCandidateFromList(_Inout_ CSampleImeArray<CCandidateListItem> &candidateList, const CRustStringRange& candidateString)
-{
-    for (UINT index = 0; index < candidateList.Count();)
-    {
-        CCandidateListItem* pLI = candidateList.GetAt(index);
-
-        if (candidateString == CRustStringRange(pLI->_ItemString))
-        {
-            candidateList.RemoveAt(index);
-            continue;
-        }
-
-        index++;
-    }
 }
 
 void CCandidateListUIPresenter::AdviseUIChangedByArrowKey(_In_ KeystrokeFunction arrowKey)

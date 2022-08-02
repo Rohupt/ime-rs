@@ -184,6 +184,10 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
         {
             return hr;
         }
+
+        if (item == CRustStringRange(CStringRangeUtf16(L' '))) {
+            return _HandleCompositionFinalize(ec, pContext, FALSE);
+        }
     }
 
     //

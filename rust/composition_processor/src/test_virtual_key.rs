@@ -1,8 +1,8 @@
 use crate::engine::CompositionProcessorEngine;
 use windows::Win32::UI::{Input::KeyboardAndMouse::{
     VK_BACK, VK_DOWN, VK_END, VK_ESCAPE, VK_HOME, VK_LEFT, VK_NEXT, VK_PRIOR, VK_RETURN, VK_RIGHT,
-    VK_TAB, VK_UP,
-}, TextServices::{TF_MOD_CONTROL, TF_MOD_ALT}};
+    VK_TAB, VK_UP, VK_SPACE,
+}, TextServices::{TF_MOD_CONTROL, TF_MOD_ALT, TF_MOD_SHIFT}};
 
 #[repr(C)]
 #[derive(PartialEq)]
@@ -54,7 +54,7 @@ fn map_invariable_keystroke_function(keystroke: u16) -> Option<KeystrokeFunction
     match keystroke {
         k if k == VK_TAB.0 => Some(KeystrokeFunction::Convert),
         k if k == VK_RETURN.0 => Some(KeystrokeFunction::FinalizeCandidatelist),
-
+        k if k == VK_SPACE.0 => Some(KeystrokeFunction::FinalizeTextstoreAndInput),
         k if k == VK_UP.0 => Some(KeystrokeFunction::MoveUp),
         k if k == VK_DOWN.0 => Some(KeystrokeFunction::MoveDown),
         k if k == VK_PRIOR.0 => Some(KeystrokeFunction::MovePageUp),
@@ -65,11 +65,11 @@ fn map_invariable_keystroke_function(keystroke: u16) -> Option<KeystrokeFunction
     }
 }
 
-fn character_affects_keystroke_composition(ch: char, modifiers: u32) -> bool {
+fn character_affects_keystroke_composition(ch: char, modifiers: u32, candidate_mode: CandidateMode) -> bool {
     // Normally [a-z] are only relevant since composition does not happen with Shift,
     // but KEYEVENTF_UNICODE can dispatch A-Z without Shift and that's allowed here
     // to maintain the original behavior.
-    (' '..='~').contains(&ch) && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0
+    ('!'..='~').contains(&ch) && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 && !(ch.is_numeric() && candidate_mode == CandidateMode::Original)
 }
 
 fn is_keystroke_range(ch: char, candidate_mode: CandidateMode) -> bool {
@@ -97,7 +97,7 @@ pub fn test_virtual_key(
     let modifiers = engine.modifiers().get();
 
     // Candidate list could not handle key. We can try to restart the composition.
-    if character_affects_keystroke_composition(ch, modifiers) {
+    if character_affects_keystroke_composition(ch, modifiers, candidate_mode) {
         return if candidate_mode == CandidateMode::Original {
             (
                 true,
@@ -113,6 +113,9 @@ pub fn test_virtual_key(
     // System pre-defined keystroke
     if composing {
         if let Some(mapped_function) = mapped_function {
+            if mapped_function == KeystrokeFunction::FinalizeTextstoreAndInput {
+                return (true, KeystrokeCategory::InvokeCompositionEditSession, KeystrokeFunction::FinalizeTextstoreAndInput);
+            }
             let category = if candidate_mode == CandidateMode::Incremental {
                 KeystrokeCategory::Candidate
             } else {
@@ -185,6 +188,17 @@ pub fn test_virtual_key(
 
     if candidate_mode == CandidateMode::Original {
         if let Some(mapped_function) = mapped_function {
+            if mapped_function == KeystrokeFunction::FinalizeTextstoreAndInput {
+                return (true, KeystrokeCategory::InvokeCompositionEditSession, KeystrokeFunction::FinalizeTextstoreAndInput);
+            } else if mapped_function == KeystrokeFunction::Convert {
+                if modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 {
+                    if modifiers & (TF_MOD_SHIFT) == 0 {
+                        return (true, KeystrokeCategory::Candidate, KeystrokeFunction::MoveDown);
+                    } else {
+                        return (true, KeystrokeCategory::Candidate, KeystrokeFunction::MoveUp);
+                    }
+                }
+            }
             return (true, KeystrokeCategory::Candidate, mapped_function);
         }
         match code {
@@ -215,7 +229,7 @@ pub fn test_virtual_key(
     }
 
     if ch != '\0' {
-        return if character_affects_keystroke_composition(ch, modifiers) {
+        return if character_affects_keystroke_composition(ch, modifiers, candidate_mode) {
             (
                 false,
                 KeystrokeCategory::Composing,

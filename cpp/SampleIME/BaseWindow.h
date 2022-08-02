@@ -49,9 +49,6 @@ public:
 
     virtual LRESULT CALLBACK _WindowProcCallback(_In_ HWND wndHandle, UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam) = 0;
     virtual void _OnPaint(_In_ HDC dcHandle, _In_ PAINTSTRUCT *pps) { dcHandle; pps; }
-    virtual void _OnLButtonDown(POINT pt) { pt; }
-    virtual void _OnLButtonUp(POINT pt) { pt; }
-    virtual void _OnMouseMove(POINT pt) { pt; }
     virtual void _OnTimer() { }
 
     CBaseWindow* _GetTopmostUIWnd();

@@ -36,9 +36,6 @@ ATOM AtomCandidateWindow;
 extern const WCHAR ShadowClassName[] = L"SampleIME.ShadowWindow";
 ATOM AtomShadowWindow;
 
-extern const WCHAR ScrollBarClassName[] = L"SampleIME.ScrollBarWindow";
-ATOM AtomScrollBarWindow;
-
 BOOL RegisterWindowClass()
 {
     if (!CBaseWindow::_InitWindowClass(CandidateClassName, &AtomCandidateWindow))
@@ -46,10 +43,6 @@ BOOL RegisterWindowClass()
         return FALSE;
     }
     if (!CBaseWindow::_InitWindowClass(ShadowClassName, &AtomShadowWindow))
-    {
-        return FALSE;
-    }
-    if (!CBaseWindow::_InitWindowClass(ScrollBarClassName, &AtomScrollBarWindow))
     {
         return FALSE;
     }

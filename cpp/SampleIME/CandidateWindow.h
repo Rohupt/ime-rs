@@ -13,7 +13,6 @@
 #include "Private.h"
 #include "BaseWindow.h"
 #include "ShadowWindow.h"
-#include "ScrollBarWindow.h"
 #include "SampleIMEBaseStructure.h"
 #include "RustStringRange.h"
 
@@ -23,6 +22,12 @@ enum CANDWND_ACTION
 };
 
 typedef HRESULT (*CANDWNDCALLBACK)(void *pv, enum CANDWND_ACTION action);
+
+typedef struct KVPair {
+    CRustStringRange key;
+    CRustStringRange value;
+    KVPair(CRustStringRange k, CRustStringRange v) : key(k), value(v) {}
+} KVPair;
 
 class CCandidateWindow : public CBaseWindow
 {
@@ -40,12 +45,9 @@ public:
 
     LRESULT CALLBACK _WindowProcCallback(_In_ HWND wndHandle, UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam);
     void _OnPaint(_In_ HDC dcHandle, _In_ PAINTSTRUCT *pps);
-    void _OnLButtonDown(POINT pt);
-    void _OnLButtonUp(POINT pt);
-    void _OnMouseMove(POINT pt);
     void _OnVScroll(DWORD dwSB, _In_ DWORD nPos);
 
-    void _AddString(const CRustStringRange& str);
+    void _AddKVPair(const CRustStringRange& key, const CRustStringRange& value);
     void _ClearList();
     UINT _GetCount()
     {
@@ -55,10 +57,11 @@ public:
     {
         return _currentSelection;
     }
-    void _SetScrollInfo(_In_ int nMax, _In_ int nPage);
 
     std::optional<CRustStringRange> _GetCandidateString(_In_ int iIndex);
+    std::optional<CRustStringRange> _GetCandidateKey(_In_ int iIndex);
     std::optional<CRustStringRange> _GetSelectedCandidateString();
+    std::optional<CRustStringRange> _GetSelectedCandidateKey();
 
     BOOL _MoveSelection(_In_ int offSet, _In_ BOOL isNotify);
     BOOL _SetSelection(_In_ int iPage, _In_ BOOL isNotify);
@@ -72,7 +75,6 @@ public:
     HRESULT _GetCurrentPage(_Inout_ int *pCurrentPage);
 
 private:
-    void _HandleMouseMsg(_In_ UINT mouseMsg, _In_ POINT point);
     void _DrawList(_In_ HDC dcHandle, _In_ UINT iIndex, _In_ RECT *prc);
     void _DrawBorder(_In_ HWND wndHandle, _In_ int cx);
     BOOL _SetSelectionOffset(_In_ int offSet);
@@ -84,19 +86,17 @@ private:
 
     BOOL _CreateMainWindow(ATOM atom, _In_opt_ HWND parentWndHandle);
     BOOL _CreateBackGroundShadowWindow();
-    BOOL _CreateVScrollWindow();
 
     HRESULT _AdjustPageIndex(_Inout_ UINT & currentPage, _Inout_ UINT & currentPageIndex);
 
     void _ResizeWindow();
     void _DeleteShadowWnd();
-    void _DeleteVScrollBarWnd();
 
     friend COLORREF _AdjustTextColor(_In_ COLORREF crColor, _In_ COLORREF crBkColor);
 
 private:
     UINT _currentSelection;
-    CSampleImeArray<CRustStringRange> _candidateList;
+    CSampleImeArray<KVPair> _candidateList;
     CSampleImeArray<UINT> _PageIndex;
 
     COLORREF _crTextColor;
@@ -112,7 +112,6 @@ private:
     void* _pObj;
 
     CShadowWindow* _pShadowWnd;
-    CScrollBarWindow* _pVScrollBarWnd;
 
     BOOL _dontAdjustOnEmptyItemPage;
     BOOL _isStoreAppMode;
