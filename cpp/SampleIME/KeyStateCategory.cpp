@@ -54,6 +54,9 @@ HRESULT CKeyStateCategory::KeyStateHandler(KeystrokeFunction function, KeyHandle
     case KeystrokeFunction::FinalizeTextstore:
         return HandleKeyFinalizeTextStore(dto);
 
+    case KeystrokeFunction::FinalizeTextstoreOriginal:
+        return HandleKeyFinalizeTextStoreOriginal(dto);
+
     case KeystrokeFunction::FinalizeCandidatelistAndInput:
         return HandleKeyFinalizeCandidatelistAndInput(dto);
 
@@ -119,6 +122,12 @@ HRESULT CKeyStateCategory::HandleKeyFinalizeTextStoreAndInput(KeyHandlerEditSess
     return E_NOTIMPL;
 }
 
+// HandleKeyFinalizeTextStoreOriginal
+HRESULT CKeyStateCategory::HandleKeyFinalizeTextStoreOriginal(KeyHandlerEditSessionDTO dto)
+{
+	dto;
+    return E_NOTIMPL;
+}
 // HandleKeyCompositionFinalizeCandidatelistAndInput
 HRESULT CKeyStateCategory::HandleKeyFinalizeCandidatelistAndInput(KeyHandlerEditSessionDTO dto)
 {
@@ -202,6 +211,11 @@ HRESULT CKeyStateComposing::HandleKeyFinalizeTextStoreAndInput(KeyHandlerEditSes
 HRESULT CKeyStateComposing::HandleKeyFinalizeTextStore(KeyHandlerEditSessionDTO dto)
 {
     return _pTextService->_HandleCompositionFinalize(dto.ec, dto.pContext, FALSE);
+}
+
+HRESULT CKeyStateComposing::HandleKeyFinalizeTextStoreOriginal(KeyHandlerEditSessionDTO dto)
+{
+    return _pTextService->_HandleCompositionFinalizeAsOriginal(dto.ec, dto.pContext);
 }
 
 HRESULT CKeyStateComposing::HandleKeyFinalizeCandidatelistAndInput(KeyHandlerEditSessionDTO dto)

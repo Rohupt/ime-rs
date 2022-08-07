@@ -21,6 +21,7 @@ pub enum KeystrokeFunction {
     Cancel,
     FinalizeTextstore,
     FinalizeTextstoreAndInput,
+    FinalizeTextstoreOriginal,
     FinalizeCandidatelist,
     FinalizeCandidatelistAndInput,
     Convert,
@@ -54,7 +55,7 @@ fn map_invariable_keystroke_function(keystroke: u16) -> Option<KeystrokeFunction
     match keystroke {
         k if k == VK_TAB.0 => Some(KeystrokeFunction::Convert),
         k if k == VK_RETURN.0 => Some(KeystrokeFunction::FinalizeCandidatelist),
-        k if k == VK_SPACE.0 => Some(KeystrokeFunction::FinalizeTextstoreAndInput),
+        k if k == VK_SPACE.0 => Some(KeystrokeFunction::FinalizeTextstore),
         k if k == VK_UP.0 => Some(KeystrokeFunction::MoveUp),
         k if k == VK_DOWN.0 => Some(KeystrokeFunction::MoveDown),
         k if k == VK_PRIOR.0 => Some(KeystrokeFunction::MovePageUp),
@@ -113,8 +114,12 @@ pub fn test_virtual_key(
     // System pre-defined keystroke
     if composing {
         if let Some(mapped_function) = mapped_function {
-            if mapped_function == KeystrokeFunction::FinalizeTextstoreAndInput {
-                return (true, KeystrokeCategory::InvokeCompositionEditSession, KeystrokeFunction::FinalizeTextstoreAndInput);
+            if mapped_function == KeystrokeFunction::FinalizeTextstore && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 {
+                let kf = if modifiers & (TF_MOD_SHIFT) == 0 { KeystrokeFunction::FinalizeTextstoreAndInput } else { KeystrokeFunction::FinalizeTextstore };
+                return (true, KeystrokeCategory::Composing, kf);
+            }
+            if mapped_function == KeystrokeFunction::FinalizeCandidatelist && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 && modifiers & (TF_MOD_SHIFT) != 0 {
+                return (true, KeystrokeCategory::Composing, KeystrokeFunction::FinalizeTextstoreOriginal);
             }
             let category = if candidate_mode == CandidateMode::Incremental {
                 KeystrokeCategory::Candidate

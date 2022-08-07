@@ -11,6 +11,7 @@
 #include "SampleIME.h"
 #include "CompositionProcessorEngine.h"
 #include "KeyStateCategory.h"
+#include <sstream>
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -34,8 +35,8 @@ STDAPI CKeyHandlerEditSession::DoEditSession(TfEditCookie ec)
 
     if (pKeyStateCategory)
     {
-        KeyHandlerEditSessionDTO keyHandlerEditSessioDTO(ec, _pContext, _wch, _KeyState.Function);
-        hResult = pKeyStateCategory->KeyStateHandler(_KeyState.Function, keyHandlerEditSessioDTO);
+        KeyHandlerEditSessionDTO keyHandlerEditSessionDTO(ec, _pContext, _wch, _KeyState.Function);
+        hResult = pKeyStateCategory->KeyStateHandler(_KeyState.Function, keyHandlerEditSessionDTO);
 
         pKeyStateCategory->Release();
     }

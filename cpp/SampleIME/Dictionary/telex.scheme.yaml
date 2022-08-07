@@ -56,6 +56,7 @@ uơ	uow
 uơi	uowi
 ơm	owm
 ơn	own
+uơn	uown
 ơng	owng
 ơp	owp
 ơt	owt
@@ -245,6 +246,7 @@ bơi	bowi
 buơi	buowi
 bơm	bowm
 bơn	bown
+buơn	buown
 bơng	bowng
 bơp	bowp
 bơt	bowt
@@ -434,6 +436,7 @@ cơi	cowi
 quơi	quowi
 cơm	cowm
 cơn	cown
+quơn	quown
 cơng	cowng
 cơp	cowp
 cơt	cowt
@@ -623,6 +626,7 @@ chơi	chowi
 chuơi	chuowi
 chơm	chowm
 chơn	chown
+chuơn	chuown
 chơng	chowng
 chơp	chowp
 chơt	chowt
@@ -812,6 +816,7 @@ dơi	dowi
 duơi	duowi
 dơm	dowm
 dơn	down
+duơn	duown
 dơng	downg
 dơp	dowp
 dơt	dowt
@@ -1001,6 +1006,7 @@ doec	doec
 đuơi	dduowi
 đơm	ddowm
 đơn	ddown
+đuơn	dduown
 đơng	ddowng
 đơp	ddowp
 đơt	ddowt
@@ -1190,6 +1196,7 @@ gơi	gowi
 guơi	guowi
 gơm	gowm
 gơn	gown
+guơn	guown
 gơng	gowng
 gơp	gowp
 gơt	gowt
@@ -1379,6 +1386,7 @@ giơi	giowi
 giuơi	giuowi
 giơm	giowm
 giơn	giown
+giuơn	giuown
 giơng	giowng
 giơp	giowp
 giơt	giowt
@@ -1445,7 +1453,7 @@ giat	giat
 gioat	gioat
 giac	giac
 gioac	gioac
-gia	giia
+gia	gia
 giuya	giuya
 giêu	gieeu
 giuyêu	giuyeeu
@@ -1568,6 +1576,7 @@ hơi	howi
 huơi	huowi
 hơm	howm
 hơn	hown
+huơn	huown
 hơng	howng
 hơp	howp
 hơt	howt
@@ -1757,6 +1766,7 @@ khơi	khowi
 khuơi	khuowi
 khơm	khowm
 khơn	khown
+khuơn	khuown
 khơng	khowng
 khơp	khowp
 khơt	khowt
@@ -1946,6 +1956,7 @@ lơi	lowi
 luơi	luowi
 lơm	lowm
 lơn	lown
+luơn	luown
 lơng	lowng
 lơp	lowp
 lơt	lowt
@@ -2135,6 +2146,7 @@ mơi	mowi
 muơi	muowi
 mơm	mowm
 mơn	mown
+muơn	muown
 mơng	mowng
 mơp	mowp
 mơt	mowt
@@ -2324,6 +2336,7 @@ nơi	nowi
 nuơi	nuowi
 nơm	nowm
 nơn	nown
+nuơn	nuown
 nơng	nowng
 nơp	nowp
 nơt	nowt
@@ -2513,6 +2526,7 @@ ngơi	ngowi
 nguơi	nguowi
 ngơm	ngowm
 ngơn	ngown
+nguơn	nguown
 ngơng	ngowng
 ngơp	ngowp
 ngơt	ngowt
@@ -2702,6 +2716,7 @@ nhơi	nhowi
 nhuơi	nhuowi
 nhơm	nhowm
 nhơn	nhown
+nhuơn	nhuown
 nhơng	nhowng
 nhơp	nhowp
 nhơt	nhowt
@@ -2891,6 +2906,7 @@ pơi	powi
 puơi	puowi
 pơm	powm
 pơn	pown
+puơn	puown
 pơng	powng
 pơp	powp
 pơt	powt
@@ -3080,6 +3096,7 @@ phơi	phowi
 phuơi	phuowi
 phơm	phowm
 phơn	phown
+phuơn	phuown
 phơng	phowng
 phơp	phowp
 phơt	phowt
@@ -3269,6 +3286,7 @@ rơi	rowi
 ruơi	ruowi
 rơm	rowm
 rơn	rown
+ruơn	ruown
 rơng	rowng
 rơp	rowp
 rơt	rowt
@@ -3458,6 +3476,7 @@ sơi	sowi
 suơi	suowi
 sơm	sowm
 sơn	sown
+suơn	suown
 sơng	sowng
 sơp	sowp
 sơt	sowt
@@ -3647,6 +3666,7 @@ tơi	towi
 tuơi	tuowi
 tơm	towm
 tơn	town
+tuơn	tuown
 tơng	towng
 tơp	towp
 tơt	towt
@@ -3836,6 +3856,7 @@ thơi	thowi
 thuơi	thuowi
 thơm	thowm
 thơn	thown
+thuơn	thuown
 thơng	thowng
 thơp	thowp
 thơt	thowt
@@ -4025,6 +4046,7 @@ trơi	trowi
 truơi	truowi
 trơm	trowm
 trơn	trown
+truơn	truown
 trơng	trowng
 trơp	trowp
 trơt	trowt
@@ -4214,6 +4236,7 @@ vơi	vowi
 vuơi	vuowi
 vơm	vowm
 vơn	vown
+vuơn	vuown
 vơng	vowng
 vơp	vowp
 vơt	vowt
@@ -4403,6 +4426,7 @@ xơi	xowi
 xuơi	xuowi
 xơm	xowm
 xơn	xown
+xuơn	xuown
 xơng	xowng
 xơp	xowp
 xơt	xowt
@@ -4592,6 +4616,7 @@ dzơi	dzowi
 dzuơi	dzuowi
 dzơm	dzowm
 dzơn	dzown
+dzuơn	dzuown
 dzơng	dzowng
 dzơp	dzowp
 dzơt	dzowt
@@ -4781,6 +4806,7 @@ fơi	fowi
 fuơi	fuowi
 fơm	fowm
 fơn	fown
+fuơn	fuown
 fơng	fowng
 fơp	fowp
 fơt	fowt
@@ -4970,6 +4996,7 @@ jơi	jowi
 juơi	juowi
 jơm	jowm
 jơn	jown
+juơn	juown
 jơng	jowng
 jơp	jowp
 jơt	jowt
@@ -5159,6 +5186,7 @@ zơi	zowi
 zuơi	zuowi
 zơm	zowm
 zơn	zown
+zuơn	zuown
 zơng	zowng
 zơp	zowp
 zơt	zowt
@@ -5348,6 +5376,7 @@ uơ	uowz
 uơi	uowiz
 ơm	owmz
 ơn	ownz
+uơn	uownz
 ơng	owngz
 ơp	owpz
 ơt	owtz
@@ -5537,6 +5566,7 @@ bơi	bowiz
 buơi	buowiz
 bơm	bowmz
 bơn	bownz
+buơn	buownz
 bơng	bowngz
 bơp	bowpz
 bơt	bowtz
@@ -5726,6 +5756,7 @@ cơi	cowiz
 quơi	quowiz
 cơm	cowmz
 cơn	cownz
+quơn	quownz
 cơng	cowngz
 cơp	cowpz
 cơt	cowtz
@@ -5915,6 +5946,7 @@ chơi	chowiz
 chuơi	chuowiz
 chơm	chowmz
 chơn	chownz
+chuơn	chuownz
 chơng	chowngz
 chơp	chowpz
 chơt	chowtz
@@ -6104,6 +6136,7 @@ dơi	dowiz
 duơi	duowiz
 dơm	dowmz
 dơn	downz
+duơn	duownz
 dơng	downgz
 dơp	dowpz
 dơt	dowtz
@@ -6293,6 +6326,7 @@ doec	doecz
 đuơi	dduowiz
 đơm	ddowmz
 đơn	ddownz
+đuơn	dduownz
 đơng	ddowngz
 đơp	ddowpz
 đơt	ddowtz
@@ -6482,6 +6516,7 @@ gơi	gowiz
 guơi	guowiz
 gơm	gowmz
 gơn	gownz
+guơn	guownz
 gơng	gowngz
 gơp	gowpz
 gơt	gowtz
@@ -6671,6 +6706,7 @@ giơi	giowiz
 giuơi	giuowiz
 giơm	giowmz
 giơn	giownz
+giuơn	giuownz
 giơng	giowngz
 giơp	giowpz
 giơt	giowtz
@@ -6860,6 +6896,7 @@ hơi	howiz
 huơi	huowiz
 hơm	howmz
 hơn	hownz
+huơn	huownz
 hơng	howngz
 hơp	howpz
 hơt	howtz
@@ -7049,6 +7086,7 @@ khơi	khowiz
 khuơi	khuowiz
 khơm	khowmz
 khơn	khownz
+khuơn	khuownz
 khơng	khowngz
 khơp	khowpz
 khơt	khowtz
@@ -7238,6 +7276,7 @@ lơi	lowiz
 luơi	luowiz
 lơm	lowmz
 lơn	lownz
+luơn	luownz
 lơng	lowngz
 lơp	lowpz
 lơt	lowtz
@@ -7427,6 +7466,7 @@ mơi	mowiz
 muơi	muowiz
 mơm	mowmz
 mơn	mownz
+muơn	muownz
 mơng	mowngz
 mơp	mowpz
 mơt	mowtz
@@ -7616,6 +7656,7 @@ nơi	nowiz
 nuơi	nuowiz
 nơm	nowmz
 nơn	nownz
+nuơn	nuownz
 nơng	nowngz
 nơp	nowpz
 nơt	nowtz
@@ -7805,6 +7846,7 @@ ngơi	ngowiz
 nguơi	nguowiz
 ngơm	ngowmz
 ngơn	ngownz
+nguơn	nguownz
 ngơng	ngowngz
 ngơp	ngowpz
 ngơt	ngowtz
@@ -7994,6 +8036,7 @@ nhơi	nhowiz
 nhuơi	nhuowiz
 nhơm	nhowmz
 nhơn	nhownz
+nhuơn	nhuownz
 nhơng	nhowngz
 nhơp	nhowpz
 nhơt	nhowtz
@@ -8183,6 +8226,7 @@ pơi	powiz
 puơi	puowiz
 pơm	powmz
 pơn	pownz
+puơn	puownz
 pơng	powngz
 pơp	powpz
 pơt	powtz
@@ -8372,6 +8416,7 @@ phơi	phowiz
 phuơi	phuowiz
 phơm	phowmz
 phơn	phownz
+phuơn	phuownz
 phơng	phowngz
 phơp	phowpz
 phơt	phowtz
@@ -8561,6 +8606,7 @@ rơi	rowiz
 ruơi	ruowiz
 rơm	rowmz
 rơn	rownz
+ruơn	ruownz
 rơng	rowngz
 rơp	rowpz
 rơt	rowtz
@@ -8750,6 +8796,7 @@ sơi	sowiz
 suơi	suowiz
 sơm	sowmz
 sơn	sownz
+suơn	suownz
 sơng	sowngz
 sơp	sowpz
 sơt	sowtz
@@ -8939,6 +8986,7 @@ tơi	towiz
 tuơi	tuowiz
 tơm	towmz
 tơn	townz
+tuơn	tuownz
 tơng	towngz
 tơp	towpz
 tơt	towtz
@@ -9128,6 +9176,7 @@ thơi	thowiz
 thuơi	thuowiz
 thơm	thowmz
 thơn	thownz
+thuơn	thuownz
 thơng	thowngz
 thơp	thowpz
 thơt	thowtz
@@ -9317,6 +9366,7 @@ trơi	trowiz
 truơi	truowiz
 trơm	trowmz
 trơn	trownz
+truơn	truownz
 trơng	trowngz
 trơp	trowpz
 trơt	trowtz
@@ -9506,6 +9556,7 @@ vơi	vowiz
 vuơi	vuowiz
 vơm	vowmz
 vơn	vownz
+vuơn	vuownz
 vơng	vowngz
 vơp	vowpz
 vơt	vowtz
@@ -9695,6 +9746,7 @@ xơi	xowiz
 xuơi	xuowiz
 xơm	xowmz
 xơn	xownz
+xuơn	xuownz
 xơng	xowngz
 xơp	xowpz
 xơt	xowtz
@@ -9884,6 +9936,7 @@ dzơi	dzowiz
 dzuơi	dzuowiz
 dzơm	dzowmz
 dzơn	dzownz
+dzuơn	dzuownz
 dzơng	dzowngz
 dzơp	dzowpz
 dzơt	dzowtz
@@ -10073,6 +10126,7 @@ fơi	fowiz
 fuơi	fuowiz
 fơm	fowmz
 fơn	fownz
+fuơn	fuownz
 fơng	fowngz
 fơp	fowpz
 fơt	fowtz
@@ -10262,6 +10316,7 @@ jơi	jowiz
 juơi	juowiz
 jơm	jowmz
 jơn	jownz
+juơn	juownz
 jơng	jowngz
 jơp	jowpz
 jơt	jowtz
@@ -10451,6 +10506,7 @@ zơi	zowiz
 zuơi	zuowiz
 zơm	zowmz
 zơn	zownz
+zuơn	zuownz
 zơng	zowngz
 zơp	zowpz
 zơt	zowtz
@@ -10640,6 +10696,7 @@ uờ	uowf
 uời	uowif
 ờm	owmf
 ờn	ownf
+uờn	uownf
 ờng	owngf
 ờp	owpf
 ờt	owtf
@@ -10829,6 +10886,7 @@ bời	bowif
 buời	buowif
 bờm	bowmf
 bờn	bownf
+buờn	buownf
 bờng	bowngf
 bờp	bowpf
 bờt	bowtf
@@ -11018,6 +11076,7 @@ cời	cowif
 quời	quowif
 cờm	cowmf
 cờn	cownf
+quờn	quownf
 cờng	cowngf
 cờp	cowpf
 cờt	cowtf
@@ -11207,6 +11266,7 @@ chời	chowif
 chuời	chuowif
 chờm	chowmf
 chờn	chownf
+chuờn	chuownf
 chờng	chowngf
 chờp	chowpf
 chờt	chowtf
@@ -11396,6 +11456,7 @@ dời	dowif
 duời	duowif
 dờm	dowmf
 dờn	downf
+duờn	duownf
 dờng	downgf
 dờp	dowpf
 dờt	dowtf
@@ -11585,6 +11646,7 @@ doèc	doecf
 đuời	dduowif
 đờm	ddowmf
 đờn	ddownf
+đuờn	dduownf
 đờng	ddowngf
 đờp	ddowpf
 đờt	ddowtf
@@ -11774,6 +11836,7 @@ gời	gowif
 guời	guowif
 gờm	gowmf
 gờn	gownf
+guờn	guownf
 gờng	gowngf
 gờp	gowpf
 gờt	gowtf
@@ -11963,6 +12026,7 @@ giời	giowif
 giuời	giuowif
 giờm	giowmf
 giờn	giownf
+giuờn	giuownf
 giờng	giowngf
 giờp	giowpf
 giờt	giowtf
@@ -12152,6 +12216,7 @@ hời	howif
 huời	huowif
 hờm	howmf
 hờn	hownf
+huờn	huownf
 hờng	howngf
 hờp	howpf
 hờt	howtf
@@ -12341,6 +12406,7 @@ khời	khowif
 khuời	khuowif
 khờm	khowmf
 khờn	khownf
+khuờn	khuownf
 khờng	khowngf
 khờp	khowpf
 khờt	khowtf
@@ -12530,6 +12596,7 @@ lời	lowif
 luời	luowif
 lờm	lowmf
 lờn	lownf
+luờn	luownf
 lờng	lowngf
 lờp	lowpf
 lờt	lowtf
@@ -12719,6 +12786,7 @@ mời	mowif
 muời	muowif
 mờm	mowmf
 mờn	mownf
+muờn	muownf
 mờng	mowngf
 mờp	mowpf
 mờt	mowtf
@@ -12908,6 +12976,7 @@ nời	nowif
 nuời	nuowif
 nờm	nowmf
 nờn	nownf
+nuờn	nuownf
 nờng	nowngf
 nờp	nowpf
 nờt	nowtf
@@ -13097,6 +13166,7 @@ ngời	ngowif
 nguời	nguowif
 ngờm	ngowmf
 ngờn	ngownf
+nguờn	nguownf
 ngờng	ngowngf
 ngờp	ngowpf
 ngờt	ngowtf
@@ -13286,6 +13356,7 @@ nhời	nhowif
 nhuời	nhuowif
 nhờm	nhowmf
 nhờn	nhownf
+nhuờn	nhuownf
 nhờng	nhowngf
 nhờp	nhowpf
 nhờt	nhowtf
@@ -13475,6 +13546,7 @@ pời	powif
 puời	puowif
 pờm	powmf
 pờn	pownf
+puờn	puownf
 pờng	powngf
 pờp	powpf
 pờt	powtf
@@ -13664,6 +13736,7 @@ phời	phowif
 phuời	phuowif
 phờm	phowmf
 phờn	phownf
+phuờn	phuownf
 phờng	phowngf
 phờp	phowpf
 phờt	phowtf
@@ -13853,6 +13926,7 @@ rời	rowif
 ruời	ruowif
 rờm	rowmf
 rờn	rownf
+ruờn	ruownf
 rờng	rowngf
 rờp	rowpf
 rờt	rowtf
@@ -14042,6 +14116,7 @@ sời	sowif
 suời	suowif
 sờm	sowmf
 sờn	sownf
+suờn	suownf
 sờng	sowngf
 sờp	sowpf
 sờt	sowtf
@@ -14231,6 +14306,7 @@ tời	towif
 tuời	tuowif
 tờm	towmf
 tờn	townf
+tuờn	tuownf
 tờng	towngf
 tờp	towpf
 tờt	towtf
@@ -14420,6 +14496,7 @@ thời	thowif
 thuời	thuowif
 thờm	thowmf
 thờn	thownf
+thuờn	thuownf
 thờng	thowngf
 thờp	thowpf
 thờt	thowtf
@@ -14609,6 +14686,7 @@ trời	trowif
 truời	truowif
 trờm	trowmf
 trờn	trownf
+truờn	truownf
 trờng	trowngf
 trờp	trowpf
 trờt	trowtf
@@ -14798,6 +14876,7 @@ vời	vowif
 vuời	vuowif
 vờm	vowmf
 vờn	vownf
+vuờn	vuownf
 vờng	vowngf
 vờp	vowpf
 vờt	vowtf
@@ -14987,6 +15066,7 @@ xời	xowif
 xuời	xuowif
 xờm	xowmf
 xờn	xownf
+xuờn	xuownf
 xờng	xowngf
 xờp	xowpf
 xờt	xowtf
@@ -15176,6 +15256,7 @@ dzời	dzowif
 dzuời	dzuowif
 dzờm	dzowmf
 dzờn	dzownf
+dzuờn	dzuownf
 dzờng	dzowngf
 dzờp	dzowpf
 dzờt	dzowtf
@@ -15365,6 +15446,7 @@ fời	fowif
 fuời	fuowif
 fờm	fowmf
 fờn	fownf
+fuờn	fuownf
 fờng	fowngf
 fờp	fowpf
 fờt	fowtf
@@ -15554,6 +15636,7 @@ jời	jowif
 juời	juowif
 jờm	jowmf
 jờn	jownf
+juờn	juownf
 jờng	jowngf
 jờp	jowpf
 jờt	jowtf
@@ -15743,6 +15826,7 @@ zời	zowif
 zuời	zuowif
 zờm	zowmf
 zờn	zownf
+zuờn	zuownf
 zờng	zowngf
 zờp	zowpf
 zờt	zowtf
@@ -15932,6 +16016,7 @@ uở	uowr
 uởi	uowir
 ởm	owmr
 ởn	ownr
+uởn	uownr
 ởng	owngr
 ởp	owpr
 ởt	owtr
@@ -16121,6 +16206,7 @@ bởi	bowir
 buởi	buowir
 bởm	bowmr
 bởn	bownr
+buởn	buownr
 bởng	bowngr
 bởp	bowpr
 bởt	bowtr
@@ -16310,6 +16396,7 @@ cởi	cowir
 quởi	quowir
 cởm	cowmr
 cởn	cownr
+quởn	quownr
 cởng	cowngr
 cởp	cowpr
 cởt	cowtr
@@ -16499,6 +16586,7 @@ chởi	chowir
 chuởi	chuowir
 chởm	chowmr
 chởn	chownr
+chuởn	chuownr
 chởng	chowngr
 chởp	chowpr
 chởt	chowtr
@@ -16688,6 +16776,7 @@ dởi	dowir
 duởi	duowir
 dởm	dowmr
 dởn	downr
+duởn	duownr
 dởng	downgr
 dởp	dowpr
 dởt	dowtr
@@ -16877,6 +16966,7 @@ doẻc	doecr
 đuởi	dduowir
 đởm	ddowmr
 đởn	ddownr
+đuởn	dduownr
 đởng	ddowngr
 đởp	ddowpr
 đởt	ddowtr
@@ -17066,6 +17156,7 @@ gởi	gowir
 guởi	guowir
 gởm	gowmr
 gởn	gownr
+guởn	guownr
 gởng	gowngr
 gởp	gowpr
 gởt	gowtr
@@ -17255,6 +17346,7 @@ giởi	giowir
 giuởi	giuowir
 giởm	giowmr
 giởn	giownr
+giuởn	giuownr
 giởng	giowngr
 giởp	giowpr
 giởt	giowtr
@@ -17444,6 +17536,7 @@ hởi	howir
 huởi	huowir
 hởm	howmr
 hởn	hownr
+huởn	huownr
 hởng	howngr
 hởp	howpr
 hởt	howtr
@@ -17633,6 +17726,7 @@ khởi	khowir
 khuởi	khuowir
 khởm	khowmr
 khởn	khownr
+khuởn	khuownr
 khởng	khowngr
 khởp	khowpr
 khởt	khowtr
@@ -17822,6 +17916,7 @@ lởi	lowir
 luởi	luowir
 lởm	lowmr
 lởn	lownr
+luởn	luownr
 lởng	lowngr
 lởp	lowpr
 lởt	lowtr
@@ -18011,6 +18106,7 @@ mởi	mowir
 muởi	muowir
 mởm	mowmr
 mởn	mownr
+muởn	muownr
 mởng	mowngr
 mởp	mowpr
 mởt	mowtr
@@ -18200,6 +18296,7 @@ nởi	nowir
 nuởi	nuowir
 nởm	nowmr
 nởn	nownr
+nuởn	nuownr
 nởng	nowngr
 nởp	nowpr
 nởt	nowtr
@@ -18389,6 +18486,7 @@ ngởi	ngowir
 nguởi	nguowir
 ngởm	ngowmr
 ngởn	ngownr
+nguởn	nguownr
 ngởng	ngowngr
 ngởp	ngowpr
 ngởt	ngowtr
@@ -18578,6 +18676,7 @@ nhởi	nhowir
 nhuởi	nhuowir
 nhởm	nhowmr
 nhởn	nhownr
+nhuởn	nhuownr
 nhởng	nhowngr
 nhởp	nhowpr
 nhởt	nhowtr
@@ -18767,6 +18866,7 @@ pởi	powir
 puởi	puowir
 pởm	powmr
 pởn	pownr
+puởn	puownr
 pởng	powngr
 pởp	powpr
 pởt	powtr
@@ -18956,6 +19056,7 @@ phởi	phowir
 phuởi	phuowir
 phởm	phowmr
 phởn	phownr
+phuởn	phuownr
 phởng	phowngr
 phởp	phowpr
 phởt	phowtr
@@ -19145,6 +19246,7 @@ rởi	rowir
 ruởi	ruowir
 rởm	rowmr
 rởn	rownr
+ruởn	ruownr
 rởng	rowngr
 rởp	rowpr
 rởt	rowtr
@@ -19334,6 +19436,7 @@ sởi	sowir
 suởi	suowir
 sởm	sowmr
 sởn	sownr
+suởn	suownr
 sởng	sowngr
 sởp	sowpr
 sởt	sowtr
@@ -19523,6 +19626,7 @@ tởi	towir
 tuởi	tuowir
 tởm	towmr
 tởn	townr
+tuởn	tuownr
 tởng	towngr
 tởp	towpr
 tởt	towtr
@@ -19712,6 +19816,7 @@ thởi	thowir
 thuởi	thuowir
 thởm	thowmr
 thởn	thownr
+thuởn	thuownr
 thởng	thowngr
 thởp	thowpr
 thởt	thowtr
@@ -19901,6 +20006,7 @@ trởi	trowir
 truởi	truowir
 trởm	trowmr
 trởn	trownr
+truởn	truownr
 trởng	trowngr
 trởp	trowpr
 trởt	trowtr
@@ -20090,6 +20196,7 @@ vởi	vowir
 vuởi	vuowir
 vởm	vowmr
 vởn	vownr
+vuởn	vuownr
 vởng	vowngr
 vởp	vowpr
 vởt	vowtr
@@ -20279,6 +20386,7 @@ xởi	xowir
 xuởi	xuowir
 xởm	xowmr
 xởn	xownr
+xuởn	xuownr
 xởng	xowngr
 xởp	xowpr
 xởt	xowtr
@@ -20468,6 +20576,7 @@ dzởi	dzowir
 dzuởi	dzuowir
 dzởm	dzowmr
 dzởn	dzownr
+dzuởn	dzuownr
 dzởng	dzowngr
 dzởp	dzowpr
 dzởt	dzowtr
@@ -20657,6 +20766,7 @@ fởi	fowir
 fuởi	fuowir
 fởm	fowmr
 fởn	fownr
+fuởn	fuownr
 fởng	fowngr
 fởp	fowpr
 fởt	fowtr
@@ -20846,6 +20956,7 @@ jởi	jowir
 juởi	juowir
 jởm	jowmr
 jởn	jownr
+juởn	juownr
 jởng	jowngr
 jởp	jowpr
 jởt	jowtr
@@ -21035,6 +21146,7 @@ zởi	zowir
 zuởi	zuowir
 zởm	zowmr
 zởn	zownr
+zuởn	zuownr
 zởng	zowngr
 zởp	zowpr
 zởt	zowtr
@@ -21224,6 +21336,7 @@ uỡ	uowx
 uỡi	uowix
 ỡm	owmx
 ỡn	ownx
+uỡn	uownx
 ỡng	owngx
 ỡp	owpx
 ỡt	owtx
@@ -21413,6 +21526,7 @@ bỡi	bowix
 buỡi	buowix
 bỡm	bowmx
 bỡn	bownx
+buỡn	buownx
 bỡng	bowngx
 bỡp	bowpx
 bỡt	bowtx
@@ -21602,6 +21716,7 @@ cỡi	cowix
 quỡi	quowix
 cỡm	cowmx
 cỡn	cownx
+quỡn	quownx
 cỡng	cowngx
 cỡp	cowpx
 cỡt	cowtx
@@ -21791,6 +21906,7 @@ chỡi	chowix
 chuỡi	chuowix
 chỡm	chowmx
 chỡn	chownx
+chuỡn	chuownx
 chỡng	chowngx
 chỡp	chowpx
 chỡt	chowtx
@@ -21980,6 +22096,7 @@ dỡi	dowix
 duỡi	duowix
 dỡm	dowmx
 dỡn	downx
+duỡn	duownx
 dỡng	downgx
 dỡp	dowpx
 dỡt	dowtx
@@ -22169,6 +22286,7 @@ doẽc	doecx
 đuỡi	dduowix
 đỡm	ddowmx
 đỡn	ddownx
+đuỡn	dduownx
 đỡng	ddowngx
 đỡp	ddowpx
 đỡt	ddowtx
@@ -22358,6 +22476,7 @@ gỡi	gowix
 guỡi	guowix
 gỡm	gowmx
 gỡn	gownx
+guỡn	guownx
 gỡng	gowngx
 gỡp	gowpx
 gỡt	gowtx
@@ -22547,6 +22666,7 @@ giỡi	giowix
 giuỡi	giuowix
 giỡm	giowmx
 giỡn	giownx
+giuỡn	giuownx
 giỡng	giowngx
 giỡp	giowpx
 giỡt	giowtx
@@ -22736,6 +22856,7 @@ hỡi	howix
 huỡi	huowix
 hỡm	howmx
 hỡn	hownx
+huỡn	huownx
 hỡng	howngx
 hỡp	howpx
 hỡt	howtx
@@ -22925,6 +23046,7 @@ khỡi	khowix
 khuỡi	khuowix
 khỡm	khowmx
 khỡn	khownx
+khuỡn	khuownx
 khỡng	khowngx
 khỡp	khowpx
 khỡt	khowtx
@@ -23114,6 +23236,7 @@ lỡi	lowix
 luỡi	luowix
 lỡm	lowmx
 lỡn	lownx
+luỡn	luownx
 lỡng	lowngx
 lỡp	lowpx
 lỡt	lowtx
@@ -23303,6 +23426,7 @@ mỡi	mowix
 muỡi	muowix
 mỡm	mowmx
 mỡn	mownx
+muỡn	muownx
 mỡng	mowngx
 mỡp	mowpx
 mỡt	mowtx
@@ -23492,6 +23616,7 @@ nỡi	nowix
 nuỡi	nuowix
 nỡm	nowmx
 nỡn	nownx
+nuỡn	nuownx
 nỡng	nowngx
 nỡp	nowpx
 nỡt	nowtx
@@ -23681,6 +23806,7 @@ ngỡi	ngowix
 nguỡi	nguowix
 ngỡm	ngowmx
 ngỡn	ngownx
+nguỡn	nguownx
 ngỡng	ngowngx
 ngỡp	ngowpx
 ngỡt	ngowtx
@@ -23870,6 +23996,7 @@ nhỡi	nhowix
 nhuỡi	nhuowix
 nhỡm	nhowmx
 nhỡn	nhownx
+nhuỡn	nhuownx
 nhỡng	nhowngx
 nhỡp	nhowpx
 nhỡt	nhowtx
@@ -24059,6 +24186,7 @@ pỡi	powix
 puỡi	puowix
 pỡm	powmx
 pỡn	pownx
+puỡn	puownx
 pỡng	powngx
 pỡp	powpx
 pỡt	powtx
@@ -24248,6 +24376,7 @@ phỡi	phowix
 phuỡi	phuowix
 phỡm	phowmx
 phỡn	phownx
+phuỡn	phuownx
 phỡng	phowngx
 phỡp	phowpx
 phỡt	phowtx
@@ -24437,6 +24566,7 @@ rỡi	rowix
 ruỡi	ruowix
 rỡm	rowmx
 rỡn	rownx
+ruỡn	ruownx
 rỡng	rowngx
 rỡp	rowpx
 rỡt	rowtx
@@ -24626,6 +24756,7 @@ sỡi	sowix
 suỡi	suowix
 sỡm	sowmx
 sỡn	sownx
+suỡn	suownx
 sỡng	sowngx
 sỡp	sowpx
 sỡt	sowtx
@@ -24815,6 +24946,7 @@ tỡi	towix
 tuỡi	tuowix
 tỡm	towmx
 tỡn	townx
+tuỡn	tuownx
 tỡng	towngx
 tỡp	towpx
 tỡt	towtx
@@ -25004,6 +25136,7 @@ thỡi	thowix
 thuỡi	thuowix
 thỡm	thowmx
 thỡn	thownx
+thuỡn	thuownx
 thỡng	thowngx
 thỡp	thowpx
 thỡt	thowtx
@@ -25193,6 +25326,7 @@ trỡi	trowix
 truỡi	truowix
 trỡm	trowmx
 trỡn	trownx
+truỡn	truownx
 trỡng	trowngx
 trỡp	trowpx
 trỡt	trowtx
@@ -25382,6 +25516,7 @@ vỡi	vowix
 vuỡi	vuowix
 vỡm	vowmx
 vỡn	vownx
+vuỡn	vuownx
 vỡng	vowngx
 vỡp	vowpx
 vỡt	vowtx
@@ -25571,6 +25706,7 @@ xỡi	xowix
 xuỡi	xuowix
 xỡm	xowmx
 xỡn	xownx
+xuỡn	xuownx
 xỡng	xowngx
 xỡp	xowpx
 xỡt	xowtx
@@ -25760,6 +25896,7 @@ dzỡi	dzowix
 dzuỡi	dzuowix
 dzỡm	dzowmx
 dzỡn	dzownx
+dzuỡn	dzuownx
 dzỡng	dzowngx
 dzỡp	dzowpx
 dzỡt	dzowtx
@@ -25949,6 +26086,7 @@ fỡi	fowix
 fuỡi	fuowix
 fỡm	fowmx
 fỡn	fownx
+fuỡn	fuownx
 fỡng	fowngx
 fỡp	fowpx
 fỡt	fowtx
@@ -26138,6 +26276,7 @@ jỡi	jowix
 juỡi	juowix
 jỡm	jowmx
 jỡn	jownx
+juỡn	juownx
 jỡng	jowngx
 jỡp	jowpx
 jỡt	jowtx
@@ -26327,6 +26466,7 @@ zỡi	zowix
 zuỡi	zuowix
 zỡm	zowmx
 zỡn	zownx
+zuỡn	zuownx
 zỡng	zowngx
 zỡp	zowpx
 zỡt	zowtx
@@ -26516,6 +26656,7 @@ uớ	uows
 uới	uowis
 ớm	owms
 ớn	owns
+uớn	uowns
 ớng	owngs
 ớp	owps
 ớt	owts
@@ -26705,6 +26846,7 @@ bới	bowis
 buới	buowis
 bớm	bowms
 bớn	bowns
+buớn	buowns
 bớng	bowngs
 bớp	bowps
 bớt	bowts
@@ -26894,6 +27036,7 @@ cới	cowis
 quới	quowis
 cớm	cowms
 cớn	cowns
+quớn	quowns
 cớng	cowngs
 cớp	cowps
 cớt	cowts
@@ -27083,6 +27226,7 @@ chới	chowis
 chuới	chuowis
 chớm	chowms
 chớn	chowns
+chuớn	chuowns
 chớng	chowngs
 chớp	chowps
 chớt	chowts
@@ -27272,6 +27416,7 @@ dới	dowis
 duới	duowis
 dớm	dowms
 dớn	downs
+duớn	duowns
 dớng	downgs
 dớp	dowps
 dớt	dowts
@@ -27461,6 +27606,7 @@ doéc	doecs
 đuới	dduowis
 đớm	ddowms
 đớn	ddowns
+đuớn	dduowns
 đớng	ddowngs
 đớp	ddowps
 đớt	ddowts
@@ -27650,6 +27796,7 @@ gới	gowis
 guới	guowis
 gớm	gowms
 gớn	gowns
+guớn	guowns
 gớng	gowngs
 gớp	gowps
 gớt	gowts
@@ -27839,6 +27986,7 @@ giới	giowis
 giuới	giuowis
 giớm	giowms
 giớn	giowns
+giuớn	giuowns
 giớng	giowngs
 giớp	giowps
 giớt	giowts
@@ -28028,6 +28176,7 @@ hới	howis
 huới	huowis
 hớm	howms
 hớn	howns
+huớn	huowns
 hớng	howngs
 hớp	howps
 hớt	howts
@@ -28217,6 +28366,7 @@ khới	khowis
 khuới	khuowis
 khớm	khowms
 khớn	khowns
+khuớn	khuowns
 khớng	khowngs
 khớp	khowps
 khớt	khowts
@@ -28406,6 +28556,7 @@ lới	lowis
 luới	luowis
 lớm	lowms
 lớn	lowns
+luớn	luowns
 lớng	lowngs
 lớp	lowps
 lớt	lowts
@@ -28595,6 +28746,7 @@ mới	mowis
 muới	muowis
 mớm	mowms
 mớn	mowns
+muớn	muowns
 mớng	mowngs
 mớp	mowps
 mớt	mowts
@@ -28784,6 +28936,7 @@ nới	nowis
 nuới	nuowis
 nớm	nowms
 nớn	nowns
+nuớn	nuowns
 nớng	nowngs
 nớp	nowps
 nớt	nowts
@@ -28973,6 +29126,7 @@ ngới	ngowis
 nguới	nguowis
 ngớm	ngowms
 ngớn	ngowns
+nguớn	nguowns
 ngớng	ngowngs
 ngớp	ngowps
 ngớt	ngowts
@@ -29162,6 +29316,7 @@ nhới	nhowis
 nhuới	nhuowis
 nhớm	nhowms
 nhớn	nhowns
+nhuớn	nhuowns
 nhớng	nhowngs
 nhớp	nhowps
 nhớt	nhowts
@@ -29351,6 +29506,7 @@ pới	powis
 puới	puowis
 pớm	powms
 pớn	powns
+puớn	puowns
 pớng	powngs
 pớp	powps
 pớt	powts
@@ -29540,6 +29696,7 @@ phới	phowis
 phuới	phuowis
 phớm	phowms
 phớn	phowns
+phuớn	phuowns
 phớng	phowngs
 phớp	phowps
 phớt	phowts
@@ -29729,6 +29886,7 @@ rới	rowis
 ruới	ruowis
 rớm	rowms
 rớn	rowns
+ruớn	ruowns
 rớng	rowngs
 rớp	rowps
 rớt	rowts
@@ -29918,6 +30076,7 @@ sới	sowis
 suới	suowis
 sớm	sowms
 sớn	sowns
+suớn	suowns
 sớng	sowngs
 sớp	sowps
 sớt	sowts
@@ -30107,6 +30266,7 @@ tới	towis
 tuới	tuowis
 tớm	towms
 tớn	towns
+tuớn	tuowns
 tớng	towngs
 tớp	towps
 tớt	towts
@@ -30296,6 +30456,7 @@ thới	thowis
 thuới	thuowis
 thớm	thowms
 thớn	thowns
+thuớn	thuowns
 thớng	thowngs
 thớp	thowps
 thớt	thowts
@@ -30485,6 +30646,7 @@ trới	trowis
 truới	truowis
 trớm	trowms
 trớn	trowns
+truớn	truowns
 trớng	trowngs
 trớp	trowps
 trớt	trowts
@@ -30674,6 +30836,7 @@ với	vowis
 vuới	vuowis
 vớm	vowms
 vớn	vowns
+vuớn	vuowns
 vớng	vowngs
 vớp	vowps
 vớt	vowts
@@ -30863,6 +31026,7 @@ xới	xowis
 xuới	xuowis
 xớm	xowms
 xớn	xowns
+xuớn	xuowns
 xớng	xowngs
 xớp	xowps
 xớt	xowts
@@ -31052,6 +31216,7 @@ dzới	dzowis
 dzuới	dzuowis
 dzớm	dzowms
 dzớn	dzowns
+dzuớn	dzuowns
 dzớng	dzowngs
 dzớp	dzowps
 dzớt	dzowts
@@ -31241,6 +31406,7 @@ fới	fowis
 fuới	fuowis
 fớm	fowms
 fớn	fowns
+fuớn	fuowns
 fớng	fowngs
 fớp	fowps
 fớt	fowts
@@ -31430,6 +31596,7 @@ jới	jowis
 juới	juowis
 jớm	jowms
 jớn	jowns
+juớn	juowns
 jớng	jowngs
 jớp	jowps
 jớt	jowts
@@ -31619,6 +31786,7 @@ zới	zowis
 zuới	zuowis
 zớm	zowms
 zớn	zowns
+zuớn	zuowns
 zớng	zowngs
 zớp	zowps
 zớt	zowts
@@ -31808,6 +31976,7 @@ uợ	uowj
 uợi	uowij
 ợm	owmj
 ợn	ownj
+uợn	uownj
 ợng	owngj
 ợp	owpj
 ợt	owtj
@@ -31997,6 +32166,7 @@ bợi	bowij
 buợi	buowij
 bợm	bowmj
 bợn	bownj
+buợn	buownj
 bợng	bowngj
 bợp	bowpj
 bợt	bowtj
@@ -32186,6 +32356,7 @@ cợi	cowij
 quợi	quowij
 cợm	cowmj
 cợn	cownj
+quợn	quownj
 cợng	cowngj
 cợp	cowpj
 cợt	cowtj
@@ -32375,6 +32546,7 @@ chợi	chowij
 chuợi	chuowij
 chợm	chowmj
 chợn	chownj
+chuợn	chuownj
 chợng	chowngj
 chợp	chowpj
 chợt	chowtj
@@ -32564,6 +32736,7 @@ dợi	dowij
 duợi	duowij
 dợm	dowmj
 dợn	downj
+duợn	duownj
 dợng	downgj
 dợp	dowpj
 dợt	dowtj
@@ -32753,6 +32926,7 @@ doẹc	doecj
 đuợi	dduowij
 đợm	ddowmj
 đợn	ddownj
+đuợn	dduownj
 đợng	ddowngj
 đợp	ddowpj
 đợt	ddowtj
@@ -32942,6 +33116,7 @@ gợi	gowij
 guợi	guowij
 gợm	gowmj
 gợn	gownj
+guợn	guownj
 gợng	gowngj
 gợp	gowpj
 gợt	gowtj
@@ -33131,6 +33306,7 @@ giợi	giowij
 giuợi	giuowij
 giợm	giowmj
 giợn	giownj
+giuợn	giuownj
 giợng	giowngj
 giợp	giowpj
 giợt	giowtj
@@ -33320,6 +33496,7 @@ hợi	howij
 huợi	huowij
 hợm	howmj
 hợn	hownj
+huợn	huownj
 hợng	howngj
 hợp	howpj
 hợt	howtj
@@ -33509,6 +33686,7 @@ khợi	khowij
 khuợi	khuowij
 khợm	khowmj
 khợn	khownj
+khuợn	khuownj
 khợng	khowngj
 khợp	khowpj
 khợt	khowtj
@@ -33698,6 +33876,7 @@ lợi	lowij
 luợi	luowij
 lợm	lowmj
 lợn	lownj
+luợn	luownj
 lợng	lowngj
 lợp	lowpj
 lợt	lowtj
@@ -33887,6 +34066,7 @@ mợi	mowij
 muợi	muowij
 mợm	mowmj
 mợn	mownj
+muợn	muownj
 mợng	mowngj
 mợp	mowpj
 mợt	mowtj
@@ -34076,6 +34256,7 @@ nợi	nowij
 nuợi	nuowij
 nợm	nowmj
 nợn	nownj
+nuợn	nuownj
 nợng	nowngj
 nợp	nowpj
 nợt	nowtj
@@ -34265,6 +34446,7 @@ ngợi	ngowij
 nguợi	nguowij
 ngợm	ngowmj
 ngợn	ngownj
+nguợn	nguownj
 ngợng	ngowngj
 ngợp	ngowpj
 ngợt	ngowtj
@@ -34454,6 +34636,7 @@ nhợi	nhowij
 nhuợi	nhuowij
 nhợm	nhowmj
 nhợn	nhownj
+nhuợn	nhuownj
 nhợng	nhowngj
 nhợp	nhowpj
 nhợt	nhowtj
@@ -34643,6 +34826,7 @@ pợi	powij
 puợi	puowij
 pợm	powmj
 pợn	pownj
+puợn	puownj
 pợng	powngj
 pợp	powpj
 pợt	powtj
@@ -34832,6 +35016,7 @@ phợi	phowij
 phuợi	phuowij
 phợm	phowmj
 phợn	phownj
+phuợn	phuownj
 phợng	phowngj
 phợp	phowpj
 phợt	phowtj
@@ -35021,6 +35206,7 @@ rợi	rowij
 ruợi	ruowij
 rợm	rowmj
 rợn	rownj
+ruợn	ruownj
 rợng	rowngj
 rợp	rowpj
 rợt	rowtj
@@ -35210,6 +35396,7 @@ sợi	sowij
 suợi	suowij
 sợm	sowmj
 sợn	sownj
+suợn	suownj
 sợng	sowngj
 sợp	sowpj
 sợt	sowtj
@@ -35399,6 +35586,7 @@ tợi	towij
 tuợi	tuowij
 tợm	towmj
 tợn	townj
+tuợn	tuownj
 tợng	towngj
 tợp	towpj
 tợt	towtj
@@ -35588,6 +35776,7 @@ thợi	thowij
 thuợi	thuowij
 thợm	thowmj
 thợn	thownj
+thuợn	thuownj
 thợng	thowngj
 thợp	thowpj
 thợt	thowtj
@@ -35777,6 +35966,7 @@ trợi	trowij
 truợi	truowij
 trợm	trowmj
 trợn	trownj
+truợn	truownj
 trợng	trowngj
 trợp	trowpj
 trợt	trowtj
@@ -35966,6 +36156,7 @@ vợi	vowij
 vuợi	vuowij
 vợm	vowmj
 vợn	vownj
+vuợn	vuownj
 vợng	vowngj
 vợp	vowpj
 vợt	vowtj
@@ -36155,6 +36346,7 @@ xợi	xowij
 xuợi	xuowij
 xợm	xowmj
 xợn	xownj
+xuợn	xuownj
 xợng	xowngj
 xợp	xowpj
 xợt	xowtj
@@ -36344,6 +36536,7 @@ dzợi	dzowij
 dzuợi	dzuowij
 dzợm	dzowmj
 dzợn	dzownj
+dzuợn	dzuownj
 dzợng	dzowngj
 dzợp	dzowpj
 dzợt	dzowtj
@@ -36533,6 +36726,7 @@ fợi	fowij
 fuợi	fuowij
 fợm	fowmj
 fợn	fownj
+fuợn	fuownj
 fợng	fowngj
 fợp	fowpj
 fợt	fowtj
@@ -36722,6 +36916,7 @@ jợi	jowij
 juợi	juowij
 jợm	jowmj
 jợn	jownj
+juợn	juownj
 jợng	jowngj
 jợp	jowpj
 jợt	jowtj
@@ -36911,6 +37106,7 @@ zợi	zowij
 zuợi	zuowij
 zợm	zowmj
 zợn	zownj
+zuợn	zuownj
 zợng	zowngj
 zợp	zowpj
 zợt	zowtj
@@ -37042,10 +37238,10 @@ zẹt	zetj
 zoẹt	zoetj
 zẹc	zecj
 zoẹc	zoecj
-quôc	quooc
 quôc	quoocz
 quồc	quoocf
 quổc	quoocr
 quỗc	quoocx
 quốc	quoocs
 quộc	quoocj
+quôc	quooc

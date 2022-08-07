@@ -24,6 +24,7 @@ enum class KeystrokeFunction {
   Cancel,
   FinalizeTextstore,
   FinalizeTextstoreAndInput,
+  FinalizeTextstoreOriginal,
   FinalizeCandidatelist,
   FinalizeCandidatelistAndInput,
   Convert,

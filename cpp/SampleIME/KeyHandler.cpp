@@ -110,6 +110,15 @@ HRESULT CSampleIME::_HandleCancel(TfEditCookie ec, _In_ ITfContext *pContext)
 
 HRESULT CSampleIME::_HandleCompositionInput(TfEditCookie ec, _In_ ITfContext *pContext, WCHAR wch)
 {
+    if (wch == L' ') {
+        HRESULT hr = _AddCharAndFinalize(ec, pContext, CRustStringRange(CStringRangeUtf16(L' ')));
+        if (FAILED(hr)) {
+            return hr;
+        }
+        _HandleCancel(ec, pContext);
+        return S_OK;
+    }
+
     ITfRange* pRangeComposition = nullptr;
     TF_SELECTION tfSelection;
     ULONG fetched = 0;
@@ -183,10 +192,6 @@ HRESULT CSampleIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngi
         if (FAILED(hr))
         {
             return hr;
-        }
-
-        if (item == CRustStringRange(CStringRangeUtf16(L' '))) {
-            return _HandleCompositionFinalize(ec, pContext, FALSE);
         }
     }
 
@@ -315,6 +320,58 @@ HRESULT CSampleIME::_HandleCompositionFinalize(TfEditCookie ec, _In_ ITfContext 
             tfSelection.range->Release();
         }
     }
+
+    _HandleCancel(ec, pContext);
+
+    return S_OK;
+}
+
+//+---------------------------------------------------------------------------
+//
+// _HandleCompositionFinalize
+//
+//----------------------------------------------------------------------------
+
+HRESULT CSampleIME::_HandleCompositionFinalizeAsOriginal(TfEditCookie ec, _In_ ITfContext *pContext)
+{
+    HRESULT hr = S_OK;
+
+    bool hasVirtualKey = _pCompositionProcessorEngine->HasVirtualKey();
+
+    if (hasVirtualKey)
+    {
+        CRustStringRange item = _pCompositionProcessorEngine->KeystrokeBufferGetReadingString();
+
+        hr = _AddComposingAndChar(ec, pContext, item);
+        if (FAILED(hr))
+        {
+            return hr;
+        }
+    }
+
+    if (_IsComposing())
+        {
+            ULONG fetched = 0;
+            TF_SELECTION tfSelection;
+
+            if (FAILED(pContext->GetSelection(ec, TF_DEFAULT_SELECTION, 1, &tfSelection, &fetched)) || fetched != 1)
+            {
+                return S_FALSE;
+            }
+
+            ITfRange* pRangeComposition = nullptr;
+            if (SUCCEEDED(_pComposition->GetRange(&pRangeComposition)))
+            {
+                if (_IsRangeCovered(ec, tfSelection.range, pRangeComposition))
+                {
+                    _EndComposition(pContext);
+                }
+
+                pRangeComposition->Release();
+            }
+
+            tfSelection.range->Release();
+        }
 
     _HandleCancel(ec, pContext);
 

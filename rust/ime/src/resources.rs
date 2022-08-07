@@ -7,7 +7,7 @@ pub const TEXTSERVICE_STYLE: &str = "telex.scheme.yaml";
 // defined item in setting file table [PreservedKey] section
 //---------------------------------------------------------------------
 
-pub const IME_MODE_DESCRIPTION: &str = "Bật/Tắt IME (Shift)";
+pub const IME_MODE_DESCRIPTION: &str = "Bật/Tắt IME (Alt + `)";
 pub const IME_MODE_ON_ICO_INDEX: u32 = 21;
 pub const IME_MODE_OFF_ICO_INDEX: u32 = 22;
 

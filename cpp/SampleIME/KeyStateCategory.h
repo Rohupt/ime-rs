@@ -56,6 +56,9 @@ protected:
     // HandleKeyFinalizeTextStore
     virtual HRESULT HandleKeyFinalizeTextStore(KeyHandlerEditSessionDTO dto);
 
+    // HandleKeyFinalizeTextStoreOriginal
+    virtual HRESULT HandleKeyFinalizeTextStoreOriginal(KeyHandlerEditSessionDTO dto);
+
     // HandleKeyFinalizeCandidatelistAndInput
     virtual HRESULT HandleKeyFinalizeCandidatelistAndInput(KeyHandlerEditSessionDTO dto);
 
@@ -101,6 +104,9 @@ protected:
 
     // HandleKeyFinalizeTextStore
     HRESULT HandleKeyFinalizeTextStore(KeyHandlerEditSessionDTO dto);
+
+    // HandleKeyFinalizeTextStoreOriginal
+    HRESULT HandleKeyFinalizeTextStoreOriginal(KeyHandlerEditSessionDTO dto);
 
     // HandleKeyCompositionFinalizeCandidatelistAndInput
     HRESULT HandleKeyFinalizeCandidatelistAndInput(KeyHandlerEditSessionDTO dto);
