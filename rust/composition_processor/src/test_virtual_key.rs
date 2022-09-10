@@ -70,7 +70,10 @@ fn character_affects_keystroke_composition(ch: char, modifiers: u32, candidate_m
     // Normally [a-z] are only relevant since composition does not happen with Shift,
     // but KEYEVENTF_UNICODE can dispatch A-Z without Shift and that's allowed here
     // to maintain the original behavior.
-    ('!'..='~').contains(&ch) && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 && !(ch.is_numeric() && candidate_mode == CandidateMode::Original)
+    (
+        ((' '..='~').contains(&ch) && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0) &&
+        (if ch == ' ' { modifiers & TF_MOD_SHIFT == 0 } else { true })
+    ) && !(ch.is_numeric() && candidate_mode == CandidateMode::Original)
 }
 
 fn is_keystroke_range(ch: char, candidate_mode: CandidateMode) -> bool {
@@ -115,8 +118,11 @@ pub fn test_virtual_key(
     if composing {
         if let Some(mapped_function) = mapped_function {
             if mapped_function == KeystrokeFunction::FinalizeTextstore && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 {
-                let kf = if modifiers & (TF_MOD_SHIFT) == 0 { KeystrokeFunction::FinalizeTextstoreAndInput } else { KeystrokeFunction::FinalizeTextstore };
-                return (true, KeystrokeCategory::Composing, kf);
+                return if modifiers & TF_MOD_SHIFT == 0 {
+                    (false, KeystrokeCategory::Composing, KeystrokeFunction::Input)
+                } else {
+                    (true, KeystrokeCategory::Composing, KeystrokeFunction::FinalizeTextstore)
+                };
             }
             if mapped_function == KeystrokeFunction::FinalizeCandidatelist && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 && modifiers & (TF_MOD_SHIFT) != 0 {
                 return (true, KeystrokeCategory::Composing, KeystrokeFunction::FinalizeTextstoreOriginal);
@@ -203,6 +209,12 @@ pub fn test_virtual_key(
                         return (true, KeystrokeCategory::Candidate, KeystrokeFunction::MoveUp);
                     }
                 }
+            } else if mapped_function == KeystrokeFunction::FinalizeTextstore && modifiers & (TF_MOD_CONTROL | TF_MOD_ALT) == 0 {
+                return if modifiers & TF_MOD_SHIFT == 0 {
+                    (true, KeystrokeCategory::Composing, KeystrokeFunction::FinalizeTextstoreAndInput)
+                } else {
+                    (true, KeystrokeCategory::Composing, KeystrokeFunction::FinalizeTextstore)
+                };
             }
             return (true, KeystrokeCategory::Candidate, mapped_function);
         }

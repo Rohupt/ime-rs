@@ -22,7 +22,15 @@ pub static SAMPLEIME_GUID_PROFILE: GUID = GUID::from_u128(0x2b574d86_3844_4136_8
 // {27579631-4620-4640-b3e0-ae24541c216c}
 #[no_mangle]
 // #[cfg(target_arch = "x86")]
-pub static SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY: GUID = GUID::from_u128(0x27579631_4620_4640_b3e0_ae24541c216c);
+pub static SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY_1: GUID = GUID::from_u128(0x27579631_4620_4640_b3e0_ae24541c216c);
+// // {9453642d-cdc9-43fe-a0e3-bbdb3df3c07d}
+// #[no_mangle]
+// // #[cfg(target_arch = "x86")]
+// pub static SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY_2: GUID = GUID::from_u128(0x9453642d_cdc9_43fe_a0e3_bbdb3df3c07d);
+// // {601ab3ee-cd8e-40e3-ae2a-d072a4305ad7}
+// #[no_mangle]
+// // #[cfg(target_arch = "x86")]
+// pub static SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY_3: GUID = GUID::from_u128(0x601ab3ee_cd8e_40e3_ae2a_d072a4305ad7);
 
 // {8b5255fb-0ca8-431b-a54b-b06a060c73f4}
 #[no_mangle]

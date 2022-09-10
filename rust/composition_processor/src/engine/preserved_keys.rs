@@ -1,6 +1,7 @@
 use globals::{
     SAMPLEIME_GUID_COMPARTMENT_DOUBLE_SINGLE_BYTE, SAMPLEIME_GUID_COMPARTMENT_PUNCTUATION,
-    SAMPLEIME_GUID_DOUBLE_SINGLE_BYTE_PRESERVE_KEY, SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY,
+    SAMPLEIME_GUID_DOUBLE_SINGLE_BYTE_PRESERVE_KEY, SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY_1,
+    // SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY_2, SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY_3,
     SAMPLEIME_GUID_PUNCTUATION_PRESERVE_KEY,
 };
 use windows::{
@@ -8,11 +9,14 @@ use windows::{
     Win32::{
         System::Com::{CoCreateInstance, CLSCTX_INPROC_SERVER},
         UI::{
-            Input::KeyboardAndMouse::{VK_OEM_PERIOD, VK_OEM_3, /*VK_LSHIFT, VK_RSHIFT*/},
+            Input::KeyboardAndMouse::{VK_OEM_PERIOD, VK_OEM_3,
+                // VK_F2, VK_LSHIFT, VK_RSHIFT, VK_SHIFT
+            },
             TextServices::{
                 CLSID_TF_ThreadMgr, ITfKeystrokeMgr, ITfThreadMgr,
                 GUID_COMPARTMENT_KEYBOARD_OPENCLOSE, TF_MOD_CONTROL, TF_MOD_ALT,
-                TF_PRESERVEDKEY, //TF_MOD_RSHIFT, TF_MOD_LSHIFT,
+                TF_PRESERVEDKEY, 
+                // TF_MOD_RSHIFT, TF_MOD_LSHIFT, TF_MOD_SHIFT, TF_MOD_ON_KEYUP,
             },
         },
     },
@@ -69,28 +73,10 @@ impl Default for PreservedKeys {
                         uVKey: VK_OEM_3.0 as u32,
                         uModifiers: TF_MOD_ALT,
                     },
-                    key_guid: SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY,
+                    key_guid: SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY_1,
                     compartment_guid: GUID_COMPARTMENT_KEYBOARD_OPENCLOSE,
-                    desc: "Bật/tắt bộ gõ (Alt+`)",
+                    desc: "Bật/tắt bộ gõ (Alt + `)",
                 },
-                // PreservedKeyExtended {
-                //     key: TF_PRESERVEDKEY {
-                //         uVKey: VK_LSHIFT.0 as u32,
-                //         uModifiers: TF_MOD_RSHIFT,
-                //     },
-                //     key_guid: SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY,
-                //     compartment_guid: GUID_COMPARTMENT_KEYBOARD_OPENCLOSE,
-                //     desc: "Bật/tắt bộ gõ (Shift + Shift)",
-                // },
-                // PreservedKeyExtended {
-                //     key: TF_PRESERVEDKEY {
-                //         uVKey: VK_RSHIFT.0 as u32,
-                //         uModifiers: TF_MOD_LSHIFT,
-                //     },
-                //     key_guid: SAMPLEIME_GUID_IME_MODE_PRESERVE_KEY,
-                //     compartment_guid: GUID_COMPARTMENT_KEYBOARD_OPENCLOSE,
-                //     desc: "Bật/tắt bộ gõ (Shift + Shift)",
-                // },
                 PreservedKeyExtended {
                     key: TF_PRESERVEDKEY {
                         uVKey: VK_OEM_3.0 as u32,

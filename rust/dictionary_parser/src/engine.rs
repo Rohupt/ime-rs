@@ -112,6 +112,10 @@ impl TableDictionaryEngine {
                         vec.push((full_key.clone(), value.to_string(), *priority, 8))
                     }
                 }
+                // add forms of the full key
+                for w in get_word_forms(full_key.clone()) {
+                    vec.push((full_key.clone(), w.clone(), 0, 10));
+                }
             }
         }
 
@@ -134,7 +138,7 @@ impl TableDictionaryEngine {
                 for key in prefix_keys_continuous {
                     for (value, priority) in self.dictionary.get(key).unwrap() {
                         if *priority > 0 {
-                            vec.push((key.clone(), value.to_string(), *priority, 6))
+                            vec.push((key.clone(), value.to_string(), *priority, 5))
                         }
                     }
                 }
@@ -149,7 +153,7 @@ impl TableDictionaryEngine {
         vec.iter().map(|(key, value, _priority1, _priority2)| ((*key).clone(), (*value).clone())).collect()
     }
     
-    pub fn convert_input_string(&self, istr: String) -> String {
+    pub fn convert_input_string_spaceless(&self, istr: String) -> String {
         let tones = "zfrxsj".to_string();
         let vowels = "aeiouy".to_string();
         let diacritics = "aeow".to_string();
@@ -228,6 +232,48 @@ impl TableDictionaryEngine {
                 result.push_str(&self.convert_word(&istr[si..ei]));
             }
         }
+        result
+    }
+
+    pub fn convert_input_string(&self, istr: String) -> String {
+        let tones = "zfrxsj".to_string();
+        let _chars = "".to_string();
+        let diacritics = "aeowd".to_string();
+
+        let mut result = String::new();
+
+        let mut words = istr.split(' ').peekable();
+        while let Some(word) = words.next() {
+            let mut cws = 0;
+            let mut cws_isset = false;
+            if !word.chars().all(|c| c.is_alphabetic() || tones.contains(c) || diacritics.contains(c)) {
+                for (i, c) in word.chars().enumerate() {
+                    if c.is_alphabetic() {
+                        if !cws_isset {
+                            cws = i;
+                            cws_isset = true;
+                        }
+                        if i == word.len() - 1 {
+                            result.push_str(&self.convert_word(&word[cws..=i]));
+                        }
+                    }
+                    if !(c.is_alphabetic() || tones.contains(c) || diacritics.contains(c)) {
+                        if cws_isset {
+                            result.push_str(&self.convert_word(&word[cws..i]));
+                            cws_isset = false;
+                        }
+                        result.push(c);
+                    }
+                }
+            } else {
+                result.push_str(&self.convert_word(word));
+            }
+
+            if words.peek().is_some() {
+                result.push(' ');
+            }
+        }
+        
         result
     }
 

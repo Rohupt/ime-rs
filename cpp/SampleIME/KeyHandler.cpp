@@ -110,15 +110,6 @@ HRESULT CSampleIME::_HandleCancel(TfEditCookie ec, _In_ ITfContext *pContext)
 
 HRESULT CSampleIME::_HandleCompositionInput(TfEditCookie ec, _In_ ITfContext *pContext, WCHAR wch)
 {
-    if (wch == L' ') {
-        HRESULT hr = _AddCharAndFinalize(ec, pContext, CRustStringRange(CStringRangeUtf16(L' ')));
-        if (FAILED(hr)) {
-            return hr;
-        }
-        _HandleCancel(ec, pContext);
-        return S_OK;
-    }
-
     ITfRange* pRangeComposition = nullptr;
     TF_SELECTION tfSelection;
     ULONG fetched = 0;
@@ -126,6 +117,15 @@ HRESULT CSampleIME::_HandleCompositionInput(TfEditCookie ec, _In_ ITfContext *pC
 
     CCompositionProcessorEngine* pCompositionProcessorEngine = nullptr;
     pCompositionProcessorEngine = _pCompositionProcessorEngine;
+
+    if (wch == L' ' && pCompositionProcessorEngine->KeystrokeBufferGetReadingString().GetLengthUtf8() == 0) {
+        HRESULT hr = _AddCharAndFinalize(ec, pContext, CRustStringRange(CStringRangeUtf16(L' ')));
+        if (FAILED(hr)) {
+            return hr;
+        }
+        _HandleCancel(ec, pContext);
+        return S_OK;
+    }
 
     if ((_pCandidateListUIPresenter != nullptr) && (_candidateMode != CandidateMode::Incremental))
     {
